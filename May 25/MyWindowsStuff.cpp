@@ -232,7 +232,7 @@ void Integration()
 		break;
 
 	case Washer:
-		IntegrationResult = XM_PI * (result_2 - result_1);
+		IntegrationResult = XM_PI * (result_1 - result_2);
 		break;
 
 	case Shell:

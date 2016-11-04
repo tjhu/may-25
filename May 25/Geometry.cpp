@@ -91,29 +91,6 @@ GeometryPointers BuildDiskGeometryBuffers(ID3D11Device* g_pd3dDevice, UINT* NumO
 	GeometryPointers mGeoPointers;
 	mGeoPointers.pVertexPointer = vertices;
 	mGeoPointers.pIndexPointer = indices;
-	//D3D11_BUFFER_DESC bd;
-	//ZeroMemory(&bd, sizeof(bd));
-	//bd.Usage = D3D11_USAGE_DEFAULT;
-	//bd.ByteWidth = sizeof(SimpleVertex) * *NumOfVertex;
-	//bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	//bd.CPUAccessFlags = 0;
-	//D3D11_SUBRESOURCE_DATA InitData;
-	//ZeroMemory(&InitData, sizeof(InitData));
-	//InitData.pSysMem = vertices;
-	//ThrowIfFailed(g_pd3dDevice->CreateBuffer(&bd, &InitData, &mBuffers.pVertexBuffer));
-	//bd.Usage = D3D11_USAGE_DEFAULT;
-	//bd.ByteWidth = *NumOfIndice * sizeof(WORD);        // 36 vertices needed for 12 triangles in a triangle list
-	//bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	//bd.CPUAccessFlags = 0;
-	//InitData.pSysMem = indices;
-	//ThrowIfFailed(g_pd3dDevice->CreateBuffer(&bd, &InitData, &mBuffers.pIndexBuffer));
-
-
-	//delete[] vertices;
-	//vertices = nullptr;
-	//delete[] indices;
-	//indices = nullptr;
-
 	return mGeoPointers;
 }
 
@@ -269,29 +246,10 @@ GeometryPointers BuildEntireWasherGeometryBuffers(ID3D11Device* g_pd3dDevice, UI
 		}
 	}
 
-	GeometryPointers mBuffers;
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = *NumOfVertex * sizeof(SimpleVertex);
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.CPUAccessFlags = 0;
-	D3D11_SUBRESOURCE_DATA InitData;
-	ZeroMemory(&InitData, sizeof(InitData));
-	InitData.pSysMem = vertices;
-	ThrowIfFailed(g_pd3dDevice->CreateBuffer(&bd, &InitData, &mBuffers.pVertexBuffer));
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = *NumOfIndice * sizeof(WORD);        
-	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	bd.CPUAccessFlags = 0;
-	InitData.pSysMem = indices;
-	ThrowIfFailed(g_pd3dDevice->CreateBuffer(&bd, &InitData, &mBuffers.pIndexBuffer));
-
-	delete[] vertices;
-	vertices = nullptr;
-	delete[] indices;
-	indices = nullptr;
-	return mBuffers;
+	GeometryPointers mGeoPointers;
+	mGeoPointers.pVertexPointer = vertices;
+	mGeoPointers.pIndexPointer = indices;
+	return mGeoPointers;
 }
 
 //GeometryPointers BuildEntireShellGeometryBuffers(ID3D11Device* g_pd3dDevice, UINT* NumOfVertex, UINT* NumOfIndice, UINT NCount,

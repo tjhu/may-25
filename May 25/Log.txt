@@ -1,0 +1,5 @@
+Go main
+Read setting from file
+Initialization was succeed
+Read inputs from file
+Device cleaned up

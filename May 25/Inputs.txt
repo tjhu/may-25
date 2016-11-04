@@ -1,0 +1,6 @@
+Function_1= sin(x)
+Function_2= 0.1*x
+LeftBound= -1
+RightBound= 1
+Rectangle= 40
+BoundTo= 0

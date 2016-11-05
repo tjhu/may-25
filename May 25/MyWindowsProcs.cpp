@@ -282,33 +282,31 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 				{
 				case Disk:
 					if (MethodChanged)
-						mGeoPointers = BuildDiskGeometryBuffers(g_pd3dDevice, &NumOfVertices_Solid, &NumOfIndices_Solid);
-				//	break;
-				//case Washer:
-				//	mBuffers = BuildEntireWasherGeometryBuffers(g_pd3dDevice, &NumOfVertices_Solid, &NumOfIndices_Solid,
-				//		NCount, LeftBound, RightBound, Expression_1, Expression_2);
-				//	break;
-				//case Shell:
-				//	mBuffers = BuildEntireShellGeometryBuffers(g_pd3dDevice, &NumOfVertices_Solid, &NumOfIndices_Solid,
-				//		NCount, LeftBound, RightBound, Expression_1, g_BoundToWhat);
-				//	break;
-				//case CrossSection_Semicircle:
-				//case CrossSection_EquilateralTriangle:
-				//case CrossSection_Square:
-				//	if (MethodChanged)
-				//		mBuffers = BuildCrossSectionGeometryBuffers(g_pd3dDevice, &NumOfVertices_Solid, &NumOfIndices_Solid,
-				//			g_SolidMethod);
-				//	break;
+						mGeoPointers = BuildDiskGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid);
+					break;
+				case Washer:
+					mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid,
+						NCount, LeftBound, RightBound, Expression_1, Expression_2);
+					break;
+				case Shell:
+					mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid,
+						NCount, LeftBound, RightBound, Expression_1, g_BoundToWhat);
+					break;
+				case CrossSection_Semicircle:
+				case CrossSection_EquilateralTriangle:
+				case CrossSection_Square:
+					if (MethodChanged)
+						mGeoPointers = BuildCrossSectionGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid,
+							g_SolidMethod);
+					break;
 				default:
 					break;
 				}
-				//if (mBuffers.pVertexBuffer)
-				//{
-				//	g_pVertexBuffer = mBuffers.pVertexBuffer;
-				//	g_pIndexBuffer = mBuffers.pIndexBuffer;
-				//}
-
-				BuildGeometryBuffers(mGeoPointers, &g_pVertexBuffer, &g_pIndexBuffer, NumOfVertices_Solid, NumOfIndices_Solid);
+				
+				if (mGeoPointers.pVertexPointer)
+				{
+					BuildGeometryBuffers(mGeoPointers, g_pVertexBuffer, g_pIndexBuffer, NumOfVertices_Solid, NumOfIndices_Solid);
+				}
 
 				//BuildFunctionVertexBuffer();
 				Integration();

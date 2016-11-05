@@ -293,22 +293,6 @@ GeometryPointers BuildEntireShellGeometryBuffers(UINT* NumOfVertex, UINT* NumOfI
 	// Fill in vertices
 	for (UINT i = 0; i < NCount; i++)
 	{
-		XMFLOAT4 mVertexColor;
-		switch (i % 3)
-		{
-		case 0:
-			mVertexColor = SomeGreen;
-			break;
-		case 1:
-			mVertexColor = HotPink;
-			break;
-		case 2:
-			mVertexColor = Gold;
-			break;
-		default:
-			break;
-		}
-
 		if (IsBoundToLeft)
 		{
 			xf = evaluate(Expression_1, y0);
@@ -710,44 +694,67 @@ GeometryPointers BuildInfDiskGeometryBuffers(UINT * NumOfVertex, UINT * NumOfInd
 	return GeometryPointers();
 }
 
-//GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices_Axes, UINT * NumOfIndices_Axes)
-//{
-//	*NumOfVertices_Axes = NumOfSlices + 1;
-//	SimpleVertex* vertices = nullptr;
-//	vertices = new SimpleVertex[*NumOfVertices_Axes];
-//	*NumOfIndices_Axes = 8 * NumOfSlices * NCount * 3;
-//	WORD* indices = nullptr;
-//	indices = new WORD[*NumOfIndices_Axes];
-//
-//	float radius = 1.0f;
-//	float height = 1.0f;
-//
-//	for (unsigned int i = 0; i < NumOfSlices + 1; i++)
-//	{
-//		if (i == 0)
-//		{
-//			//center
-//			vertices[0] = { XMFLOAT3{ a, 0.0f, 0.0f }, XMFLOAT3{ -1.0f, 0.0f, 0.0f } };
-//			vertices[NumOfSlices + 1] = { XMFLOAT3{ b, 0.0f, 0.0f }, XMFLOAT3{ 1.0f, 0.0f, 0.0f } };
-//			continue;
-//		}
-//		float theta = XM_2PI * (i - 1) / NumOfSlices;
-//		float nY = cos(theta);
-//		float nZ = sin(theta);
-//		float y = raidus * nY;
-//		float z = raidus * nZ;
-//		// Top and Bottom
-//		vertices[i] = { XMFLOAT3{ a, y, z }, XMFLOAT3{ -1.0f, 0.0f, 0.0f } };
-//		vertices[i + 1 + NumOfSlices] = { XMFLOAT3{ b, y, z }, XMFLOAT3{ 1.0f, 0.0f, 0.0f } };
-//		// Side
-//		vertices[2 * NumOfSlices + 1 + i] = { vertices[i].Pos, XMFLOAT3{ 0.0f, nY, nZ } };
-//		vertices[3 * NumOfSlices + 1 + i] = { vertices[i + 1 + NumOfSlices].Pos, XMFLOAT3{ 0.0f, nY, nZ } };
-//	}
-//	
-//	
-//
-//
-//}
+GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices_Axes, UINT * NumOfIndices_Axes)
+{
+	*NumOfVertices_Axes = NumOfSlices * 3 + 1;
+	SimpleVertex* vertices = nullptr;
+	vertices = new SimpleVertex[*NumOfVertices_Axes];
+	*NumOfIndices_Axes = 2 * NumOfSlices * 3;
+	WORD* indices = nullptr;
+	indices = new WORD[*NumOfIndices_Axes];
+
+	float radius = 1.0f;
+	float height = 1.0f;
+
+	float dTheta = XM_2PI / NumOfSlices;
+	float innerTheta = XM_PI / NumOfSlices;
+	float outerTheta = 0.0f;
+
+	for (unsigned int i = 0; i < NumOfSlices; i++)
+	{
+		float y = radius * cos(outerTheta);
+		float z = radius * sin(outerTheta);
+		// Top
+		vertices[i] = { XMFLOAT3{height, 0.0f, 0.0f}, XMFLOAT3{cos(innerTheta), sin(innerTheta), 0.0f} };
+		// Side
+		vertices[i + NumOfSlices] = { XMFLOAT3{0.0f, y, z}, XMFLOAT3{ cos(outerTheta), sin(outerTheta), 0.0f } };
+		// Buttom
+		vertices[i + 2 * NumOfSlices] = { XMFLOAT3{0.0f, y, z}, XMFLOAT3{-1.0f, 0.0f, 0.0f} };
+
+		// Increment theta
+		innerTheta += dTheta;
+		outerTheta += dTheta;
+	}
+	vertices[3 * NumOfSlices] = { XMFLOAT3{0.0f, 0.0f, 0.0f}, XMFLOAT3{-1.0f, 0.0f, 0.0f} };
+
+	UINT k = 0;
+	// Side
+	for (WORD i = 0; i < NumOfSlices - 1; i++)
+	{
+		indices[k++] = i;
+		indices[k++] = i + NumOfSlices;
+		indices[k++] = i + NumOfSlices + 1;
+	}
+	indices[k++] = NumOfSlices - 1;
+	indices[k++] = 2 * NumOfSlices - 1;
+	indices[k++] = NumOfSlices;
+
+	// Buttom
+	for (WORD i = 0; i < NumOfSlices - 1; i++)
+	{
+		indices[k++] = 3 * NumOfSlices;
+		indices[k++] = 2 * NumOfSlices + i + 1;
+		indices[k++] = 2 * NumOfSlices + i;
+	}
+	indices[k++] = 3 * NumOfSlices;
+	indices[k++] = 2 * NumOfSlices;
+	indices[k++] = 3 * NumOfSlices - 1;
+
+	GeometryPointers mGeoPointers;
+	mGeoPointers.pVertexPointer = vertices;
+	mGeoPointers.pIndexPointer = indices;
+	return mGeoPointers;
+}
 
 //void BuildFunctionVertexBuffer()
 //{

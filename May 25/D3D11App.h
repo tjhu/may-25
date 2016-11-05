@@ -61,7 +61,7 @@ ID3D11SamplerState*			g_pSamplerState = nullptr;
 XMMATRIX					g_View = XMMatrixIdentity();
 XMMATRIX					g_Projection = XMMatrixIdentity();
 XMMATRIX					g_World = XMMatrixIdentity();
-XMFLOAT3					g_LightDir = XMFLOAT3{ 0.7071067811865475f, 0.0f, 0.7071067811865475f };
+XMFLOAT3					g_LightDir = XMFLOAT3{ 0.57735f, -0.57735f, 0.57735f };
 XMMATRIX					g_LightView = XMMatrixIdentity();
 
 std::array <std::wstring, 6> SolidMethodDropDownList =

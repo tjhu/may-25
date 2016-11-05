@@ -159,7 +159,7 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 	switch (g_SolidMethod)
 	{
 	case Disk:
-		mGeoPointers = BuildDiskGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid);
+		mGeoPointers = BuildConeGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid);
 		break;
 	case Washer:
 		mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid,

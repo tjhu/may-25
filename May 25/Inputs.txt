@@ -2,5 +2,5 @@ Function_1= x
 Function_2= 0.3*x
 LeftBound= -1
 RightBound= 1
-Rectangle= 40
+Rectangle= 1
 BoundTo= 0

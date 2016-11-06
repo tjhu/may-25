@@ -1,4 +1,4 @@
 Method= 3
 Radius= 4
-Theta= 155.813
-Phi= 0.942837
+Theta= 156.738
+Phi= 1.13046

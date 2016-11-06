@@ -1,4 +1,4 @@
-Function_1= x
+Function_1= -1*x
 Function_2= 0.3*x
 LeftBound= -1
 RightBound= 1

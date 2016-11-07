@@ -13,9 +13,7 @@
 
 #include "stdafx.h"
 #include "resource.h"
-#include "DirectXGlobalVariables.h"
 #include "Geometry.h"
-#include "WindowsGlobalVariables.h"
 #include "MyWindowsProcs.h"
 
 using namespace DirectX;
@@ -57,7 +55,6 @@ ID3D11Buffer*				g_pConstantBuffer = nullptr;
 ID3D11Buffer*				g_pConstantBuffer_Shadowmap = nullptr;
 ID3D11SamplerState*			g_pSamplerState = nullptr;
 
-
 XMMATRIX					g_View = XMMatrixIdentity();
 XMMATRIX					g_Projection = XMMatrixIdentity();
 XMMATRIX					g_World = XMMatrixIdentity();
@@ -77,60 +74,42 @@ std::array <std::wstring, 6> SolidMethodDropDownList =
 
 UINT					stride = sizeof(SimpleVertex);
 UINT					NumOfVertices_Solid = 0;
-UINT					NumOfVertices_Outline = 0;
 UINT					NumOfVertices_Function = 0;
-UINT					NumOfVertices_Total = 0;
 UINT					NumOfIndices_Solid = 0;
 UINT					NumOfIndices_Function = 0;
-UINT					NumOfIndices_Outline = 0;
-UINT					NumOfIndices_Total = 0;
 
-UINT					NumOfVertices_Axes = 0;
-UINT					NumOfIndices_Axes = 0;
+UINT					NumOfVertices_Axis = 0;
+UINT					NumOfIndices_Axis = 0;
 
-
-
-XMFLOAT3				mEyePosW = XMFLOAT3(0.0f, 0.0f, 0.0f);
-
+//XMFLOAT3				mEyePosW = XMFLOAT3(0.0f, 0.0f, 0.0f);
 POINT					mLastMousePos = { 0,0 };
 
 // Input File
-float					LeftBound = 0;
-float					RightBound = 4;
-UINT					NCount = 11;
+ //float					LeftBound = 0;
+//float					RightBound = 4;
+//UINT					NCount = 11;
 std::string				Expression_1 = "";
 std::string				UnparsedExpression_1 = "4-(x-2)^2";
 std::string				Expression_2 = "";
 std::string				UnparsedExpression_2 = " 0";
-SolidMethod				g_SolidMethod = Shell;
-BoundToWhat				g_BoundToWhat = BoundToLeft;
+//SolidMethod				g_SolidMethod = Shell;
+//BoundToWhat				g_BoundToWhat = BoundToLeft;
 
 // Setting File
-
 float					mTheta = 137.23f;
 float					mPhi = 1.47994f;
 float					mRadius = 18.0f;
 bool					AxisOn = FALSE;
-
-
-
-
 
 // Functions
 void InitDevice(HWND hWnd, HINSTANCE hInstance);
 void CompileShaders();
 void Render();
 void CleanupDevice();
-
-void DrawSolids(RenderObject);
-
-
 void UpdateScene();
-
 
 //---------------------------------------------------
 // Window Stuff
 //---------------------------------------------------
 std::ofstream						LogFileObject;
-
 #endif

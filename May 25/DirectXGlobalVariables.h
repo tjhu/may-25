@@ -3,8 +3,6 @@
 #include "stdafx.h"
 using namespace DirectX;
 
-
-
 extern D3D_DRIVER_TYPE				g_driverType;
 extern D3D_FEATURE_LEVEL			g_featureLevel;
 extern ID3D11Device*				g_pd3dDevice;
@@ -19,7 +17,7 @@ extern ID3D11DepthStencilView*		g_ShadowmapDepthView;
 extern ID3D11ShaderResourceView *	g_ShadowmapResourceView;
 extern ID3D11VertexShader*			g_pVertexShader;
 extern ID3D11PixelShader*			g_pPixelShader;
-extern ID3D11VertexShader*			g_pShadowmapVertexShade;
+extern ID3D11VertexShader*			g_pShadowmapVertexShader;
 extern ID3D11PixelShader*			g_pShadowmapPixelShader;
 extern ID3D11PixelShader*			g_pPixelShaderSolid;
 extern ID3D11InputLayout*			g_pVertexLayout;
@@ -34,14 +32,11 @@ extern ID3D11Buffer*				g_pConstantBuffer_Shadowmap;
 extern ID3D11SamplerState*			g_pSamplerState;
 
 extern UINT							stride;
-extern UINT							NumOfVertices_Outline;
+extern UINT							NumOfVertices_Solid;
 extern UINT							NumOfVertices_Function;
-extern UINT							NumOfVertices_Total;
 extern UINT							NumOfIndices_Solid;
 extern UINT							NumOfIndices_Function;
-extern UINT							NumOfIndices_Outline;
-extern UINT							NumOfIndices_Total;
-	
-extern UINT							NumOfVertices_Axes;
-extern UINT							NumOfIndices_Axes;
+
+extern UINT							NumOfVertices_Axis;
+extern UINT							NumOfIndices_Axis;
 

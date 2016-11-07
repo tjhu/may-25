@@ -20,9 +20,6 @@
 #define ID_LEFTBOUNDGUESS				203
 #define ID_RIGHTBOUNDGUESS				204
 
-
-
-
 // Global Variables
 extern std::array <std::wstring, 6>		SolidMethodDropDownList;
 extern POINT							mLastMousePos;
@@ -70,4 +67,11 @@ extern bool								AxisOn;
 
 extern float							IntegrationResult;
 
+// Camera matrix
+extern XMMATRIX							g_View;
+extern XMMATRIX							g_Projection;
+extern XMMATRIX							g_World;
+extern XMFLOAT3							g_LightDir;
+extern XMMATRIX							g_LightView;
+extern XMFLOAT3							mEyePosW;
 #endif // !1

@@ -13,7 +13,7 @@ GeometryPointers BuildEntireShellGeometryBuffers(UINT* NumOfVertex, UINT* NumOfI
 GeometryPointers BuildCrossSectionGeometryBuffers(UINT* NumOfVertex, UINT* NumOfIndice, 
 	SolidMethod g_SolidMethod);
 
-GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices_Axes, UINT * NumOfIndices_Axes);
+GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices_Axis, UINT * NumOfIndices_Axis);
 
 GeometryPointers BuildInfDiskGeometryBuffers(UINT* NumOfVertex, UINT* NumOfIndice);
 

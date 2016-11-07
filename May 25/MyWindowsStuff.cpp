@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "WindowsGlobalVariables.h"
 #include "MyWindowsStuff.h"
 #include <DirectXMath.h>
 

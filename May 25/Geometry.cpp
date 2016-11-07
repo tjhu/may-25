@@ -3,7 +3,6 @@
 
 GeometryPointers BuildDiskGeometryBuffers(UINT* NumOfVertex, UINT* NumOfIndice)
 {
-	
 	*NumOfVertex = 4 * NumOfSlices + 2;
 	SimpleVertex* vertices;
 	vertices = new SimpleVertex[*NumOfVertex];
@@ -17,8 +16,6 @@ GeometryPointers BuildDiskGeometryBuffers(UINT* NumOfVertex, UINT* NumOfIndice)
 	float b = 1.0f;
 
 	// Create vertex buffer
-
-
 	for (unsigned int i = 0; i < NumOfSlices + 1; i++)
 	{
 		if (i == 0)
@@ -43,9 +40,7 @@ GeometryPointers BuildDiskGeometryBuffers(UINT* NumOfVertex, UINT* NumOfIndice)
 
 
 	// Create index buffer
-
-	// Left Hand Rule!
-
+	// Use left-Hand Rule!
 	// Top
 	unsigned int k = 0;
 	for (unsigned int i = 0; i < NumOfSlices - 1; i++)
@@ -694,14 +689,14 @@ GeometryPointers BuildInfDiskGeometryBuffers(UINT * NumOfVertex, UINT * NumOfInd
 	return GeometryPointers();
 }
 
-GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices_Axes, UINT * NumOfIndices_Axes)
+GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices, UINT * NumOfIndices)
 {
-	*NumOfVertices_Axes = NumOfSlices * 3 + 1;
+	*NumOfVertices = NumOfSlices * 3 + 1;
 	SimpleVertex* vertices = nullptr;
-	vertices = new SimpleVertex[*NumOfVertices_Axes];
-	*NumOfIndices_Axes = 2 * NumOfSlices * 3;
+	vertices = new SimpleVertex[*NumOfVertices];
+	*NumOfIndices = 2 * NumOfSlices * 3;
 	WORD* indices = nullptr;
-	indices = new WORD[*NumOfIndices_Axes];
+	indices = new WORD[*NumOfIndices];
 
 	float radius = 1.0f;
 	float height = 1.0f;

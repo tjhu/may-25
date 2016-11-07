@@ -43,6 +43,8 @@
 #include "EvaluateExpression\tmath.h"
 #include "CommonStruct.h"
 #include "DXUtility.h"
+#include "DirectXGlobalVariables.h"
+#include "WindowsGlobalVariables.h"
 
 //-----------------------------------
 //My Definition

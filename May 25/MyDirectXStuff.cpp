@@ -68,6 +68,21 @@ void BuildAxisGeometryBuffers(ID3D11Buffer*& pVertexBuffer, ID3D11Buffer*& pInde
 
 void DrawSolids(RenderObject mRenderObject)
 {
+	switch (mRenderObject)
+	{
+	case Shadowmap:
+		g_pImmediateContext->VSSetShader(g_pShadowmapVertexShader, nullptr, 0);
+		g_pImmediateContext->PSSetShader(g_pShadowmapPixelShader, nullptr, 0);
+		break;
+	case Scene:
+		g_pImmediateContext->VSSetShader(g_pVertexShader, nullptr, 0);
+		g_pImmediateContext->PSSetShader(g_pPixelShader, nullptr, 0);
+		break;
+	default:
+		MessageBoxA(NULL, "Unable to set shaders because render object is undefined", NULL, NULL);
+		break;
+	}
+
 	// Draw solid
 	switch (g_SolidMethod)
 	{
@@ -82,13 +97,8 @@ void DrawSolids(RenderObject mRenderObject)
 		{
 			float x = LeftBound + i * dx;
 			float y = evaluate(Expression_1, x);
-
-			// Get world matrix
-			//XMMATRIX mSpin = XMMatrixRotationZ(-t * 2.0f);
-			//XMMATRIX mOrbit = XMMatrixRotationY(t);
 			XMMATRIX mTranslate = XMMatrixTranslation(x, 0.0f, 0.0f);
 			XMMATRIX mScale = XMMatrixScaling(dx, y, y);
-
 			g_World = mScale * mTranslate;
 
 			//
@@ -100,14 +110,10 @@ void DrawSolids(RenderObject mRenderObject)
 			{
 				ConstantBuffer_Shadowmap cb;
 				cb.mWorldViewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
-
 				g_pImmediateContext->UpdateSubresource(g_pConstantBuffer_Shadowmap, 0, nullptr, &cb, 0, 0);
-				g_pImmediateContext->VSSetShader(g_pShadowmapVertexShader, nullptr, 0);
 				g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer_Shadowmap);
-				g_pImmediateContext->PSSetShader(g_pShadowmapPixelShader, nullptr, 0);
 				break;
 			}
-
 			case Scene:
 			{
 				ConstantBuffer cb;
@@ -119,17 +125,13 @@ void DrawSolids(RenderObject mRenderObject)
 				cb.ColorSwitch = i % 3;
 
 				g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
-				g_pImmediateContext->VSSetShader(g_pVertexShader, nullptr, 0);
 				g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
-				g_pImmediateContext->PSSetShader(g_pPixelShader, nullptr, 0);
 				break;
 			}
 			default:
 				break;
 			}
-
 			g_pImmediateContext->DrawIndexed(NumOfIndices_Solid, 0, 0);
-
 		}
 	}
 	break;
@@ -142,7 +144,6 @@ void DrawSolids(RenderObject mRenderObject)
 		//XMMATRIX mOrbit = XMMatrixRotationY(t);
 		XMMATRIX mTranslate = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 		XMMATRIX mScale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-
 		g_World = mScale * mTranslate;
 
 		//
@@ -158,10 +159,8 @@ void DrawSolids(RenderObject mRenderObject)
 
 		//
 		// Render the object
-		//
-		g_pImmediateContext->VSSetShader(g_pVertexShader, nullptr, 0);
+		//);
 		g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
-		g_pImmediateContext->PSSetShader(g_pPixelShader, nullptr, 0);
 		g_pImmediateContext->DrawIndexed(NumOfIndices_Solid, 0, 0);
 	}
 	break;

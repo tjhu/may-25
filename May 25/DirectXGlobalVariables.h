@@ -37,6 +37,9 @@ extern UINT							NumOfVertices_Function;
 extern UINT							NumOfIndices_Solid;
 extern UINT							NumOfIndices_Function;
 
+extern UINT							NumOfIndices_Cone;
+extern UINT							NumOfIndices_Cylinder;
+
 extern UINT							NumOfVertices_Axis;
 extern UINT							NumOfIndices_Axis;
 

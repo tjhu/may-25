@@ -78,6 +78,9 @@ UINT					NumOfVertices_Function = 0;
 UINT					NumOfIndices_Solid = 0;
 UINT					NumOfIndices_Function = 0;
 
+UINT					NumOfIndices_Cone = 0;
+UINT					NumOfIndices_Cylinder = 0;
+
 UINT					NumOfVertices_Axis = 0;
 UINT					NumOfIndices_Axis = 0;
 

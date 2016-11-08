@@ -37,17 +37,18 @@ void BuildGeometryBuffers(GeometryPointers mGeoPointers, ID3D11Buffer*& pVertexB
 	mGeoPointers.pVertexPointer = nullptr;
 	delete[] mGeoPointers.pIndexPointer;
 	mGeoPointers.pIndexPointer = nullptr;
+	return;
 }
 
-void BuildAxisGeometryBuffers(ID3D11Buffer*& pVertexBuffer, ID3D11Buffer*& pIndexBuffer)
+void BuildAxisGeometryBuffers(ID3D11Buffer*& pVertexBuffer, ID3D11Buffer*& pIndexBuffer, UINT& NumOfIndices_Cylinder, UINT& NumOfIndices_Cone)
 {
 	UINT NumOfVertices_Cone = 0;
-	UINT NumOfIndices_Cone = 0;
+	NumOfIndices_Cone = 0;
 	UINT NumOfVertices_Cylinder = 0;
-	UINT NumOfIndices_Cylinder = 0;
+	NumOfIndices_Cylinder = 0;
 
-	GeometryPointers CylinderGeometry = BuildDiskGeometryBuffers(&NumOfVertices_Cone, &NumOfIndices_Cone);
-	GeometryPointers ConeGeometry = BuildConeGeometryBuffers(&NumOfVertices_Cylinder, &NumOfIndices_Cylinder);
+	GeometryPointers CylinderGeometry = BuildDiskGeometryBuffers(&NumOfVertices_Cylinder, &NumOfIndices_Cylinder);
+	GeometryPointers ConeGeometry = BuildConeGeometryBuffers(&NumOfVertices_Cone, &NumOfIndices_Cone);
 	GeometryPointers AxisGeometry;
 	AxisGeometry.pVertexPointer = new SimpleVertex[NumOfVertices_Cone + NumOfVertices_Cylinder];
 	AxisGeometry.pIndexPointer = new WORD[NumOfIndices_Cone + NumOfIndices_Cylinder];
@@ -167,4 +168,49 @@ void DrawSolids(RenderObject mRenderObject)
 	default:
 		break;
 	}
+}
+
+void DrawAxis()
+{
+	UINT offset = 0;
+	g_pImmediateContext->VSSetShader(g_pVertexShader, nullptr, 0);
+	g_pImmediateContext->PSSetShader(g_pPixelShader, nullptr, 0);
+	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pAxesVertexBuffer, &stride, &offset);
+	g_pImmediateContext->IASetIndexBuffer(g_pAxesIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+
+	const float SemiLengthOfStick = 10;
+	const float r_stick = 0.005f * mRadius;
+	// Draw negative part of x-axis
+	XMMATRIX mTranslate = XMMatrixTranslation(-SemiLengthOfStick, 0.0f, 0.0f);
+	XMMATRIX mScale = XMMatrixScaling(SemiLengthOfStick, r_stick, r_stick);
+	g_World = mScale * mTranslate;
+
+	ConstantBuffer cb;
+	cb.mWorld = XMMatrixTranspose(g_World);
+	cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
+	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
+	cb.mWorldInvTranspose = InverseTranspose(g_World);
+	cb.mEyePosW = mEyePosW;
+	cb.ColorSwitch = 999;
+
+	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+	g_pImmediateContext->DrawIndexed(NumOfIndices_Cylinder, 0, 0);
+
+	// Draw positive part of x-axis
+	mTranslate = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+	mScale = XMMatrixScaling(SemiLengthOfStick, r_stick, r_stick);
+	g_World = mScale * mTranslate;
+
+	ZeroMemory(&cb, sizeof(cb));
+	cb.mWorld = XMMatrixTranspose(g_World);
+	cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
+	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
+	cb.mWorldInvTranspose = InverseTranspose(g_World);
+	cb.mEyePosW = mEyePosW;
+	cb.ColorSwitch = 999;
+
+	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+	g_pImmediateContext->DrawIndexed(NumOfIndices_Cylinder, 0, 0);
 }

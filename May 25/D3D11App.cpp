@@ -148,7 +148,7 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 	CompileShaders();
 
 	//// Create axes vertex buffer and index buffer
-	//BuildAxesGeometryBuffers();
+	BuildAxisGeometryBuffers(g_pAxesVertexBuffer, g_pAxesIndexBuffer, NumOfIndices_Cylinder, NumOfIndices_Cone);
 
 	//// Create function vertex buffer and index buffer
 	//BuildFunctionVertexBuffer();
@@ -181,7 +181,7 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 
 	// Build Geometry Buffers
 	BuildGeometryBuffers(mGeoPointers, g_pVertexBuffer, g_pIndexBuffer, NumOfVertices_Solid, NumOfIndices_Solid);
-	BuildAxisGeometryBuffers(g_pAxesVertexBuffer, g_pAxesIndexBuffer);
+	//BuildAxisGeometryBuffers(g_pAxesVertexBuffer, g_pAxesIndexBuffer, a, b);
 
 	// Create the constant buffer
 	D3D11_BUFFER_DESC cbd;
@@ -319,6 +319,11 @@ void Render()
 	g_pImmediateContext->PSSetShaderResources(0, 1, ShaderResourceView);
 
 	DrawSolids(Scene);
+
+	// Set geometry buffers for axis
+//	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pAxesVertexBuffer, &stride, &offset);
+//	g_pImmediateContext->IASetIndexBuffer(g_pAxesIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+	DrawAxis();
 
 
 	//

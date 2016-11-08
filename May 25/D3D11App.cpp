@@ -320,62 +320,8 @@ void Render()
 	g_pImmediateContext->PSSetShaderResources(0, 1, ShaderResourceView);
 
 	DrawSolids(Scene);
-
-	// Set geometry buffers for axis
-//	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pAxesVertexBuffer, &stride, &offset);
-//	g_pImmediateContext->IASetIndexBuffer(g_pAxesIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 	DrawAxis();
 
-
-	//
-	// Draw Lines
-	//
-	//if (AxisOn)
-	//{
-	//	// Set primitive topology
-	//	g_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-
-	//	//
-	//	// Draw function(s)
-	//	//
-	//	if (g_SolidMethod != Shell)
-	//	{
-	//		// Set vertex buffer
-	//		stride = sizeof(SimpleVertex);
-	//		offset = 0;
-	//		g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pFunctionVertexBuffer, &stride, &offset);
-
-	//		// Set index buffer
-	//		g_pImmediateContext->IASetIndexBuffer(g_pFunctionIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
-
-
-	//		// Get world matrix
-	//		//XMMATRIX mSpin = XMMatrixRotationZ(-t * 2.0f);
-	//		//XMMATRIX mOrbit = XMMatrixRotationY(t);
-	//		mTranslate = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
-	//		mScale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-
-	//		g_World = mScale * mTranslate;
-
-	//		// Update variables for the object
-	//		cb;
-	//		cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
-	//		cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
-	//		cb.mWorldInvTranspose = InverseTranspose(g_World);
-	//		cb.mEyePosW = mEyePosW;
-	//		cb.ColorSwitch = 999;
-	//		g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
-
-	//		// Render the object
-	//		g_pImmediateContext->VSSetShader(g_pVertexShader, nullptr, 0);
-	//		g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
-	//		g_pImmediateContext->PSSetShader(g_pPixelShader, nullptr, 0);
-	//		g_pImmediateContext->DrawIndexed(NumOfIndices_Function / 2, 0, 0);
-	//	}
-	//}
-	
-	// Present our back buffer to our front buffer
-	
 	g_pSwapChain->Present(0, 0);
 }
 

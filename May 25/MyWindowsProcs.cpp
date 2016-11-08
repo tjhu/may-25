@@ -77,7 +77,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	case WM_CLOSE:
 	{
-		if (IDNO == MessageBoxA(NULL, "Do you want to Quit?", "Quit", MB_YESNO | MB_DEFBUTTON2))
+		if (IDNO == MessageBoxA(NULL, "Do you want to Quit?", "Quit", MB_YESNO | MB_DEFBUTTON1))
 			return 0;
 
 		SetInputs();

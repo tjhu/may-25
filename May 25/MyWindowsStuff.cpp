@@ -349,6 +349,11 @@ void OnMouseMove(WPARAM btnState, POINT* mLastMousePos,
 
 void DXOnKeyDown(float* mTheta, float* mPhi, float* mRadius)
 {
+	// Do nothing if this program is not the foreground window
+	HWND ForegroundWindow = GetForegroundWindow();
+	if (ForegroundWindow != g_hWnd)
+		return;
+
 	float dx = 0.003f;
 	float dy = 0.003f;
 	float dr = 0.018f;
@@ -384,16 +389,12 @@ void DXOnKeyDown(float* mTheta, float* mPhi, float* mRadius)
 
 void OnKeyDown(HWND hWnd, HWND g_hWndButton)
 {
+	// Do nothing if this program is not the foreground window
+	HWND ForegroundWindow = GetForegroundWindow();
+	if (ForegroundWindow != g_hWnd)
+		return;
 
 	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
-		//if(GetFocus() == g_hWndUI||
-		//	GetFocus() == g_hWndButton || 
-		//	GetFocus() == g_hWndEquation_1 || 
-		//	GetFocus() == g_hWndEquation_2 ||
-		//	GetFocus() == g_hWndLeftBound || 
-		//	GetFocus() == g_hWndRightBound ||
-		//	GetFocus() == g_hWndNCount || 
-		//	GetFocus() == g_hWndGoInfinite)
 		SendMessage(g_hWndButton, BM_CLICK, NULL, NULL);
 
 	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)

@@ -276,27 +276,27 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 
 			if (bValid == INPUT_OK)
 			{
-				UINT	NumOfVertices_Solid = 0;
+				UINT	NumOfVertices;
 				GeometryPointers mGeoPointers;
 				switch (g_SolidMethod)
 				{
 				case Disk:
 					if (MethodChanged)
-						mGeoPointers = BuildDiskGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid);
+						mGeoPointers = BuildDiskGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid);
 					break;
 				case Washer:
-					mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid,
+					mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid,
 						NCount, LeftBound, RightBound, Expression_1, Expression_2);
 					break;
 				case Shell:
-					mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid,
+					mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid,
 						NCount, LeftBound, RightBound, Expression_1, g_BoundToWhat);
 					break;
 				case CrossSection_Semicircle:
 				case CrossSection_EquilateralTriangle:
 				case CrossSection_Square:
 					if (MethodChanged)
-						mGeoPointers = BuildCrossSectionGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid,
+						mGeoPointers = BuildCrossSectionGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid,
 							g_SolidMethod);
 					break;
 				default:
@@ -305,7 +305,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 				
 				if (mGeoPointers.pVertexPointer)
 				{
-					BuildGeometryBuffers(mGeoPointers, g_pVertexBuffer, g_pIndexBuffer, NumOfVertices_Solid, NumOfIndices_Solid);
+					BuildGeometryBuffers(mGeoPointers, g_pVertexBuffer, g_pIndexBuffer, NumOfVertices, NumOfIndices_Solid);
 				}
 
 				//BuildFunctionVertexBuffer();
@@ -335,8 +335,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			return DefWindowProc(hWnd, message, wParam, lParam);
 			break;
 		}
-
-		
+	
 		return 0;
 	}
 

@@ -73,30 +73,21 @@ std::array <std::wstring, 6> SolidMethodDropDownList =
 
 
 UINT					stride = sizeof(SimpleVertex);
-UINT					NumOfVertices_Solid = 0;
-UINT					NumOfVertices_Function = 0;
 UINT					NumOfIndices_Solid = 0;
 UINT					NumOfIndices_Function = 0;
 
 UINT					NumOfIndices_Cone = 0;
 UINT					NumOfIndices_Cylinder = 0;
 
-UINT					NumOfVertices_Axis = 0;
 UINT					NumOfIndices_Axis = 0;
 
-//XMFLOAT3				mEyePosW = XMFLOAT3(0.0f, 0.0f, 0.0f);
 POINT					mLastMousePos = { 0,0 };
 
 // Input File
- //float					LeftBound = 0;
-//float					RightBound = 4;
-//UINT					NCount = 11;
 std::string				Expression_1 = "";
 std::string				UnparsedExpression_1 = "4-(x-2)^2";
 std::string				Expression_2 = "";
 std::string				UnparsedExpression_2 = " 0";
-//SolidMethod				g_SolidMethod = Shell;
-//BoundToWhat				g_BoundToWhat = BoundToLeft;
 
 // Setting File
 float					mTheta = 137.23f;

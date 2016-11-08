@@ -156,23 +156,24 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 
 	// Get vertices and indices data
 	GeometryPointers mGeoPointers;
+	UINT NumOfertices;
 	switch (g_SolidMethod)
 	{
 	case Disk:
-		mGeoPointers = BuildDiskGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid);
+		mGeoPointers = BuildDiskGeometryBuffers(&NumOfertices, &NumOfIndices_Solid);
 		break;
 	case Washer:
-		mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid,
+		mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfertices, &NumOfIndices_Solid,
 			NCount, LeftBound, RightBound, Expression_1, Expression_2);
 		break;
 	case Shell:
-		mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid,
+		mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfertices, &NumOfIndices_Solid,
 			NCount, LeftBound, RightBound, Expression_1, g_BoundToWhat);
 		break;
 	case CrossSection_Semicircle:
 	case CrossSection_EquilateralTriangle:
 	case CrossSection_Square:
-		mGeoPointers = BuildCrossSectionGeometryBuffers(&NumOfVertices_Solid, &NumOfIndices_Solid,
+		mGeoPointers = BuildCrossSectionGeometryBuffers(&NumOfertices, &NumOfIndices_Solid,
 			g_SolidMethod);
 		break;
 	default:
@@ -180,7 +181,7 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 	}
 
 	// Build Geometry Buffers
-	BuildGeometryBuffers(mGeoPointers, g_pVertexBuffer, g_pIndexBuffer, NumOfVertices_Solid, NumOfIndices_Solid);
+	BuildGeometryBuffers(mGeoPointers, g_pVertexBuffer, g_pIndexBuffer, NumOfertices, NumOfIndices_Solid);
 	//BuildAxisGeometryBuffers(g_pAxesVertexBuffer, g_pAxesIndexBuffer, a, b);
 
 	// Create the constant buffer
@@ -333,44 +334,6 @@ void Render()
 	//{
 	//	// Set primitive topology
 	//	g_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-
-	//	// 
-	//	// Draw axes
-	//	//
-
-	//	// Set vertex buffer
-	//	UINT stride = sizeof(SimpleVertex);
-	//	UINT offset = 0;
-	//	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pAxesVertexBuffer, &stride, &offset);
-
-	//	// Set index buffer
-	//	g_pImmediateContext->IASetIndexBuffer(g_pAxesIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
-
-
-	//	// Get world matrix
-	//	//XMMATRIX mSpin = XMMatrixRotationZ(-t * 2.0f);
-	//	//XMMATRIX mOrbit = XMMatrixRotationY(t);
-	//	XMMATRIX mTranslate = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
-	//	XMMATRIX mScale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-
-	//	g_World = mScale * mTranslate;
-
-	//	// Update variables for the object
-	//	ConstantBuffer cb;
-	//	cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
-	//	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
-	//	cb.mWorldInvTranspose = InverseTranspose(g_World);
-	//	cb.mEyePosW = mEyePosW;
-	//	cb.ColorSwitch = 999;
-	//	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
-
-	//	// Render the object
-	//	g_pImmediateContext->VSSetShader(g_pVertexShader, nullptr, 0);
-	//	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
-	//	g_pImmediateContext->PSSetShader(g_pPixelShader, nullptr, 0);
-	//	g_pImmediateContext->DrawIndexed(NumOfIndices_Axis, 0, 0);
-
-
 
 	//	//
 	//	// Draw function(s)

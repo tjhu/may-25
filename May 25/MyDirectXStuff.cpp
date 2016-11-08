@@ -138,10 +138,7 @@ void DrawSolids(RenderObject mRenderObject)
 	case Washer:
 	case Shell:
 	{
-
 		// Get world matrix
-		//XMMATRIX mSpin = XMMatrixRotationZ(-t * 2.0f);
-		//XMMATRIX mOrbit = XMMatrixRotationY(t);
 		XMMATRIX mTranslate = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 		XMMATRIX mScale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
 		g_World = mScale * mTranslate;

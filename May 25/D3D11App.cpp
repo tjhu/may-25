@@ -325,6 +325,49 @@ void Render()
 	g_pSwapChain->Present(0, 0);
 }
 
+void RenderTest()
+{
+	g_pImmediateContext->OMSetRenderTargets(1, &g_pRenderTargetView, g_pDepthStencilView);
+
+	g_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// Clear the back buffer
+	XMVECTORF32 BKGColor = Colors::LightBlue;
+	g_pImmediateContext->ClearRenderTargetView(g_pRenderTargetView, BKGColor);
+
+	// Clear the depth buffer to 1.0 (max depth)
+	g_pImmediateContext->ClearDepthStencilView(g_pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+	UINT offset = 0;
+	g_pImmediateContext->VSSetShader(g_pVertexShader, nullptr, 0);
+	g_pImmediateContext->PSSetShader(g_pPixelShader, nullptr, 0);
+	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pAxesVertexBuffer, &stride, &offset);
+	g_pImmediateContext->IASetIndexBuffer(g_pAxesIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+
+	const float SemiLengthOfStick = 3;
+	const float r_stick = 0.002f * mRadius;
+
+	// Draw arrow head of x-axis
+	XMMATRIX mTranslate = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+	XMMATRIX mScale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+	g_World = mScale * mTranslate;
+
+	ConstantBuffer cb;
+	ZeroMemory(&cb, sizeof(cb));
+	cb.mWorld = XMMatrixTranspose(g_World);
+	cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
+	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
+	cb.mWorldInvTranspose = InverseTranspose(g_World);
+	cb.mEyePosW = mEyePosW;
+	cb.ColorSwitch = 999;
+
+	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+	g_pImmediateContext->DrawIndexed(NumOfIndices_Cone, 0, 18);
+
+	g_pSwapChain->Present(0, 0);
+}
+
 // Clean up the objects we've created
 void CleanupDevice()
 {
@@ -493,7 +536,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 			// Render stuff
 			UpdateScene();
-			Render();
+			RenderTest();
 		}
 	}
 	LogFileObject << "Device cleaned up" << std::endl;

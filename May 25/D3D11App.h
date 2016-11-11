@@ -99,6 +99,7 @@ bool					AxisOn = FALSE;
 void InitDevice(HWND hWnd, HINSTANCE hInstance);
 void CompileShaders();
 void Render();
+void RenderTest();
 void CleanupDevice();
 void UpdateScene();
 

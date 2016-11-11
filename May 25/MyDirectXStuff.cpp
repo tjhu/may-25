@@ -54,11 +54,13 @@ void BuildAxisGeometryBuffers(ID3D11Buffer*& pVertexBuffer, ID3D11Buffer*& pInde
 	AxisGeometry.pIndexPointer = new WORD[NumOfIndices_Cone + NumOfIndices_Cylinder];
 
 	// Fill out vertices array
+	SimpleVertex* VertexPointerToCylinder = AxisGeometry.pVertexPointer + NumOfVertices_Cylinder;
 	memcpy(AxisGeometry.pVertexPointer, CylinderGeometry.pVertexPointer, NumOfVertices_Cylinder * sizeof(SimpleVertex));
-	memcpy(AxisGeometry.pVertexPointer + NumOfVertices_Cylinder, ConeGeometry.pVertexPointer, NumOfVertices_Cone * sizeof(SimpleVertex));
+	memcpy(VertexPointerToCylinder, ConeGeometry.pVertexPointer, NumOfVertices_Cone * sizeof(SimpleVertex));
 	// Fill out indices array
+	WORD* IndexPointerToCylinder = AxisGeometry.pIndexPointer + NumOfIndices_Cylinder;
 	memcpy(AxisGeometry.pIndexPointer, CylinderGeometry.pIndexPointer, NumOfIndices_Cylinder * sizeof(WORD));
-	memcpy(AxisGeometry.pIndexPointer + NumOfIndices_Cylinder, ConeGeometry.pIndexPointer, NumOfIndices_Cone * sizeof(WORD));
+	memcpy(IndexPointerToCylinder, ConeGeometry.pIndexPointer, NumOfIndices_Cone * sizeof(WORD));
 
 	UINT NumOfVertices = NumOfVertices_Cone + NumOfVertices_Cylinder;
 	UINT NumOfIndices = NumOfIndices_Cone + NumOfIndices_Cylinder;

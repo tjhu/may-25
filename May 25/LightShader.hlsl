@@ -11,16 +11,26 @@
 sampler ShadowMapSampler : register(s0);;
 Texture2D Shadowmap : register(t0);;
 
+PS_INPUT VS(VS_INPUT input)
+{
+    PS_INPUT output = (PS_INPUT) 0;
+    output.PosW = mul(input.Pos, World).xyz;
+    output.Pos = mul(input.Pos, WorldViewProj);
+    output.Normal = mul(input.Normal, (float3x3) WorldInvTranspose);
+    output.Pos_L = mul(input.Pos, WorldLightviewProj);
+    return output;
+}
+
 float4 PS(PS_INPUT pin) : SV_Target
 {
     Material mMaterial;
     mMaterial.DiffuseAlbedo = float4(1.000000000f, 0.411764741f, 0.705882370f, 1.0f);
     mMaterial.FresnelR0 = float3(0.10f, 0.10f, 0.10f);
-	float Roughness = 0.2f;
+    float Roughness = 0.2f;
     float4 AmbientLight = (0.15f, 0.15f, 0.15f, 1.0f);
 
-	Light Lights[16];
-	Lights[0].Direction = float3(0.57735f, -0.57735f, 0.57735f);
+    Light Lights[16];
+    Lights[0].Direction = float3(0.57735f, -0.57735f, 0.57735f);
     //Lights[0].Direction = float3(0.7071067811865475f, 0.0f, 0.7071067811865475f);
     Lights[0].Strength = float3(0.4f, 0.4f, 0.4f);
 

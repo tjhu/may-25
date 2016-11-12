@@ -124,16 +124,13 @@
     <FxCompile Include="LightingUtil.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="PixelShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="ShadowmapShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="StructsForShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="VertexShader.hlsl">
+    <FxCompile Include="LightShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

@@ -404,11 +404,11 @@ void CompileShaders()
 {
 	// Compile the vertex shader
 	ID3DBlob* pVSBlob = nullptr;
-	HRESULT hr = CompileShaderFromFile(L"VertexShader.hlsl", "VS", "vs_5_0", &pVSBlob);
+	HRESULT hr = CompileShaderFromFile(L"LightShader.hlsl", "VS", "vs_5_0", &pVSBlob);
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr,
-			L"The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file.", L"Error", MB_OK);
+			L"LightShader.hlsl", L"Error", MB_OK);
 		ThrowIfFailed(hr);
 	}
 
@@ -440,11 +440,11 @@ void CompileShaders()
 
 	// Compile the pixel shader
 	ID3DBlob* pPSBlob = nullptr;
-	hr = CompileShaderFromFile(L"PixelShader.hlsl", "PS", "ps_5_0", &pPSBlob);
+	hr = CompileShaderFromFile(L"LightShader.hlsl", "PS", "ps_5_0", &pPSBlob);
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr,
-			L"The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file.", L"Error", MB_OK);
+			L"LightShader.hlsl cannot be compiled", L"Error", MB_OK);
 		ThrowIfFailed(hr);
 	}
 
@@ -459,7 +459,7 @@ void CompileShaders()
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr,
-			L"The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file.", L"Error", MB_OK);
+			L"ShadowmapShader.hlsl cannot be compiled", L"Error", MB_OK);
 		ThrowIfFailed(hr);
 	}
 	ID3DBlob* pPSBlob_s = nullptr;
@@ -467,7 +467,7 @@ void CompileShaders()
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr,
-			L"The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file.", L"Error", MB_OK);
+			L"ShadowmapShader.hlsl cannot be compiled", L"Error", MB_OK);
 		ThrowIfFailed(hr);
 	}
 	hr = g_pd3dDevice->CreateVertexShader(pVSBlob_s->GetBufferPointer(), pVSBlob_s->GetBufferSize(), nullptr, &g_pShadowmapVertexShader);

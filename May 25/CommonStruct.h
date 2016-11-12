@@ -20,6 +20,13 @@ struct Light
     float SpotPower;		// spot light only
 };
 
+struct Material
+{
+	XMFLOAT4 DiffuseAlbedo;
+	XMFLOAT3 FresnelR0;
+	float Shininess;
+};
+
 struct ConstantBuffer
 {
 	XMMATRIX mWorld;
@@ -27,7 +34,7 @@ struct ConstantBuffer
 	XMMATRIX mWorldLightviewProj;
 	XMMATRIX mWorldInvTranspose;
 	XMFLOAT3 mEyePosW;
-	UINT ColorSwitch;
+	Material mMaterial;
 };
 
 struct ConstantBuffer_Shadowmap

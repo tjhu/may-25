@@ -4,8 +4,6 @@
 
 // Defaults for number of lights.
 
-
-#include "StructsForShader.hlsl"
 #include "LightingUtil.hlsl"
 
 sampler ShadowMapSampler : register(s0);;

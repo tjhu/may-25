@@ -124,7 +124,6 @@ void DrawSolids(RenderObject mRenderObject)
 				cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
 				cb.mWorldInvTranspose = InverseTranspose(g_World);
 				cb.mEyePosW = mEyePosW;
-				cb.ColorSwitch = i % 3;
 
 				g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 				g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
@@ -153,7 +152,6 @@ void DrawSolids(RenderObject mRenderObject)
 		cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
 		cb.mWorldInvTranspose = InverseTranspose(g_World);
 		cb.mEyePosW = mEyePosW;
-		cb.ColorSwitch = 999;
 		g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 
 		//
@@ -192,7 +190,6 @@ void DrawAxis()
 	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
 	cb.mWorldInvTranspose = InverseTranspose(g_World);
 	cb.mEyePosW = mEyePosW;
-	cb.ColorSwitch = 999;
 
 	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
@@ -220,7 +217,6 @@ void DrawAxis()
 	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
 	cb.mWorldInvTranspose = InverseTranspose(g_World);
 	cb.mEyePosW = mEyePosW;
-	cb.ColorSwitch = 999;
 
 	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
@@ -248,7 +244,6 @@ void DrawAxis()
 	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
 	cb.mWorldInvTranspose = InverseTranspose(g_World);
 	cb.mEyePosW = mEyePosW;
-	cb.ColorSwitch = 999;
 
 	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);

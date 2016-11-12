@@ -363,7 +363,7 @@ void RenderTest()
 
 	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
-	g_pImmediateContext->DrawIndexed(NumOfIndices_Cone, 0, 18);
+	g_pImmediateContext->DrawIndexed(NumOfIndices_Cone, NumOfIndices_Cylinder, 4 * NumOfSlices + 2); // Since we know that it is fixed
 
 	g_pSwapChain->Present(0, 0);
 }
@@ -372,8 +372,6 @@ void RenderTest()
 void CleanupDevice()
 {
 	if (g_pImmediateContext) g_pImmediateContext->ClearState();
-
-
 	ReleaseCom(g_pConstantBuffer);
 	ReleaseCom(g_pVertexBuffer);
 	ReleaseCom(g_pIndexBuffer);
@@ -536,7 +534,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 			// Render stuff
 			UpdateScene();
-			RenderTest();
+			Render();
 		}
 	}
 	LogFileObject << "Device cleaned up" << std::endl;

@@ -52,7 +52,7 @@
 #define NumOfChar 100
 
 #define NumOfPoint 400
-#define NumOfSlices 4
+#define NumOfSlices 40
 
 #define NumOfIntergal 1000
 #define g_WorldCount 199

@@ -176,11 +176,14 @@ void DrawAxis()
 	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pAxesVertexBuffer, &stride, &offset);
 	g_pImmediateContext->IASetIndexBuffer(g_pAxesIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 
-	const float SemiLengthOfStick = 3;
+	const float SemiLengthOfStick = 0.5f * mRadius;
 	const float r_stick = 0.002f * mRadius;
+	const float r_arrow = r_stick * 5;
+	const float h_arrow = r_stick * 10;
 	// Draw negative part of x-axis
 	XMMATRIX mTranslate = XMMatrixTranslation(-SemiLengthOfStick, 0.0f, 0.0f);
 	XMMATRIX mScale = XMMatrixScaling(SemiLengthOfStick, r_stick, r_stick);
+	XMMATRIX mRotate = XMMatrixRotationZ(XM_PIDIV2);
 	g_World = mScale * mTranslate;
 
 	ConstantBuffer cb;
@@ -190,6 +193,17 @@ void DrawAxis()
 	cb.mWorldInvTranspose = InverseTranspose(g_World);
 	cb.mEyePosW = mEyePosW;
 	cb.ColorSwitch = 999;
+
+	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+	g_pImmediateContext->DrawIndexed(NumOfIndices_Cylinder, 0, 0);
+
+	// Draw negaive part of y-axis
+	g_World = mScale * mTranslate * mRotate;
+	cb.mWorld = XMMatrixTranspose(g_World);
+	cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
+	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
+	cb.mWorldInvTranspose = InverseTranspose(g_World);
 
 	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
@@ -212,9 +226,20 @@ void DrawAxis()
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 	g_pImmediateContext->DrawIndexed(NumOfIndices_Cylinder, 0, 0);
 
+	// Draw positive part of y-axis
+	g_World = mScale * mTranslate * mRotate;
+	cb.mWorld = XMMatrixTranspose(g_World);
+	cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
+	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
+	cb.mWorldInvTranspose = InverseTranspose(g_World);
+
+	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+	g_pImmediateContext->DrawIndexed(NumOfIndices_Cylinder, 0, 0);
+
 	// Draw arrow head of x-axis
 	mTranslate = XMMatrixTranslation(SemiLengthOfStick, 0.0f, 0.0f);
-	mScale = XMMatrixScaling(r_stick * 7, r_stick * 5, r_stick * 5);
+	mScale = XMMatrixScaling(h_arrow, r_arrow, r_arrow);
 	g_World = mScale * mTranslate;
 
 	ZeroMemory(&cb, sizeof(cb));
@@ -227,5 +252,16 @@ void DrawAxis()
 
 	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
-	g_pImmediateContext->DrawIndexed(NumOfIndices_Cone, NumOfIndices_Cylinder - 1, 0);
+	g_pImmediateContext->DrawIndexed(NumOfIndices_Cone, NumOfIndices_Cylinder, 4 * NumOfSlices + 2); // Since we know that it is fixed
+
+	// Draw arrow head of y-axis
+	g_World = mScale * mTranslate * mRotate;
+	cb.mWorld = XMMatrixTranspose(g_World);
+	cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
+	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
+	cb.mWorldInvTranspose = InverseTranspose(g_World);
+
+	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+	g_pImmediateContext->DrawIndexed(NumOfIndices_Cone, NumOfIndices_Cylinder, 4 * NumOfSlices + 2);
 }

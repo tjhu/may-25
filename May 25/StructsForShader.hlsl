@@ -15,8 +15,7 @@ struct Light
 struct Material
 {
     float4 DiffuseAlbedo;
-    float3 FresnelR0;
-    float Shininess;
+    float4 FresnelR0AndShininess;
 };
 
 cbuffer ConstantBuffer : register(b0)
@@ -25,8 +24,8 @@ cbuffer ConstantBuffer : register(b0)
     matrix WorldViewProj;
     matrix WorldLightviewProj;
     matrix WorldInvTranspose;
+    Material mMaterial;
     float3 EyePos;
-    
 }
 
 //--------------------------------------------------------------------------------------
@@ -42,4 +41,5 @@ struct PS_INPUT
     float3 PosW : POSITION;
 	float4 Pos_L : TEXCOORD0;
     float3 Normal : NORMAL;
+    Material a : TEXCOORD1;
 };

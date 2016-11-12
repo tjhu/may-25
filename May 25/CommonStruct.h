@@ -23,8 +23,7 @@ struct Light
 struct Material
 {
 	XMFLOAT4 DiffuseAlbedo;
-	XMFLOAT3 FresnelR0;
-	float Shininess;
+	XMFLOAT4 FresnelR0AndShininess;
 };
 
 struct ConstantBuffer
@@ -33,8 +32,8 @@ struct ConstantBuffer
 	XMMATRIX mWorldViewProj;
 	XMMATRIX mWorldLightviewProj;
 	XMMATRIX mWorldInvTranspose;
-	XMFLOAT3 mEyePosW;
 	Material mMaterial;
+	XMFLOAT3 mEyePosW;
 };
 
 struct ConstantBuffer_Shadowmap

@@ -124,9 +124,12 @@ void DrawSolids(RenderObject mRenderObject)
 				cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
 				cb.mWorldInvTranspose = InverseTranspose(g_World);
 				cb.mEyePosW = mEyePosW;
+				cb.mMaterial.DiffuseAlbedo = XMFLOAT4(1.000000000f, 0.411764741f, 0.705882370f, 1.0f);
+				cb.mMaterial.FresnelR0AndShininess = XMFLOAT4( 0.10f, 0.10f, 0.10f , 0.8f );
 
 				g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 				g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+				g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 				break;
 			}
 			default:
@@ -168,13 +171,16 @@ void DrawSolids(RenderObject mRenderObject)
 
 void DrawAxis()
 {
+	XMFLOAT4 xAxisColor = { 1.000000000f, 0.847058845f, 0.500000000f, 1.000000000f };
+	XMFLOAT4 yAxisColor = { 1.000000000f, 0.500000000f, 0.500000000f, 1.000000000f };
+	XMFLOAT4 AxisFresShin = { 0.10f, 0.10f, 0.10f, 0.8f };
 	UINT offset = 0;
 	g_pImmediateContext->VSSetShader(g_pVertexShader, nullptr, 0);
 	g_pImmediateContext->PSSetShader(g_pPixelShader, nullptr, 0);
 	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pAxesVertexBuffer, &stride, &offset);
 	g_pImmediateContext->IASetIndexBuffer(g_pAxesIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 
-	const float SemiLengthOfStick = 0.5f * mRadius;
+	const float SemiLengthOfStick = 0.35f * mRadius;
 	const float r_stick = 0.002f * mRadius;
 	const float r_arrow = r_stick * 5;
 	const float h_arrow = r_stick * 10;
@@ -190,17 +196,22 @@ void DrawAxis()
 	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
 	cb.mWorldInvTranspose = InverseTranspose(g_World);
 	cb.mEyePosW = mEyePosW;
+	cb.mMaterial.DiffuseAlbedo = xAxisColor;
+	cb.mMaterial.FresnelR0AndShininess = AxisFresShin;
 
 	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 	g_pImmediateContext->DrawIndexed(NumOfIndices_Cylinder, 0, 0);
 
 	// Draw negaive part of y-axis
+	ZeroMemory(&cb, sizeof(cb));
 	g_World = mScale * mTranslate * mRotate;
 	cb.mWorld = XMMatrixTranspose(g_World);
 	cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
 	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
 	cb.mWorldInvTranspose = InverseTranspose(g_World);
+	cb.mMaterial.DiffuseAlbedo = yAxisColor;
+	cb.mMaterial.FresnelR0AndShininess = AxisFresShin;
 
 	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
@@ -217,17 +228,22 @@ void DrawAxis()
 	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
 	cb.mWorldInvTranspose = InverseTranspose(g_World);
 	cb.mEyePosW = mEyePosW;
+	cb.mMaterial.DiffuseAlbedo = xAxisColor;
+	cb.mMaterial.FresnelR0AndShininess = AxisFresShin;
 
 	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 	g_pImmediateContext->DrawIndexed(NumOfIndices_Cylinder, 0, 0);
 
 	// Draw positive part of y-axis
+	ZeroMemory(&cb, sizeof(cb));
 	g_World = mScale * mTranslate * mRotate;
 	cb.mWorld = XMMatrixTranspose(g_World);
 	cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
 	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
 	cb.mWorldInvTranspose = InverseTranspose(g_World);
+	cb.mMaterial.DiffuseAlbedo = yAxisColor;
+	cb.mMaterial.FresnelR0AndShininess = AxisFresShin;
 
 	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
@@ -244,17 +260,22 @@ void DrawAxis()
 	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
 	cb.mWorldInvTranspose = InverseTranspose(g_World);
 	cb.mEyePosW = mEyePosW;
+	cb.mMaterial.DiffuseAlbedo = xAxisColor;
+	cb.mMaterial.FresnelR0AndShininess = AxisFresShin;
 
 	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 	g_pImmediateContext->DrawIndexed(NumOfIndices_Cone, NumOfIndices_Cylinder, 4 * NumOfSlices + 2); // Since we know that it is fixed
 
 	// Draw arrow head of y-axis
+	ZeroMemory(&cb, sizeof(cb));
 	g_World = mScale * mTranslate * mRotate;
 	cb.mWorld = XMMatrixTranspose(g_World);
 	cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
 	cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
 	cb.mWorldInvTranspose = InverseTranspose(g_World);
+	cb.mMaterial.DiffuseAlbedo = yAxisColor;
+	cb.mMaterial.FresnelR0AndShininess = AxisFresShin;
 
 	g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);

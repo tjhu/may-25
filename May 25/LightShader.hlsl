@@ -3,7 +3,6 @@
 //--------------------------------------------------------------------------------------
 
 // Defaults for number of lights.
-
 #include "LightingUtil.hlsl"
 
 sampler ShadowMapSampler : register(s0);;
@@ -21,10 +20,8 @@ PS_INPUT VS(VS_INPUT input)
 
 float4 PS(PS_INPUT pin) : SV_Target
 {
-    Material mMaterial;
-    mMaterial.DiffuseAlbedo = float4(1.000000000f, 0.411764741f, 0.705882370f, 1.0f);
-    mMaterial.FresnelR0 = float3(0.10f, 0.10f, 0.10f);
-    float Roughness = 0.2f;
+    float3 FresnelR0 = mMaterial.FresnelR0AndShininess.xyz;
+    float Shininess = mMaterial.FresnelR0AndShininess.w;
     float4 AmbientLight = (0.15f, 0.15f, 0.15f, 1.0f);
 
     Light Lights[16];
@@ -48,8 +45,7 @@ float4 PS(PS_INPUT pin) : SV_Target
     // Compute Shadow
     //if (pin.Pos_L.z > Deep_Shadowmap + 0.000001f) return ambient;
 
-    const float shininess = 1.0f - Roughness;
-    Material mat = { mMaterial.DiffuseAlbedo, mMaterial.FresnelR0, shininess };
+    Material mat = { mMaterial.DiffuseAlbedo, FresnelR0, Shininess };
     float3 shadowFactor = 1.0f;
     float4 directLight = ComputeLighting(Lights, mat, pin.PosW,
         pin.Normal, toEyeW, shadowFactor);

@@ -147,8 +147,7 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 	// Compile&set vertex&pixel shader and set input layout
 	CompileShaders();
 
-	//// Create axes vertex buffer and index buffer
-	BuildAxisGeometryBuffers(g_pAxesVertexBuffer, g_pAxesIndexBuffer, NumOfIndices_Cylinder, NumOfIndices_Cone);
+
 
 	//// Create function vertex buffer and index buffer
 	//BuildFunctionVertexBuffer();
@@ -182,7 +181,7 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 
 	// Build Geometry Buffers
 	BuildGeometryBuffers(mGeoPointers, g_pVertexBuffer, g_pIndexBuffer, NumOfertices, NumOfIndices_Solid);
-	//BuildAxisGeometryBuffers(g_pAxesVertexBuffer, g_pAxesIndexBuffer, a, b);
+	BuildAxisGeometryBuffers(g_pAxesVertexBuffer, g_pAxesIndexBuffer, NumOfIndices_Cylinder, NumOfIndices_Cone);
 
 	// Create the constant buffer
 	D3D11_BUFFER_DESC cbd;

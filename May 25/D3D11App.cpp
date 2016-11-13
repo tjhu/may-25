@@ -10,9 +10,9 @@
 #include "stdafx.h"
 #include "D3D11App.h"
 #include "MyDirectXStuff.h"
+#include "GameTimer.h"
 
 using namespace DirectX;
-
 
 // Create Direct3D device and swap chain
 void InitDevice(HWND hWnd, HINSTANCE hInstance)
@@ -23,6 +23,7 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 	GetClientRect(hWnd, &rc);
 	UINT width = rc.right - rc.left;
 	UINT height = rc.bottom - rc.top;
+
 	UINT createDeviceFlags = 0;
 #ifdef _DEBUG
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
@@ -38,6 +39,7 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 
 	D3D_FEATURE_LEVEL featureLevels[] =
 	{
+		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
 		D3D_FEATURE_LEVEL_10_1,
 		D3D_FEATURE_LEVEL_10_0,
@@ -48,11 +50,48 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 	{
 		g_driverType = driverTypes[driverTypeIndex];
 		hr = D3D11CreateDevice(nullptr, g_driverType, nullptr, createDeviceFlags, featureLevels, numFeatureLevels,
-		D3D11_SDK_VERSION, &g_pd3dDevice, &g_featureLevel, &g_pImmediateContext);
+			D3D11_SDK_VERSION, &g_pd3dDevice, &g_featureLevel, &g_pImmediateContext);
+
+		if (hr == E_INVALIDARG)
+		{
+			// DirectX 11.0 platforms will not recognize D3D_FEATURE_LEVEL_11_1 so we need to retry without it
+			hr = D3D11CreateDevice(nullptr, g_driverType, nullptr, createDeviceFlags, &featureLevels[1], numFeatureLevels - 1,
+				D3D11_SDK_VERSION, &g_pd3dDevice, &g_featureLevel, &g_pImmediateContext);
+		}
+
 		if (SUCCEEDED(hr))
 			break;
 	}
 	ThrowIfFailed(hr);
+	// Log feature level
+	std::string FeatureLevel = "";
+	switch (g_featureLevel)
+	{
+	case D3D_FEATURE_LEVEL_9_1:
+		FeatureLevel = "D3D_FEATURE_LEVEL_9_1";
+		break;
+	case D3D_FEATURE_LEVEL_9_2:
+		FeatureLevel = "D3D_FEATURE_LEVEL_9_2";
+		break;
+	case D3D_FEATURE_LEVEL_9_3:
+		FeatureLevel = "D3D_FEATURE_LEVEL_9_3";
+		break;
+	case D3D_FEATURE_LEVEL_10_0:
+		FeatureLevel = "D3D_FEATURE_LEVEL_10_0";
+		break;
+	case D3D_FEATURE_LEVEL_10_1:
+		FeatureLevel = "D3D_FEATURE_LEVEL_10_1";
+		break;
+	case D3D_FEATURE_LEVEL_11_0:
+		FeatureLevel = "D3D_FEATURE_LEVEL_11_0";
+		break;
+	case D3D_FEATURE_LEVEL_11_1:
+		FeatureLevel = "D3D_FEATURE_LEVEL_11_1";
+		break;
+	default:
+		break;
+	}
+	LogFileObject << "D3D device with feature level " << FeatureLevel << " is created" << std::endl;
 
 	// Obtain DXGI factory from device (since we used nullptr for pAdapter above)
 	IDXGIFactory1* dxgiFactory = nullptr;
@@ -66,35 +105,71 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 			if (SUCCEEDED(hr))
 			{
 				hr = adapter->GetParent(__uuidof(IDXGIFactory1), reinterpret_cast<void**>(&dxgiFactory));
-				ReleaseCom(adapter);
+				adapter->Release();
 			}
-			ReleaseCom(dxgiDevice);
+			dxgiDevice->Release();
 		}
 	}
 	ThrowIfFailed(hr);
 
+	// Create swap chain
+	IDXGIFactory2* dxgiFactory2 = nullptr;
+	hr = dxgiFactory->QueryInterface(__uuidof(IDXGIFactory2), reinterpret_cast<void**>(&dxgiFactory2));
+	if (dxgiFactory2)
+	{
+		// DirectX 11.1 or later
+		hr = g_pd3dDevice->QueryInterface(__uuidof(ID3D11Device1), reinterpret_cast<void**>(&g_pd3dDevice1));
+		if (SUCCEEDED(hr))
+		{
+			(void)g_pImmediateContext->QueryInterface(__uuidof(ID3D11DeviceContext1), reinterpret_cast<void**>(&g_pImmediateContext1));
+		}
 
-	//Create swap chain
-	DXGI_SWAP_CHAIN_DESC sd;
-	ZeroMemory(&sd, sizeof(sd));
-	sd.BufferCount = 1;
-	sd.BufferDesc.Width = width;
-	sd.BufferDesc.Height = height;
-	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	sd.BufferDesc.RefreshRate.Numerator = 30;
-	sd.BufferDesc.RefreshRate.Denominator = 1;
-	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.OutputWindow = hWnd;
-	sd.SampleDesc.Count = 1;
-	sd.SampleDesc.Quality = 0;
-	sd.Windowed = TRUE;
+		DXGI_SWAP_CHAIN_DESC1 sd;
+		ZeroMemory(&sd, sizeof(sd));
+		sd.Width = width;
+		sd.Height = height;
+		sd.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		sd.SampleDesc.Count = 1;
+		sd.SampleDesc.Quality = 0;
+		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		sd.BufferCount = 1;
 
-	hr = dxgiFactory->CreateSwapChain(g_pd3dDevice, &sd, &g_pSwapChain);
+		hr = dxgiFactory2->CreateSwapChainForHwnd(g_pd3dDevice, g_hWnd, &sd, nullptr, nullptr, &g_pSwapChain1);
+		if (SUCCEEDED(hr))
+		{
+			hr = g_pSwapChain1->QueryInterface(__uuidof(IDXGISwapChain), reinterpret_cast<void**>(&g_pSwapChain));
+		}
+
+		dxgiFactory2->Release();
+	}
+	else
+	{
+		// DirectX 11.0 systems
+		DXGI_SWAP_CHAIN_DESC sd;
+		ZeroMemory(&sd, sizeof(sd));
+		sd.BufferCount = 1;
+		sd.BufferDesc.Width = width;
+		sd.BufferDesc.Height = height;
+		sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		sd.BufferDesc.RefreshRate.Numerator = 60;
+		sd.BufferDesc.RefreshRate.Denominator = 1;
+		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		sd.OutputWindow = g_hWnd;
+		sd.SampleDesc.Count = 1;
+		sd.SampleDesc.Quality = 0;
+		sd.Windowed = TRUE;
+
+		hr = dxgiFactory->CreateSwapChain(g_pd3dDevice, &sd, &g_pSwapChain);
+	}
+
+	ThrowIfFailed(g_pSwapChain->QueryInterface(__uuidof(IDXGISwapChainMedia), reinterpret_cast<void**>(&g_pSwapChainMedia)));
+	UINT ClosestSmallerPresentDuration, ClosestLargerPresentDuration = 0;
+	ThrowIfFailed(g_pSwapChainMedia->CheckPresentDurationSupport(167777, &ClosestSmallerPresentDuration, &ClosestLargerPresentDuration));
 
 	// Note this tutorial doesn't handle full-screen swapchains so we block the ALT+ENTER shortcut
-	dxgiFactory->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER);
+	dxgiFactory->MakeWindowAssociation(g_hWnd, DXGI_MWA_NO_ALT_ENTER);
 
-	ReleaseCom(dxgiFactory);
+	dxgiFactory->Release();
 
 	ThrowIfFailed(hr);
 
@@ -267,21 +342,6 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 
 void Render()
 {
-	// Update our time
-	static float t = 0.0f;
-	if (g_driverType == D3D_DRIVER_TYPE_REFERENCE)
-	{
-		t += (float)XM_PI * 0.0125f;
-	}
-	else
-	{
-		static ULONGLONG timeStart = 0;
-		ULONGLONG timeCur = GetTickCount64();
-		if (timeStart == 0)
-			timeStart = timeCur;
-		t = (timeCur - timeStart) / 1000.0f;
-	}
-
 	// Set vertex buffer
 	UINT stride = sizeof(SimpleVertex);
 	UINT offset = 0;
@@ -370,6 +430,7 @@ void RenderTest()
 void CleanupDevice()
 {
 	if (g_pImmediateContext) g_pImmediateContext->ClearState();
+	if (g_pImmediateContext1) g_pImmediateContext1->ClearState();
 	ReleaseCom(g_pConstantBuffer);
 	ReleaseCom(g_pVertexBuffer);
 	ReleaseCom(g_pIndexBuffer);
@@ -386,8 +447,11 @@ void CleanupDevice()
 	ReleaseCom(g_pRenderTargetView);
 	ReleaseCom(g_pSwapChain1);
 	ReleaseCom(g_pSwapChain);
+	ReleaseCom(g_pSwapChainMedia);
 	ReleaseCom(g_pImmediateContext);
+	ReleaseCom(g_pImmediateContext1);
 	ReleaseCom(g_pd3dDevice);
+	ReleaseCom(g_pd3dDevice1);
 	ReleaseCom(g_pAxesVertexBuffer);
 	ReleaseCom(g_pAxesIndexBuffer);
 	ReleaseCom(g_pFunctionVertexBuffer);
@@ -511,6 +575,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	LogFileObject << "Read inputs from file" << std::endl;
 
+	GameTimer mTimer;
+	const float LeastMSPF= 20.0f;
+	mTimer.Start();
 	//Main message loop
 	MSG msg = { 0 };
 	while (WM_QUIT != msg.message)
@@ -525,14 +592,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		}
 		else
 		{
+
 			// Update keypressed
 			if (GetFocus() == g_hWndDX)
 				DXOnKeyDown(&mTheta, &mPhi, &mRadius);
 			OnKeyDown(g_hWnd, g_hWndButton);
+			UpdateScene();
 
 			// Render stuff
-			UpdateScene();
 			Render();
+			mTimer.Tick();
 		}
 	}
 	LogFileObject << "Device cleaned up" << std::endl;

@@ -152,6 +152,7 @@
     <Text Include="Inputs.txt">
       <DeploymentContent>true</DeploymentContent>
     </Text>
+    <Text Include="Log.txt" />
     <Text Include="ReadMe.txt" />
     <Text Include="Setting.txt">
       <DeploymentContent>true</DeploymentContent>
@@ -162,6 +163,7 @@
     <ClInclude Include="D3D11App.h" />
     <ClInclude Include="DXUtility.h" />
     <ClInclude Include="EvaluateExpression\tmath.h" />
+    <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="DirectXGlobalVariables.h" />
     <ClInclude Include="MyDirectXStuff.h" />
@@ -178,6 +180,7 @@
     <ClCompile Include="EvaluateExpression\tmath.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Tianjiao\Documents\Visual Studio 2015\Projects\May 25\May 25;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="MyDirectXStuff.cpp" />
     <ClCompile Include="MyWindowsProcs.cpp" />
@@ -209,6 +212,7 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </EntryPointName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="ShadowmapShader.hlsl">
       <DeploymentContent>true</DeploymentContent>
@@ -218,6 +222,7 @@
     <FxCompile Include="StructsForShader.hlsl">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

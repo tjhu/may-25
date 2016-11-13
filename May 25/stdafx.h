@@ -31,9 +31,9 @@
 //-------------------------------------
 // DirectX Headers
 //-------------------------------------
-#include <d3d11.h>
+#include <d3d11_1.h>
 #include <DirectXMath.h>
-#include <DXGI1_2.h>
+#include <DXGI1_3.h>
 #include <d3dcompiler.h>
 #include <directxcolors.h>
 

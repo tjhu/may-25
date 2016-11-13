@@ -163,8 +163,8 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 	}
 
 	ThrowIfFailed(g_pSwapChain->QueryInterface(__uuidof(IDXGISwapChainMedia), reinterpret_cast<void**>(&g_pSwapChainMedia)));
-	UINT ClosestSmallerPresentDuration, ClosestLargerPresentDuration = 0;
-	ThrowIfFailed(g_pSwapChainMedia->CheckPresentDurationSupport(167777, &ClosestSmallerPresentDuration, &ClosestLargerPresentDuration));
+	UINT FrameRate = 0;
+	GetFrameRate(g_pSwapChainMedia, &FrameRate);
 
 	// Note this tutorial doesn't handle full-screen swapchains so we block the ALT+ENTER shortcut
 	dxgiFactory->MakeWindowAssociation(g_hWnd, DXGI_MWA_NO_ALT_ENTER);

@@ -9,6 +9,23 @@ UINT					NCount;
 SolidMethod				g_SolidMethod;
 BoundToWhat				g_BoundToWhat;
 
+bool GetFrameRate(IDXGISwapChainMedia * pSwapChainMedia, UINT * pFrameRate)
+{
+	UINT SDuration, LDuration = 0;
+	UINT Duration = 16777;
+	for (WORD i = 1; i < 100; i++)
+	{
+		ThrowIfFailed(g_pSwapChainMedia->CheckPresentDurationSupport(Duration * i, &SDuration, &LDuration));
+		if (SDuration != 0)
+		{
+			*pFrameRate = SDuration;
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void BuildGeometryBuffers(GeometryPointers mGeoPointers, ID3D11Buffer*& pVertexBuffer, ID3D11Buffer*& pIndexBuffer,
 	UINT NumOfVertex, UINT NumOfIndice)
 {

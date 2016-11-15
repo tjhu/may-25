@@ -134,7 +134,7 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		sd.BufferCount = 1;
 
-		hr = dxgiFactory2->CreateSwapChainForHwnd(g_pd3dDevice, g_hWnd, &sd, nullptr, nullptr, &g_pSwapChain1);
+		hr = dxgiFactory2->CreateSwapChainForHwnd(g_pd3dDevice, hWnd, &sd, nullptr, nullptr, &g_pSwapChain1);
 		if (SUCCEEDED(hr))
 		{
 			hr = g_pSwapChain1->QueryInterface(__uuidof(IDXGISwapChain), reinterpret_cast<void**>(&g_pSwapChain));
@@ -154,7 +154,7 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 		sd.BufferDesc.RefreshRate.Numerator = 60;
 		sd.BufferDesc.RefreshRate.Denominator = 1;
 		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		sd.OutputWindow = g_hWnd;
+		sd.OutputWindow = hWnd;
 		sd.SampleDesc.Count = 1;
 		sd.SampleDesc.Quality = 0;
 		sd.Windowed = TRUE;
@@ -163,11 +163,12 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 	}
 
 	ThrowIfFailed(g_pSwapChain->QueryInterface(__uuidof(IDXGISwapChainMedia), reinterpret_cast<void**>(&g_pSwapChainMedia)));
-	UINT FrameRate = 0;
-	GetFrameRate(g_pSwapChainMedia, &FrameRate);
+	UINT FrameRate = 167777;
+//	GetFrameRate(g_pSwapChainMedia, &FrameRate);
+	ThrowIfFailed(g_pSwapChainMedia->SetPresentDuration(FrameRate));
 
 	// Note this tutorial doesn't handle full-screen swapchains so we block the ALT+ENTER shortcut
-	dxgiFactory->MakeWindowAssociation(g_hWnd, DXGI_MWA_NO_ALT_ENTER);
+	dxgiFactory->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER);
 
 	dxgiFactory->Release();
 
@@ -381,7 +382,7 @@ void Render()
 	DrawSolids(Scene);
 	DrawAxis();
 
-	g_pSwapChain->Present(0, 0);
+	g_pSwapChain->Present(0, DXGI_PRESENT_USE_DURATION);
 }
 
 void RenderTest()

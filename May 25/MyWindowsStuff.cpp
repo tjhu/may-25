@@ -354,9 +354,9 @@ void DXOnKeyDown(float* mTheta, float* mPhi, float* mRadius)
 	if (ForegroundWindow != g_hWnd)
 		return;
 
-	float dx = 0.003f;
-	float dy = 0.003f;
-	float dr = 0.018f;
+	float dx = 0.006f;
+	float dy = 0.006f;
+	float dr = 0.036f;
 
 	if (GetAsyncKeyState(VK_LCONTROL) & 0x8000)
 	{

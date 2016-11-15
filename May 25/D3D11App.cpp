@@ -382,7 +382,7 @@ void Render()
 	DrawSolids(Scene);
 	DrawAxis();
 
-	g_pSwapChain->Present(0, DXGI_PRESENT_USE_DURATION);
+	g_pSwapChain->Present(1, DXGI_PRESENT_USE_DURATION);
 }
 
 void RenderTest()

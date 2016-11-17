@@ -90,25 +90,25 @@ GeometryPointers BuildDiskGeometryBuffers(UINT* NumOfVertex, UINT* NumOfIndice)
 }
 
 GeometryPointers BuildEntireWasherGeometryBuffers(UINT* NumOfVertex, UINT* NumOfIndice,
-	UINT NCount, float LeftBound, float RightBound, std::string Expression_1, std::string Expression_2)
+	UINT g_NCount, float g_LeftBound, float g_RightBound, std::string Expression_1, std::string Expression_2)
 {
-	*NumOfVertex = 8 * NumOfSlices * NCount;
+	*NumOfVertex = 8 * NumOfSlices * g_NCount;
 	SimpleVertex* vertices = nullptr;
 	vertices = new SimpleVertex[*NumOfVertex];
-	*NumOfIndice = 8 * NumOfSlices * NCount * 3;
+	*NumOfIndice = 8 * NumOfSlices * g_NCount * 3;
 	WORD* indices = nullptr;
 	indices = new WORD[*NumOfIndice];
 
 	float yf = 0.0f;
 	float y0 = 0.0f;
 
-	float x0 = (LeftBound < RightBound) ? LeftBound : RightBound;
-	float dx = abs(RightBound - LeftBound) / (float)NCount;
+	float x0 = (g_LeftBound < g_RightBound) ? g_LeftBound : g_RightBound;
+	float dx = abs(g_RightBound - g_LeftBound) / (float)g_NCount;
 	float theta = 0.0f;
 	float dTheta = XM_2PI / NumOfSlices;
 
 
-	for (UINT i = 0; i < NCount; i++)
+	for (UINT i = 0; i < g_NCount; i++)
 	{
 		float xf = x0 + dx;
 		y0 = abs(evaluate(Expression_1, x0));
@@ -151,7 +151,7 @@ GeometryPointers BuildEntireWasherGeometryBuffers(UINT* NumOfVertex, UINT* NumOf
 	// Left Hand Rule
 	DWORD k = 0;
 	UINT space = 0; // The space of vertices bettwwen each Washer-Solid being drawn
-	for (UINT c = 0; c < NCount; c++)
+	for (UINT c = 0; c < g_NCount; c++)
 	{
 		space = c * 8 * NumOfSlices;
 		// Top
@@ -247,23 +247,23 @@ GeometryPointers BuildEntireWasherGeometryBuffers(UINT* NumOfVertex, UINT* NumOf
 	return mGeoPointers;
 }
 
-GeometryPointers BuildEntireShellGeometryBuffers(UINT* NumOfVertex, UINT* NumOfIndice, UINT NCount,
-	float LeftBound, float RightBound, std::string Expression_1, BoundToWhat g_BoundToWhat)
+GeometryPointers BuildEntireShellGeometryBuffers(UINT* NumOfVertex, UINT* NumOfIndice, UINT g_NCount,
+	float g_LeftBound, float g_RightBound, std::string Expression_1, BoundToWhat g_BoundToWhat)
 {
 	// Function_1: with respect to y
-	*NumOfVertex = 8 * NumOfSlices * NCount;
+	*NumOfVertex = 8 * NumOfSlices * g_NCount;
 	SimpleVertex* vertices = nullptr;
 	vertices = new SimpleVertex[*NumOfVertex];
-	*NumOfIndice = 8 * NumOfSlices * NCount * 3;
+	*NumOfIndice = 8 * NumOfSlices * g_NCount * 3;
 	WORD* indices = nullptr;
 	indices = new WORD[*NumOfIndice];
 
 	bool IsBoundToLeft = (g_BoundToWhat == BoundToLeft) ? TRUE : FALSE;
 
-	float yLeftBound = LeftBound;
-	float yRightBound = RightBound;
-	float xLeftBound = evaluate(Expression_1, LeftBound);
-	float xRightBound = evaluate(Expression_1, RightBound);
+	float yLeftBound = g_LeftBound;
+	float yRightBound = g_RightBound;
+	float xLeftBound = evaluate(Expression_1, g_LeftBound);
+	float xRightBound = evaluate(Expression_1, g_RightBound);
 	if (xLeftBound > xRightBound)
 		std::swap(xLeftBound, xRightBound);
 
@@ -281,12 +281,12 @@ GeometryPointers BuildEntireShellGeometryBuffers(UINT* NumOfVertex, UINT* NumOfI
 
 	float y0 = yLeftBound;
 	float yf = 0.0f;
-	float dy = (yRightBound - yLeftBound) / (float)NCount;
+	float dy = (yRightBound - yLeftBound) / (float)g_NCount;
 	float theta = 0.0f;
 	float dTheta = XM_2PI / NumOfSlices;
 
 	// Fill in vertices
-	for (UINT i = 0; i < NCount; i++)
+	for (UINT i = 0; i < g_NCount; i++)
 	{
 		if (IsBoundToLeft)
 		{
@@ -334,7 +334,7 @@ GeometryPointers BuildEntireShellGeometryBuffers(UINT* NumOfVertex, UINT* NumOfI
 	// Fill in indices
 	DWORD k = 0;
 	UINT space = 0;
-	for (UINT c = 0; c < NCount; c++)
+	for (UINT c = 0; c < g_NCount; c++)
 	{
 		space = c * 8 * NumOfSlices;
 		// Top
@@ -758,8 +758,8 @@ GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices, UINT * NumOfIndi
 //	NumOfVertices_Function = NumOfPoint * 2;
 //	SimpleVertex vertices[NumOfPoint * 2];
 //
-//	float b = (RightBound > AxisMax) ? RightBound : AxisMax;
-//	float a = (LeftBound < AxisMin) ? LeftBound : AxisMin;
+//	float b = (g_RightBound > AxisMax) ? g_RightBound : AxisMax;
+//	float a = (g_LeftBound < AxisMin) ? g_LeftBound : AxisMin;
 //	float dx = (b - a) / (float)(NumOfPoint -1);
 //	float x = a;
 //

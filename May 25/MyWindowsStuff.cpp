@@ -22,7 +22,7 @@ void TcharToChar(char * String)
 	}
 }
 
-ErrorCode ValidateInput(std::string Function_1, std::string Function_2, std::string LeftBound, std::string RightBound)
+ErrorCode ValidateInput(std::string Function_1, std::string Function_2, std::string g_LeftBound, std::string g_RightBound)
 {
 	std::string sample;
 	try
@@ -45,15 +45,15 @@ ErrorCode ValidateInput(std::string Function_1, std::string Function_2, std::str
 		return InvalidFunction_2;
 	}
 
-	for (auto s : LeftBound)
+	for (auto s : g_LeftBound)
 	{
-		if (!(isdigit(s) || s == '.' || s == 'e' || LeftBound[0] == '-'))
+		if (!(isdigit(s) || s == '.' || s == 'e' || g_LeftBound[0] == '-'))
 			return InvalidLeftBound;
 	}
 
-	for (auto s : RightBound)
+	for (auto s : g_RightBound)
 	{
-		if (!(isdigit(s) || s == '.' || s == 'e' || RightBound[0] == '-'))
+		if (!(isdigit(s) || s == '.' || s == 'e' || g_RightBound[0] == '-'))
 			return InvalidRightBound;
 	}
 
@@ -93,16 +93,16 @@ void PopInvalideMessage(ErrorCode ErrorMessage)
 	}
 }
 
-void SetInputs(std::string Function_1, std::string Function_2, std::string sLeftBound, std::string sRightBound, UINT Rectangles)
+void SetInputs(std::string Function_1, std::string Function_2, std::string sLeftBound, std::string sRightBound, UINT NCount)
 {
 	std::ofstream Inputs(InputFile);
 	Inputs.clear();
 
 	Inputs << "Function_1= " << Function_1 << std::endl;
 	Inputs << "Function_2= " << Function_2 << std::endl;
-	Inputs << "LeftBound= " << sLeftBound << std::endl;
-	Inputs << "RightBound= " << sRightBound << std::endl;
-	Inputs << "Rectangle= " << Rectangles << std::endl;
+	Inputs << "g_LeftBound= " << sLeftBound << std::endl;
+	Inputs << "g_RightBound= " << sRightBound << std::endl;
+	Inputs << "Rectangle= " << NCount << std::endl;
 	Inputs << "BoundTo= " << g_BoundToWhat << std::endl;
 
 	Inputs.close();
@@ -111,9 +111,9 @@ void SetInputs(std::string Function_1, std::string Function_2, std::string sLeft
 	UnparsedExpression_2 = Function_2;
 	Expression_1 = parse(Function_1);
 	Expression_2 = parse(Function_2);
-	LeftBound = std::stof(sLeftBound.c_str());
-	RightBound = std::stof(sRightBound.c_str());
-	NCount = Rectangles;
+	g_LeftBound = std::stof(sLeftBound.c_str());
+	g_RightBound = std::stof(sRightBound.c_str());
+	g_NCount = NCount;
 }
 
 void SetInputs()
@@ -123,9 +123,9 @@ void SetInputs()
 
 	Inputs << "Function_1= " << UnparsedExpression_1 << std::endl;
 	Inputs << "Function_2= " << UnparsedExpression_2 << std::endl;
-	Inputs << "LeftBound= " << LeftBound << std::endl;
-	Inputs << "RightBound= " << RightBound << std::endl;
-	Inputs << "Rectangle= " << NCount << std::endl;
+	Inputs << "g_LeftBound= " << g_LeftBound << std::endl;
+	Inputs << "g_RightBound= " << g_RightBound << std::endl;
+	Inputs << "Rectangle= " << g_NCount << std::endl;
 	Inputs << "BoundTo= " << g_BoundToWhat << std::endl;
 
 
@@ -153,9 +153,9 @@ void UpdateVariables()
 
 	Inputs >> buffer >> UnparsedExpression_1;
 	Inputs >> buffer >> UnparsedExpression_2;
-	Inputs >> buffer >> LeftBound;
-	Inputs >> buffer >> RightBound;
-	Inputs >> buffer >> NCount;
+	Inputs >> buffer >> g_LeftBound;
+	Inputs >> buffer >> g_RightBound;
+	Inputs >> buffer >> g_NCount;
 	Inputs >> buffer >> x;
 	Inputs.close();
 
@@ -174,9 +174,9 @@ void UpdateVariables()
 		SetWindowTextA(g_hWndEquation_1, UnparsedExpression_1.c_str());
 	}
 	SetWindowTextA(g_hWndEquation_2, UnparsedExpression_2.c_str());
-	SetWindowTextA(g_hWndLeftBound, std::to_string(LeftBound).c_str());
-	SetWindowTextA(g_hWndRightBound, std::to_string(RightBound).c_str());
-	SendMessage(g_hWndNCount, CB_SETCURSEL, (WPARAM)(NCount - 1), NULL);
+	SetWindowTextA(g_hWndLeftBound, std::to_string(g_LeftBound).c_str());
+	SetWindowTextA(g_hWndRightBound, std::to_string(g_RightBound).c_str());
+	SendMessage(g_hWndNCount, CB_SETCURSEL, (WPARAM)(g_NCount - 1), NULL);
 
 	g_BoundToWhat = (BoundToWhat)x;
 	if (g_BoundToWhat == BoundToLeft)
@@ -216,13 +216,13 @@ void Integration()
 	UnParsedFunctionSquare_1.append(UnparsedExpression_1);
 	UnParsedFunctionSquare_1.append(")^2");
 	std::string FunctionSquare_1 = parse(UnParsedFunctionSquare_1);
-	float result_1 = intergal(FunctionSquare_1, LeftBound, RightBound, NumOfIntergal, Method);
+	float result_1 = intergal(FunctionSquare_1, g_LeftBound, g_RightBound, NumOfIntergal, Method);
 
 	std::string UnParsedFunctionSquare_2 = "(";
 	UnParsedFunctionSquare_2.append(UnparsedExpression_2);
 	UnParsedFunctionSquare_2.append(")^2");
 	std::string FunctionSquare_2 = parse(UnParsedFunctionSquare_2);
-	float result_2 = intergal(FunctionSquare_2, LeftBound, RightBound, NumOfIntergal, Method);
+	float result_2 = intergal(FunctionSquare_2, g_LeftBound, g_RightBound, NumOfIntergal, Method);
 
 	switch (g_SolidMethod)
 	{
@@ -238,7 +238,7 @@ void Integration()
 	{
 		std::string ShellFunction = Expression_1;
 		ShellFunction.append("x * ");
-		IntegrationResult = XM_2PI * intergal(ShellFunction, LeftBound, RightBound, NumOfIntergal, Method);
+		IntegrationResult = XM_2PI * intergal(ShellFunction, g_LeftBound, g_RightBound, NumOfIntergal, Method);
 	}
 	break;
 

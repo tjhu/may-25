@@ -51,9 +51,9 @@ extern HWND								g_hWndLeftCheck;
 extern HWND								g_hWndRightCheck;
 
 // Input File
-extern float							LeftBound;
-extern float							RightBound;
-extern UINT								NCount;
+extern float							g_LeftBound;
+extern float							g_RightBound;
+extern UINT								g_NCount;
 extern std::string						Expression_1;
 extern std::string						UnparsedExpression_1;
 extern std::string						Expression_2;

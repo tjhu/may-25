@@ -32,8 +32,7 @@ HWND								g_hWndButton = nullptr;
 HWND								g_hWndLeftCheck = nullptr;
 HWND								g_hWndRightCheck = nullptr;
 
-
-
+// Functions
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -115,18 +114,18 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		EditIndent = 100;
 		UINT EditLength = (UINT)(cyChar * 1.4f);
 		UINT k = 0;
-		g_hWndMethod = CreateWindowExA(NULL, "combobox", "NCount", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP,
+		g_hWndMethod = CreateWindowExA(NULL, "combobox", "g_NCount", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP,
 			40, EditIndent + k++ * EditSpacing, UIClientRect.right - 120, UIClientRect.right - 80, hWnd, (HMENU)ID_METHOD, g_hInstance, NULL);
 		g_hWndEquation_1 = CreateWindowExA(NULL, "edit", "Equation", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
 			40, EditIndent + k++ * EditSpacing, UIClientRect.right - 120, EditLength, hWnd, (HMENU)ID_EQUATION_1, g_hInstance, NULL);
 		g_hWndEquation_2 = CreateWindowExA(NULL, "edit", "Equation", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
 			40, EditIndent + k++ * EditSpacing, UIClientRect.right - 120, EditLength, hWnd, (HMENU)ID_EQUATION_2, g_hInstance, NULL);
 
-		g_hWndLeftBound = CreateWindowExA(NULL, "edit", "LeftBound", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
+		g_hWndLeftBound = CreateWindowExA(NULL, "edit", "g_LeftBound", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
 			40, EditIndent + k++ * EditSpacing, UIClientRect.right - 120, EditLength, hWnd, (HMENU)ID_LEFTBOUND, g_hInstance, NULL);
-		g_hWndRightBound = CreateWindowExA(NULL, "edit", "RightBound", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
+		g_hWndRightBound = CreateWindowExA(NULL, "edit", "g_RightBound", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
 			40, EditIndent + k++ * EditSpacing, UIClientRect.right - 120, EditLength, hWnd, (HMENU)ID_RIGHTBOUND, g_hInstance, NULL);
-		g_hWndNCount = CreateWindowExA(NULL, "combobox", "NCount", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL,
+		g_hWndNCount = CreateWindowExA(NULL, "combobox", "g_NCount", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL,
 			40, EditIndent + k++ * EditSpacing, UIClientRect.right - 120, 200, hWnd, (HMENU)ID_NCOUNT, g_hInstance, NULL);
 		g_hWndGoInfinite = CreateWindowExA(NULL, "button", "Toggle Axes", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX | BS_CENTER | WS_TABSTOP,
 			40, EditIndent + 30 + (k - 1) * EditSpacing, 20 * cxChar, cyChar * 7 / 4, hWnd, (HMENU)ID_GOINFINITE, g_hInstance, NULL);
@@ -209,12 +208,11 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			char cLeftBound[NumOfChar] = "";
 			char cRightBound[NumOfChar] = "";
 
-			int x = 0;
-			x = SendMessage(g_hWndMethod, CB_GETCURSEL, NULL, NULL);
-			if ((SolidMethod)x != g_SolidMethod)
+			int Method = 0;
+			Method = SendMessage(g_hWndMethod, CB_GETCURSEL, NULL, NULL);
+			if ((SolidMethod)Method != g_SolidMethod)
 			{
 				MethodChanged = TRUE;
-				g_SolidMethod = (SolidMethod)x;
 			}
 			// Get text from edit controls
 			Edit_GetLine(g_hWndEquation_1, NULL, (LPTSTR)&cFunction_1, NumOfChar);
@@ -226,20 +224,19 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			Edit_GetLine(g_hWndRightBound, NULL, (LPTSTR)&cRightBound, NumOfChar);
 			TcharToChar(cRightBound);
 
-			// Get selection from NCount
-			NCount = SendMessage(g_hWndNCount, CB_GETCURSEL, NULL, NULL) + 1;
+			// Get selection from g_NCount
+			UINT NCount = SendMessage(g_hWndNCount, CB_GETCURSEL, NULL, NULL) + 1;
 
 			// Get check state from radio buttons
 			g_BoundToWhat =
 				(BST_CHECKED == SendMessage(g_hWndLeftCheck, BM_GETCHECK, NULL, NULL)) ? BoundToLeft : BoundToRight;
-
 
 			std::string sFunction_1(cFunction_1);
 			std::string sFunction_2(cFunction_2);
 			std::string sLeftBound(cLeftBound);
 			std::string sRightBound(cRightBound);
 
-			if (g_SolidMethod == Shell)
+			if (Method == Shell)
 			{
 				for (UINT i = 0; i < sFunction_1.size(); i++)
 				{
@@ -278,6 +275,8 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			{
 				UINT	NumOfVertices;
 				GeometryPointers mGeoPointers;
+				g_SolidMethod = (SolidMethod)Method;
+				g_NCount = NCount;
 				switch (g_SolidMethod)
 				{
 				case Disk:
@@ -286,11 +285,11 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 					break;
 				case Washer:
 					mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid,
-						NCount, LeftBound, RightBound, Expression_1, Expression_2);
+						g_NCount, g_LeftBound, g_RightBound, Expression_1, Expression_2);
 					break;
 				case Shell:
 					mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid,
-						NCount, LeftBound, RightBound, Expression_1, g_BoundToWhat);
+						g_NCount, g_LeftBound, g_RightBound, Expression_1, g_BoundToWhat);
 					break;
 				case CrossSection_Semicircle:
 				case CrossSection_EquilateralTriangle:
@@ -345,7 +344,6 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		SetBkColor(hdc, (COLORREF)(COLOR_WINDOW + 1));
 		return 0;
 	}
-
 
 	case WM_PAINT:
 	{

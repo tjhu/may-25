@@ -3,9 +3,9 @@
 #include "Geometry.h"
 
 XMFLOAT3				mEyePosW;
-float					LeftBound;
-float					RightBound;
-UINT					NCount;
+float					g_LeftBound;
+float					g_RightBound;
+UINT					g_NCount;
 SolidMethod				g_SolidMethod;
 BoundToWhat				g_BoundToWhat;
 
@@ -233,11 +233,11 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 		break;
 	case Washer:
 		mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfertices, &NumOfIndices_Solid,
-			NCount, LeftBound, RightBound, Expression_1, Expression_2);
+			g_NCount, g_LeftBound, g_RightBound, Expression_1, Expression_2);
 		break;
 	case Shell:
 		mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfertices, &NumOfIndices_Solid,
-			NCount, LeftBound, RightBound, Expression_1, g_BoundToWhat);
+			g_NCount, g_LeftBound, g_RightBound, Expression_1, g_BoundToWhat);
 		break;
 	case CrossSection_Semicircle:
 	case CrossSection_EquilateralTriangle:
@@ -514,10 +514,10 @@ void DrawSolids(RenderObject mRenderObject)
 	case CrossSection_Square:
 	{
 		// Draw objects
-		float dx = (RightBound - LeftBound) / (float)NCount;
-		for (UINT i = 0; i < NCount; i++)
+		float dx = (g_RightBound - g_LeftBound) / (float)g_NCount;
+		for (UINT i = 0; i < g_NCount; i++)
 		{
-			float x = LeftBound + i * dx;
+			float x = g_LeftBound + i * dx;
 			float y = evaluate(Expression_1, x);
 			XMMATRIX mTranslate = XMMatrixTranslation(x, 0.0f, 0.0f);
 			XMMATRIX mScale = XMMatrixScaling(dx, y, y);
@@ -567,20 +567,35 @@ void DrawSolids(RenderObject mRenderObject)
 		XMMATRIX mScale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
 		g_World = mScale * mTranslate;
 
-		//
-		// Update variables for the object
-		//
-		ConstantBuffer cb;
-		cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
-		cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
-		cb.mWorldInvTranspose = InverseTranspose(g_World);
-		cb.mEyePosW = mEyePosW;
-		g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+		switch (mRenderObject)
+		{
+		case Shadowmap:
+		{
+			ConstantBuffer_Shadowmap cb;
+			cb.mWorldViewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
+			g_pImmediateContext->UpdateSubresource(g_pConstantBuffer_Shadowmap, 0, nullptr, &cb, 0, 0);
+			g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer_Shadowmap);
+			break;
+		}
+		case Scene:
+		{
+			ConstantBuffer cb;
+			cb.mWorld = XMMatrixTranspose(g_World);
+			cb.mWorldLightviewProj = XMMatrixTranspose(g_World * g_LightView * g_Projection);
+			cb.mWorldViewProj = XMMatrixTranspose(g_World * g_View * g_Projection);
+			cb.mWorldInvTranspose = InverseTranspose(g_World);
+			cb.mEyePosW = mEyePosW;
+			cb.mMaterial.DiffuseAlbedo = XMFLOAT4(1.000000000f, 0.411764741f, 0.705882370f, 1.0f);
+			cb.mMaterial.FresnelR0AndShininess = XMFLOAT4(0.10f, 0.10f, 0.10f, 0.8f);
 
-		//
-		// Render the object
-		//);
-		g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+			g_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+			g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+			g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+			break;
+		}
+		default:
+			break;
+		}
 		g_pImmediateContext->DrawIndexed(NumOfIndices_Solid, 0, 0);
 	}
 	break;

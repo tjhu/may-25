@@ -2,6 +2,10 @@
 #ifndef MYDIRECTXSTUFF_H
 #define MYDIRECTXSTUFF_H
 
+void InitDevice(HWND hWnd, HINSTANCE hInstance);
+
+void CompileShaders();
+
 bool GetFrameRate(IDXGISwapChainMedia* pSwapChainMedia, UINT* pFrameRate);
 
 void BuildGeometryBuffers(GeometryPointers mGeoPointers, ID3D11Buffer*& pVertexBuffer, ID3D11Buffer*& pIndexShader,

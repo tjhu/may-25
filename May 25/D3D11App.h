@@ -99,8 +99,6 @@ float					mRadius = 18.0f;
 bool					AxisOn = FALSE;
 
 // Functions
-void InitDevice(HWND hWnd, HINSTANCE hInstance);
-void CompileShaders();
 void Render();
 void RenderTest();
 void CleanupDevice();

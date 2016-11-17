@@ -417,6 +417,18 @@ LRESULT CALLBACK DXWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 {
 	switch (message)
 	{
+	case WM_CREATE:
+		try {
+			InitDevice(hWnd, g_hInstance);
+		}
+		catch (DxException& e)
+		{
+			MessageBox(nullptr, e.ToString().c_str(), L"HR Failed In Initializing The Device", MB_OK);
+			PostQuitMessage(0);
+			break;
+		}
+		break;
+
 	case WM_LBUTTONDOWN:
 	case WM_MBUTTONDOWN:
 	case WM_RBUTTONDOWN:

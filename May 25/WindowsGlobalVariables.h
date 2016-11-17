@@ -21,6 +21,8 @@
 #define ID_RIGHTBOUNDGUESS				204
 
 // Global Variables
+extern std::ofstream					LogFileObject;
+
 extern std::array <std::wstring, 6>		SolidMethodDropDownList;
 extern POINT							mLastMousePos;
 

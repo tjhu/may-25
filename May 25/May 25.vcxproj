@@ -176,12 +176,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3D11App.cpp" />
-    <ClCompile Include="DXUtility.cpp" />
+    <ClCompile Include="DXUtility.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="EvaluateExpression\tmath.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Tianjiao\Documents\Visual Studio 2015\Projects\May 25\May 25;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="GameTimer.cpp" />
-    <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="GameTimer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="MyDirectXStuff.cpp" />
     <ClCompile Include="MyWindowsProcs.cpp" />
     <ClCompile Include="MyWindowsStuff.cpp" />

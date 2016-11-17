@@ -15,7 +15,6 @@
 //
 
 //早回的猫
-#include "stdafx.h"
 #include <iostream>
 #include "tmath.h"
 

@@ -10,7 +10,6 @@
 #define TMATH_H
 #endif
 
-#include "stdafx.h"
 #include <cmath>
 #include <string>
 #include <stack>

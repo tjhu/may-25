@@ -108,6 +108,8 @@ void CleanupDevice()
 	if (g_pImmediateContext) g_pImmediateContext->ClearState();
 	if (g_pImmediateContext1) g_pImmediateContext1->ClearState();
 	ReleaseCom(g_pConstantBuffer);
+	ReleaseCom(g_pCbPerFrame);
+	ReleaseCom(g_pConstantBuffer_Shadowmap);
 	ReleaseCom(g_pVertexBuffer);
 	ReleaseCom(g_pIndexBuffer);
 	ReleaseCom(g_pVertexLayout);
@@ -133,7 +135,6 @@ void CleanupDevice()
 	ReleaseCom(g_pFunctionVertexBuffer);
 	ReleaseCom(g_pFunctionIndexBuffer);
 	ReleaseCom(g_ShadowmapResourceView);
-	ReleaseCom(g_pConstantBuffer_Shadowmap);
 	ReleaseCom(g_pSamplerState);
 }
 

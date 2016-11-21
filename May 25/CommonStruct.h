@@ -36,6 +36,13 @@ struct ConstantBuffer
 	XMFLOAT3 mEyePosW;
 };
 
+struct cbPerFrame
+{
+	XMMATRIX mWorldViewProj;
+	XMMATRIX mWorldLightviewProj;
+	XMFLOAT3 mEyePosW;
+};
+
 struct ConstantBuffer_Shadowmap
 {
 	XMMATRIX mWorldViewProj;

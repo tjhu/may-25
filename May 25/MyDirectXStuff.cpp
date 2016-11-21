@@ -264,6 +264,13 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 
 	ZeroMemory(&cbd, sizeof(cbd));
 	cbd.Usage = D3D11_USAGE_DEFAULT;
+	cbd.ByteWidth = sizeof(cbPerFrame);
+	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd.CPUAccessFlags = 0;
+	ThrowIfFailed(g_pd3dDevice->CreateBuffer(&cbd, nullptr, &g_pCbPerFrame));
+
+	ZeroMemory(&cbd, sizeof(cbd));
+	cbd.Usage = D3D11_USAGE_DEFAULT;
 	cbd.ByteWidth = sizeof(ConstantBuffer_Shadowmap);
 	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cbd.CPUAccessFlags = 0;
@@ -343,7 +350,7 @@ void CompileShaders()
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr,
-			L"LightShader.hlsl", L"Error", MB_OK);
+			L"LightShader.hlsl cannot be compiled", L"Error", MB_OK);
 		ThrowIfFailed(hr);
 	}
 

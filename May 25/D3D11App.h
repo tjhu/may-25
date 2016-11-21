@@ -55,6 +55,7 @@ ID3D11Buffer*				g_pAxesIndexBuffer = nullptr;
 ID3D11Buffer*				g_pFunctionVertexBuffer = nullptr;
 ID3D11Buffer*				g_pFunctionIndexBuffer = nullptr;
 ID3D11Buffer*				g_pConstantBuffer = nullptr;
+ID3D11Buffer*				g_pCbPerFrame = nullptr;
 ID3D11Buffer*				g_pConstantBuffer_Shadowmap = nullptr;
 ID3D11SamplerState*			g_pSamplerState = nullptr;
 

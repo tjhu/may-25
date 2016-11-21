@@ -31,6 +31,7 @@ extern ID3D11Buffer*				g_pAxesIndexBuffer;
 extern ID3D11Buffer*				g_pFunctionVertexBuffer;
 extern ID3D11Buffer*				g_pFunctionIndexBuffer;
 extern ID3D11Buffer*				g_pConstantBuffer;
+extern ID3D11Buffer*				g_pCbPerFrame;
 extern ID3D11Buffer*				g_pConstantBuffer_Shadowmap;
 extern ID3D11SamplerState*			g_pSamplerState;
 

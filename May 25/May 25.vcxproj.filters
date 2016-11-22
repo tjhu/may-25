@@ -40,6 +40,7 @@
     <Text Include="Inputs.txt" />
     <Text Include="Setting.txt" />
     <Text Include="Log.txt" />
+    <Text Include="plan.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

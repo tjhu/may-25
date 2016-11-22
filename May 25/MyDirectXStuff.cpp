@@ -613,8 +613,8 @@ void DrawSolids(RenderObject mRenderObject)
 
 void DrawAxis()
 {
-	XMFLOAT4 xAxisColor = { 1.000000000f, 0.847058845f, 0.500000000f, 1.000000000f };
-	XMFLOAT4 yAxisColor = { 1.000000000f, 0.500000000f, 0.500000000f, 1.000000000f };
+	XMFLOAT4 xAxisColor = { 1.000000000f, 0.000000000f, 0.000000000f, 1.000000000f };
+	XMFLOAT4 yAxisColor = { 0.000000000f, 0.000000000f, 1.000000000f, 1.000000000f };
 	XMFLOAT4 AxisFresShin = { 0.10f, 0.10f, 0.10f, 0.8f };
 	UINT offset = 0;
 	g_pImmediateContext->VSSetShader(g_pVertexShader, nullptr, 0);

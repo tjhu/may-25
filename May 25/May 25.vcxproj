@@ -153,6 +153,7 @@
       <DeploymentContent>true</DeploymentContent>
     </Text>
     <Text Include="Log.txt" />
+    <Text Include="plan.txt" />
     <Text Include="ReadMe.txt" />
     <Text Include="Setting.txt">
       <DeploymentContent>true</DeploymentContent>

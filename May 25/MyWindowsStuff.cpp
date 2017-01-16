@@ -2,8 +2,8 @@
 #include "MyWindowsStuff.h"
 #include <DirectXMath.h>
 
-char InputFile[50] = "Inputs.txt";
-char SettingFile[50] = "Setting.txt";
+char InputFile[50] = "input.txt";
+char SettingFile[50] = "setting.txt";
 
 float IntegrationResult = 0.0f;
 
@@ -107,8 +107,8 @@ void SetInputs(std::string Function_1, std::string Function_2, std::string sLeft
 
 	Inputs.close();
 
-	UnparsedExpression_1 = Function_1;
-	UnparsedExpression_2 = Function_2;
+	g_UnparsedExpression_1 = Function_1;
+	g_UnparsedExpression_2 = Function_2;
 	Expression_1 = parse(Function_1);
 	Expression_2 = parse(Function_2);
 	g_LeftBound = std::stof(sLeftBound.c_str());
@@ -121,13 +121,12 @@ void SetInputs()
 	std::ofstream Inputs(InputFile);
 	Inputs.clear();
 
-	Inputs << "Function_1= " << UnparsedExpression_1 << std::endl;
-	Inputs << "Function_2= " << UnparsedExpression_2 << std::endl;
+	Inputs << "Function_1= " << g_UnparsedExpression_1 << std::endl;
+	Inputs << "Function_2= " << g_UnparsedExpression_2 << std::endl;
 	Inputs << "g_LeftBound= " << g_LeftBound << std::endl;
 	Inputs << "g_RightBound= " << g_RightBound << std::endl;
 	Inputs << "Rectangle= " << g_NCount << std::endl;
 	Inputs << "BoundTo= " << g_BoundToWhat << std::endl;
-
 
 	Inputs.close();
 }
@@ -136,10 +135,12 @@ void SetSetting()
 {
 	std::ofstream Setting(SettingFile);
 	Setting.clear();
+
 	Setting << "Method= " << g_SolidMethod << std::endl;
 	Setting << "Radius= " << mRadius << std::endl;
 	Setting << "Theta= " << mTheta << std::endl;
 	Setting << "Phi= " << mPhi << std::endl;
+
 	Setting.close();
 }
 
@@ -151,8 +152,8 @@ void UpdateVariables()
 	if (!Inputs.is_open())
 		SetInputs();
 
-	Inputs >> buffer >> UnparsedExpression_1;
-	Inputs >> buffer >> UnparsedExpression_2;
+	Inputs >> buffer >> g_UnparsedExpression_1;
+	Inputs >> buffer >> g_UnparsedExpression_2;
 	Inputs >> buffer >> g_LeftBound;
 	Inputs >> buffer >> g_RightBound;
 	Inputs >> buffer >> g_NCount;
@@ -161,7 +162,7 @@ void UpdateVariables()
 
 	if (g_SolidMethod == Shell)
 	{
-		std::string buffer = UnparsedExpression_1;
+		std::string buffer = g_UnparsedExpression_1;
 		for (UINT i = 0; i < buffer.size(); i++)
 		{
 			if (buffer[i] == 'x')
@@ -171,9 +172,9 @@ void UpdateVariables()
 	}
 	else
 	{
-		SetWindowTextA(g_hWndEquation_1, UnparsedExpression_1.c_str());
+		SetWindowTextA(g_hWndEquation_1, g_UnparsedExpression_1.c_str());
 	}
-	SetWindowTextA(g_hWndEquation_2, UnparsedExpression_2.c_str());
+	SetWindowTextA(g_hWndEquation_2, g_UnparsedExpression_2.c_str());
 	SetWindowTextA(g_hWndLeftBound, std::to_string(g_LeftBound).c_str());
 	SetWindowTextA(g_hWndRightBound, std::to_string(g_RightBound).c_str());
 	SendMessage(g_hWndNCount, CB_SETCURSEL, (WPARAM)(g_NCount - 1), NULL);
@@ -188,8 +189,8 @@ void UpdateVariables()
 		SendMessage(g_hWndRightCheck, BM_SETCHECK, BST_CHECKED, NULL);
 	}
 
-	Expression_1 = parse(UnparsedExpression_1);
-	Expression_2 = parse(UnparsedExpression_2);
+	Expression_1 = parse(g_UnparsedExpression_1);
+	Expression_2 = parse(g_UnparsedExpression_2);
 }
 
 void UpdateSetting()
@@ -213,13 +214,13 @@ void Integration()
 	intMethod Method = Simpson;
 
 	std::string UnParsedFunctionSquare_1 = "(";
-	UnParsedFunctionSquare_1.append(UnparsedExpression_1);
+	UnParsedFunctionSquare_1.append(g_UnparsedExpression_1);
 	UnParsedFunctionSquare_1.append(")^2");
 	std::string FunctionSquare_1 = parse(UnParsedFunctionSquare_1);
 	float result_1 = intergal(FunctionSquare_1, g_LeftBound, g_RightBound, NumOfIntergal, Method);
 
 	std::string UnParsedFunctionSquare_2 = "(";
-	UnParsedFunctionSquare_2.append(UnparsedExpression_2);
+	UnParsedFunctionSquare_2.append(g_UnparsedExpression_2);
 	UnParsedFunctionSquare_2.append(")^2");
 	std::string FunctionSquare_2 = parse(UnParsedFunctionSquare_2);
 	float result_2 = intergal(FunctionSquare_2, g_LeftBound, g_RightBound, NumOfIntergal, Method);

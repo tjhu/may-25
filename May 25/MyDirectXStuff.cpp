@@ -3,9 +3,9 @@
 #include "Geometry.h"
 
 XMFLOAT3				mEyePosW;
-float					g_LeftBound;
-float					g_RightBound;
-UINT					g_NCount;
+float					g_LeftBound = 0;
+float					g_RightBound = 5;
+UINT					g_NCount = 10;
 SolidMethod				g_SolidMethod;
 BoundToWhat				g_BoundToWhat;
 
@@ -613,8 +613,10 @@ void DrawSolids(RenderObject mRenderObject)
 
 void DrawAxis()
 {
-	XMFLOAT4 xAxisColor = { 1.000000000f, 0.000000000f, 0.000000000f, 1.000000000f };
-	XMFLOAT4 yAxisColor = { 0.000000000f, 0.000000000f, 1.000000000f, 1.000000000f };
+	XMFLOAT4 xAxisColor = { 1.000000000f, 0.847058845f, 0.500000000f, 1.000000000f };
+	XMFLOAT4 yAxisColor = { 1.000000000f, 0.500000000f, 0.500000000f, 1.000000000f };
+	//XMFLOAT4 xAxisColor = { 1.000000000f, 0.000000000f, 0.000000000f, 1.000000000f };
+	//XMFLOAT4 yAxisColor = { 0.000000000f, 0.000000000f, 1.000000000f, 1.000000000f };
 	XMFLOAT4 AxisFresShin = { 0.10f, 0.10f, 0.10f, 0.8f };
 	UINT offset = 0;
 	g_pImmediateContext->VSSetShader(g_pVertexShader, nullptr, 0);

@@ -55,9 +55,9 @@ extern float							g_LeftBound;
 extern float							g_RightBound;
 extern UINT								g_NCount;
 extern std::string						Expression_1;
-extern std::string						UnparsedExpression_1;
+extern std::string						g_UnparsedExpression_1;
 extern std::string						Expression_2;
-extern std::string						UnparsedExpression_2;
+extern std::string						g_UnparsedExpression_2;
 extern SolidMethod						g_SolidMethod;
 extern BoundToWhat						g_BoundToWhat;
 

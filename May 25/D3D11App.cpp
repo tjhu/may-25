@@ -153,7 +153,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	UpdateSetting();
 	LogFileObject << "Read setting from file" << std::endl;
-	UpdateVariables();
 	Integration();
 
 	// Perform application initialization:

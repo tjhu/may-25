@@ -19,7 +19,7 @@
 using namespace DirectX;
 
 //Variables
-char LogFile[50] = "Log.txt";
+char LogFile[50] = "log.txt";
 
 
 //---------------------------------------------------
@@ -89,9 +89,9 @@ POINT					mLastMousePos = { 0,0 };
 
 // Input File
 std::string				Expression_1 = "";
-std::string				UnparsedExpression_1 = "4-(x-2)^2";
+std::string				g_UnparsedExpression_1 = "4-(x-2)^2";
 std::string				Expression_2 = "";
-std::string				UnparsedExpression_2 = " 0";
+std::string				g_UnparsedExpression_2 = "sin(x)";
 
 // Setting File
 float					mTheta = 137.23f;

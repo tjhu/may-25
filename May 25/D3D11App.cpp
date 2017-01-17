@@ -11,6 +11,7 @@
 #include "D3D11App.h"
 #include "MyDirectXStuff.h"
 #include "GameTimer.h"
+#include "MathInput.h"
 
 using namespace DirectX;
 
@@ -161,6 +162,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		MessageBox(NULL, L"Unable to initilize window", nullptr, NULL);
 		return 0;
 	}
+
+	MathInput g_mMathInput;
+	if (bMathInput)
+	{
+		g_mMathInput.CreateMathInput();
+		g_mMathInput.SetParent(g_hWnd);
+		g_mMathInput.Show();
+	}
+
 
 	LogFileObject << "Initialization was succeed" << std::endl;
 

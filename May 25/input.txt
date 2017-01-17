@@ -1,0 +1,6 @@
+Function_1= 4-(x-2)^2
+Function_2= sin(x)
+g_LeftBound= 0
+g_RightBound= 3
+Rectangle= 10
+BoundTo= 0

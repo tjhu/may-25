@@ -66,6 +66,7 @@ extern float							mTheta;
 extern float							mPhi;
 extern float							mRadius;
 extern bool								AxisOn;
+extern bool								bMathInput;
 
 extern float							IntegrationResult;
 

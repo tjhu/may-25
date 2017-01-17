@@ -3,6 +3,7 @@
 #include "MyWindowsProcs.h"
 #include "MyDirectXStuff.h"
 
+
 UINT								EditIndent;
 UINT								EditSpacing;
 UINT								EditLength;

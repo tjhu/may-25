@@ -8,6 +8,7 @@ float					g_RightBound = 5;
 UINT					g_NCount = 10;
 SolidMethod				g_SolidMethod;
 BoundToWhat				g_BoundToWhat;
+bool					bMathInput = false;
 
 void InitDevice(HWND hWnd, HINSTANCE hInstance)
 {

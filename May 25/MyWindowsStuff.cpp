@@ -140,6 +140,7 @@ void SetSetting()
 	Setting << "Radius= " << mRadius << std::endl;
 	Setting << "Theta= " << mTheta << std::endl;
 	Setting << "Phi= " << mPhi << std::endl;
+	Setting << "MathInput= " << bMathInput << std::endl;
 
 	Setting.close();
 }
@@ -205,6 +206,7 @@ void UpdateSetting()
 	Setting >> buffer >> mRadius;
 	Setting >> buffer >> mTheta;
 	Setting >> buffer >> mPhi;
+	Setting >> buffer >> bMathInput;
 	Setting.close();
 	g_SolidMethod = (SolidMethod)x;
 }

@@ -167,6 +167,7 @@
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="DirectXGlobalVariables.h" />
+    <ClInclude Include="MathInput.h" />
     <ClInclude Include="MyDirectXStuff.h" />
     <ClInclude Include="MyWindowsProcs.h" />
     <ClInclude Include="MyWindowsStuff.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="Geometry.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="MathInput.cpp" />
     <ClCompile Include="MyDirectXStuff.cpp" />
     <ClCompile Include="MyWindowsProcs.cpp" />
     <ClCompile Include="MyWindowsStuff.cpp" />

@@ -1,4 +1,4 @@
-Function_1= x
+Function_1= sin(x)
 Function_2= sin(x)
 g_LeftBound= 0
 g_RightBound= 5

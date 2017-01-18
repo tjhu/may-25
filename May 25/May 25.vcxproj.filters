@@ -148,4 +148,7 @@
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".tfignore" />
+  </ItemGroup>
 </Project>

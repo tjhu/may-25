@@ -37,10 +37,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-    <Text Include="Inputs.txt" />
-    <Text Include="Setting.txt" />
-    <Text Include="Log.txt" />
     <Text Include="plan.txt" />
+    <Text Include="log.txt" />
+    <Text Include="setting.txt" />
+    <Text Include="input.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

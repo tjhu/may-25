@@ -45,11 +45,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			RegisterMyClass(g_hInstance);
 			GetClientRect(hWnd, &ClientRect);
 			AdjustClientRect(ClientRect, &DXClientRect, &UIClientRect);
-			// Create child windows
-			g_hWndDX = CreateWindow(DXClass, TEXT("DX window"), WS_CHILD | WS_VISIBLE,
-				0, 0, DXClientRect.right, DXClientRect.bottom, hWnd, (HMENU)ID_DX, g_hInstance, NULL);
+			// Create UI first so that DX can read cfg
 			g_hWndUI = CreateWindowEx(NULL, UIClass, TEXT("UI window"), WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN,
 				DXClientRect.right, 0, UIClientRect.right, UIClientRect.bottom, hWnd, (HMENU)ID_UI, g_hInstance, NULL);
+			g_hWndDX = CreateWindow(DXClass, TEXT("DX window"), WS_CHILD | WS_VISIBLE,
+				0, 0, DXClientRect.right, DXClientRect.bottom, hWnd, (HMENU)ID_DX, g_hInstance, NULL);
 		}
 		return 0;
 

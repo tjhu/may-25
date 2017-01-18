@@ -242,6 +242,6 @@ ModelManifest.xml
 .fake/
 
 # Input and setting files
-/May\ 25/Inputs.txt
-/May\ 25/Setting.txt
-/May\ 25/Log.txt
+"May 25/inputs.txt"
+"May 25/setting.txt"
+"May 25/log.txt"

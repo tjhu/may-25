@@ -149,15 +149,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="Inputs.txt">
-      <DeploymentContent>true</DeploymentContent>
-    </Text>
-    <Text Include="Log.txt" />
+    <Text Include="input.txt" />
+    <Text Include="log.txt" />
     <Text Include="plan.txt" />
     <Text Include="ReadMe.txt" />
-    <Text Include="Setting.txt">
-      <DeploymentContent>true</DeploymentContent>
-    </Text>
+    <Text Include="setting.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonStruct.h" />

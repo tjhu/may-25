@@ -89,14 +89,14 @@ POINT					mLastMousePos = { 0,0 };
 
 // Input File
 std::string				Expression_1 = "";
-std::string				g_UnparsedExpression_1 = "4-(x-2)^2";
+std::string				g_UnparsedExpression_1 = "x";
 std::string				Expression_2 = "";
 std::string				g_UnparsedExpression_2 = "sin(x)";
 
 // Setting File
-float					mTheta = 137.23f;
-float					mPhi = 1.47994f;
-float					mRadius = 18.0f;
+float					mTheta = 136.772f;
+float					mPhi = 1.33159f;
+float					mRadius = 15.0f;
 bool					AxisOn = FALSE;
 
 // Functions

@@ -1,6 +1,6 @@
-Function_1= 4-(x-2)^2
+Function_1= x
 Function_2= sin(x)
 g_LeftBound= 0
-g_RightBound= 3
+g_RightBound= 5
 Rectangle= 10
 BoundTo= 0

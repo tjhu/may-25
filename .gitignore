@@ -242,6 +242,7 @@ ModelManifest.xml
 .fake/
 
 # Input and setting files
+*.txt
 "May 25/inputs.txt"
 "May 25/setting.txt"
 "May 25/log.txt"

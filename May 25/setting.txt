@@ -1,5 +1,5 @@
 Method= 0
 Radius= 15
-Theta= 137.152
-Phi= 1.13524
+Theta= 138.631
+Phi= 1.05234
 MathInput= 0

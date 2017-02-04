@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "May 25", "May 25\May 25.vcx
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1028", "Setup1028\Setup1028.vdproj", "{932CFC23-1E63-4D5D-953E-4413F6E0683D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFC", "MFC\MFC.vcxproj", "{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -35,6 +37,18 @@ Global
 		{932CFC23-1E63-4D5D-953E-4413F6E0683D}.Release|Win32.ActiveCfg = Release
 		{932CFC23-1E63-4D5D-953E-4413F6E0683D}.Release|x64.ActiveCfg = Release
 		{932CFC23-1E63-4D5D-953E-4413F6E0683D}.Release|x86.ActiveCfg = Release
+		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Debug|Win32.Build.0 = Debug|Win32
+		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Debug|x64.ActiveCfg = Debug|x64
+		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Debug|x64.Build.0 = Debug|x64
+		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Debug|x86.ActiveCfg = Debug|Win32
+		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Debug|x86.Build.0 = Debug|Win32
+		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Release|Win32.ActiveCfg = Release|Win32
+		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Release|Win32.Build.0 = Release|Win32
+		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Release|x64.ActiveCfg = Release|x64
+		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Release|x64.Build.0 = Release|x64
+		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Release|x86.ActiveCfg = Release|Win32
+		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

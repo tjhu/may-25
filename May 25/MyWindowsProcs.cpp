@@ -479,7 +479,7 @@ ATOM RegisterMyClass(HINSTANCE hInstance)
 	wcex.lpszMenuName = nullptr;
 	wcex.lpszClassName = UIClass;
 	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
-	RegisterClassExW(&wcex);
+	RegisterClassEx(&wcex);
 
 	WNDCLASSEXW nWcex;
 	nWcex.cbSize = sizeof(WNDCLASSEX);
@@ -494,7 +494,7 @@ ATOM RegisterMyClass(HINSTANCE hInstance)
 	nWcex.lpszMenuName = nullptr;
 	nWcex.lpszClassName = DXClass;
 	nWcex.hIconSm = LoadIcon(nWcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
-	return	RegisterClassExW(&nWcex);
+	return	RegisterClassEx(&nWcex);
 }
 
 bool InitWindow(HINSTANCE hInstance, int nCmdShow)

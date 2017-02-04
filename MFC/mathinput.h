@@ -1,6 +1,5 @@
 #pragma once
 
-#include <atlcom.h>
 
 static const int MATHINPUTCONTROL_SINK_ID = 1;
 

@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "dialog.h"
-#include "afxdialogex.h"
 
 // includes for implementation
 #include "micaut.h"
@@ -11,8 +10,6 @@
 
 // include for event handler
 #include "mathinput.h"
-
-CComPtr<IMathInputControl> g_spMIC; // Math Input Control
 
 // dialog dialog
 
@@ -23,7 +20,7 @@ dialog::dialog(CWnd* pParent /*=NULL*/)
 {
 	// TODO: Add extra initialization here
 	CoInitialize(NULL);
-	HRESULT hr = g_spMIC.CoCreateInstance(CLSID_MathInputControl);
+	HRESULT hr = m_spMIC.CoCreateInstance(CLSID_MathInputControl);
 	if (SUCCEEDED(hr)) {
 		hr = CMathInputControlEventHandler<dialog>::Initialize(m_spMIC, this);
 		if (SUCCEEDED(hr)) {

@@ -1,5 +1,12 @@
 #pragma once
+#include <atlbase.h>
+#include <atlwin.h>
 
+// include for MIC
+#include "micaut.h"
+
+// include for event sinks
+#include "mathinput.h"
 
 // dialog dialog
 class dialog;
@@ -14,9 +21,7 @@ class dialog : public CDialog,
 public:
 	CComPtr<IMathInputControl> m_spMIC; // Math Input Control
 	DECLARE_DYNAMIC(dialog)
-
-public:
-	CComPtr<IMathInputControl> m_spMIC; // Math Input Control
+	
 	dialog(CWnd* pParent = NULL);   // standard constructor
 	virtual ~dialog();
 

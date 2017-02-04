@@ -6,6 +6,7 @@
 class CMyApp : public CWinApp
 {
 public:
+	CDialog* mydialog;
 	virtual BOOL InitInstance();
 	virtual BOOL OnIdle(LONG lCount);
 	virtual BOOL ExitInstance();

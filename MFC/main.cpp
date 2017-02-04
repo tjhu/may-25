@@ -2,8 +2,7 @@
 #include <afxwinappex.h>
 #include "hello.h"
 #include "dxapp.h"
-#include "mathinput.h"
-#include "micaut_i.c"
+#include "dialog.h"
 
 CMyApp myApp;
 
@@ -13,7 +12,7 @@ BOOL CMyApp::InitInstance()
 	m_pMainWnd = new CMainWindow;
 	m_pMainWnd->ShowWindow(m_nCmdShow);
 	m_pMainWnd->UpdateWindow();
-
+	mydialog = new dialog;
 
 	HWND hWnd = m_pMainWnd->GetSafeHwnd();
 	InitDevice(hWnd);

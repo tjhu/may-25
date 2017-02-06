@@ -9,6 +9,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1028", "Setup1028\Setu
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFC", "MFC\MFC.vcxproj", "{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathML", "MathML\MathML.vcxproj", "{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -49,6 +51,18 @@ Global
 		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Release|x64.Build.0 = Release|x64
 		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Release|x86.ActiveCfg = Release|Win32
 		{7D0CC6C6-5B8D-4962-87DB-A95C130EA8C0}.Release|x86.Build.0 = Release|Win32
+		{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}.Debug|Win32.Build.0 = Debug|Win32
+		{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}.Debug|x64.ActiveCfg = Debug|x64
+		{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}.Debug|x64.Build.0 = Debug|x64
+		{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}.Debug|x86.ActiveCfg = Debug|Win32
+		{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}.Debug|x86.Build.0 = Debug|Win32
+		{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}.Release|Win32.ActiveCfg = Release|Win32
+		{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}.Release|Win32.Build.0 = Release|Win32
+		{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}.Release|x64.ActiveCfg = Release|x64
+		{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}.Release|x64.Build.0 = Release|x64
+		{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}.Release|x86.ActiveCfg = Release|Win32
+		{39C1DDCA-4A07-4B15-9BCD-7BB57A153D1B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

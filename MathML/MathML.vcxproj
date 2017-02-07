@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Users\tianjiao\Documents\Visual Studio 2015\Projects\MathML\MathML\SBML\lib;$(LibraryPath)</LibraryPath>
-    <ExecutablePath>C:\Users\tianjiao\Documents\Visual Studio 2015\Projects\MathML\MathML\SBML\bin;$(ExecutablePath)</ExecutablePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -91,12 +91,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\tianjiao\Documents\Visual Studio 2015\Projects\MathML\MathML\SBML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libsbml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -150,35 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="alglib\alglibinternal.cpp" />
-    <ClCompile Include="alglib\alglibmisc.cpp" />
-    <ClCompile Include="alglib\ap.cpp" />
-    <ClCompile Include="alglib\dataanalysis.cpp" />
-    <ClCompile Include="alglib\diffequations.cpp" />
-    <ClCompile Include="alglib\fasttransforms.cpp" />
-    <ClCompile Include="alglib\integration.cpp" />
-    <ClCompile Include="alglib\interpolation.cpp" />
-    <ClCompile Include="alglib\linalg.cpp" />
-    <ClCompile Include="alglib\optimization.cpp" />
-    <ClCompile Include="alglib\solvers.cpp" />
-    <ClCompile Include="alglib\specialfunctions.cpp" />
-    <ClCompile Include="alglib\statistics.cpp" />
     <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="alglib\alglibinternal.h" />
-    <ClInclude Include="alglib\alglibmisc.h" />
-    <ClInclude Include="alglib\ap.h" />
-    <ClInclude Include="alglib\dataanalysis.h" />
-    <ClInclude Include="alglib\diffequations.h" />
-    <ClInclude Include="alglib\fasttransforms.h" />
-    <ClInclude Include="alglib\integration.h" />
-    <ClInclude Include="alglib\interpolation.h" />
-    <ClInclude Include="alglib\linalg.h" />
-    <ClInclude Include="alglib\optimization.h" />
-    <ClInclude Include="alglib\solvers.h" />
-    <ClInclude Include="alglib\specialfunctions.h" />
-    <ClInclude Include="alglib\statistics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

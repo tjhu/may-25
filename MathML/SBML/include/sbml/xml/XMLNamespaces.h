@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,7 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class XMLNamespaces
- * @sbmlbrief{core} An XML Namespace.
+ * @sbmlbrief{core} Representation of XML Namespaces.
  *
  * @htmlinclude not-sbml-warning.html
  *
@@ -97,6 +97,9 @@ public:
    * Copy constructor; creates a copy of this XMLNamespaces list.
    *
    * @param orig the XMLNamespaces object to copy
+   *
+   * @throws @if python ValueError @else XMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   XMLNamespaces(const XMLNamespaces& orig);
 
@@ -106,14 +109,17 @@ public:
    *
    * @param rhs The XMLNamespaces object whose values are used as the basis
    * of the assignment.
+   *
+   * @throws @if python ValueError @else XMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   XMLNamespaces& operator=(const XMLNamespaces& rhs);
 
 
   /**
-   * Creates and returns a deep copy of this XMLNamespaces object.
-   *
-   * @return the (deep) copy of this XMLNamespaces object.
+   * Creates and returns a deep copy of this XMLNamespaces list.
+   * 
+   * @return a (deep) copy of this XMLNamespaces list.
    */
   XMLNamespaces* clone () const;
 
@@ -140,12 +146,14 @@ public:
    * @param uri a string, the uri for the namespace
    * @param prefix a string, the prefix for the namespace
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.   The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
+   * @if notcpp @htmlinclude warn-default-args-in-docs.html @endif@~
    */
   int add (const std::string& uri, const std::string& prefix = "");
 
@@ -155,9 +163,11 @@ public:
    *
    * @param index an integer, position of the namespace to remove.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INDEX_EXCEEDS_SIZE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.   The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INDEX_EXCEEDS_SIZE LIBSBML_INDEX_EXCEEDS_SIZE @endlink
    */
   int remove (int index);
 
@@ -167,9 +177,11 @@ public:
    *
    * @param prefix a string, prefix of the required namespace.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INDEX_EXCEEDS_SIZE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.   The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INDEX_EXCEEDS_SIZE LIBSBML_INDEX_EXCEEDS_SIZE @endlink
    *
    * @see remove(int index)
    */
@@ -180,9 +192,11 @@ public:
    * Clears (deletes) all XML namespace declarations in this XMLNamespaces
    * object.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED@endlink
    *
    * @see remove(int index)
    */
@@ -312,7 +326,7 @@ public:
    * prefix, or an empty string if no such prefix-and-URI pair exists
    * in this XMLNamespaces object
    *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
+   * @if notcpp @htmlinclude warn-default-args-in-docs.html @endif@~
    * 
    * @see getURI()
    */
@@ -370,6 +384,7 @@ public:
 #ifndef SWIG
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Writes this XMLNamespaces list to stream.
    *
@@ -397,12 +412,14 @@ public:
 #endif  /* !SWIG */
 
   /** @cond doxygenLibsbmlInternal */
+
   friend class SBase;
 
   /** @endcond */
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Removes the default XML namespace.
    */
@@ -472,10 +489,13 @@ XMLNamespaces_clone (const XMLNamespaces_t* ns);
  * @param uri a string, the uri for the namespace.
  * @param prefix a string, the prefix for the namespace.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof XMLNamespaces_t
  */
@@ -491,10 +511,13 @@ XMLNamespaces_add (XMLNamespaces_t *ns,
  * @param ns XMLNamespaces structure.
  * @param index an integer, position of the removed namespace.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INDEX_EXCEEDS_SIZE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INDEX_EXCEEDS_SIZE LIBSBML_INDEX_EXCEEDS_SIZE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof XMLNamespaces_t
  */
@@ -509,10 +532,13 @@ XMLNamespaces_remove (XMLNamespaces_t *ns, int index);
  * @param ns XMLNamespaces structure.
  * @param prefix a string, prefix of the required namespace.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INDEX_EXCEEDS_SIZE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INDEX_EXCEEDS_SIZE LIBSBML_INDEX_EXCEEDS_SIZE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof XMLNamespaces_t
  */
@@ -526,9 +552,12 @@ XMLNamespaces_removeByPrefix (XMLNamespaces_t *ns, const char* prefix);
  *
  * @param ns XMLNamespaces structure.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  **
  * @memberof XMLNamespaces_t
  */
@@ -681,7 +710,7 @@ XMLNamespaces_getURI (const XMLNamespaces_t *ns, int index);
  * prefix, or an empty string if no such prefix-and-URI pair exists
  * in this XMLNamespaces_t object
  *
- * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
+ * @if notcpp @htmlinclude warn-default-args-in-docs.html @endif@~
  * 
  * @see getURI()
  *

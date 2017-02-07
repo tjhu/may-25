@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,8 @@
  * ---------------------------------------------------------------------- -->
  *
  * @class SBO
- * @sbmlbrief{core} Facilities for using the Systems Biology Ontology.
+ * @sbmlbrief{core} Methods for interacting with Systems Biology Ontology
+ * terms.
  *
  * @htmlinclude not-sbml-warning.html
  *
@@ -83,7 +84,7 @@
  * this is simply impossible to do: not only do humans often disagree on
  * the names themselves, but it would not allow for correction of errors or
  * updates to the list of predefined names except by issuing new releases
- * of the SBML specification---to say nothing of many other limitations
+ * of the SBML specification&mdash;to say nothing of many other limitations
  * with this approach.  Moreover, the parameters and variables that appear
  * in rate expressions also need to be identified in a way that software
  * tools can interpret mechanically, implying that the names of these
@@ -225,6 +226,7 @@ class LIBSBML_EXTERN SBO
 {
 public:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Reads (and checks) sboTerm from the given XMLAttributes set.
    *
@@ -507,17 +509,6 @@ public:
 
 
   /**
-   * Returns @c true if the given term identifier comes from the stated branch of %SBO.
-   *
-   * @return @c true if @p term is-a %SBO <em>"quantiative systems description parameter"</em>, @c false
-   * otherwise.
-   *
-   * @copydetails doc_note_static_methods
-   */
-  static bool isQuantitativeSystemsDescriptionParameter  (unsigned int term);
-
-
-  /**
    * Predicate for checking whether the given term is obsolete.
    *
    * @return @c true if @p term is-a %SBO <em>"obsolete"</em> term, @c false otherwise.
@@ -574,17 +565,10 @@ public:
    */
   static bool checkTerm (int sboTerm);
 
-  /** @cond doxygenLibsbmlInternal */
- /**
-   * Returns the parent branch of the term
-   */
-  static unsigned int getParentBranch(unsigned int term);
-
-    /** @endcond */
-
 
 protected:  
   /** @cond doxygenLibsbmlInternal */
+
  /**
    * Returns @c true if the given term identifier comes from the stated branch of %SBO.
    * * @return true if the term is-a parent, false otherwise

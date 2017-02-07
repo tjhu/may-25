@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,7 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class FunctionDefinition
- * @sbmlbrief{core} A user-defined function in an SBML model.
+ * @sbmlbrief{core} Implementation of %SBML's %FunctionDefinition construct.
  *
  * The FunctionDefinition structure associates an identifier with a
  * function definition.  This identifier can then be used as the function
@@ -77,7 +77,7 @@
  * are not permitted.  The purpose of these limitations is to balance power
  * against complexity of implementation.  With the restrictions as they
  * are, function definitions could be implemented as textual
- * substitutions---they are simply macros.  Software implementations
+ * substitutions&mdash;they are simply macros.  Software implementations
  * therefore do not need the full function-definition machinery typically
  * associated with programming languages.
  * <br><br>
@@ -99,9 +99,34 @@
  * <!---------------------------------------------------------------------- -->
  *
  * @class ListOfFunctionDefinitions
- * @sbmlbrief{core} A list of FunctionDefinition objects.
+ * @sbmlbrief{core} Implementation of SBML's %ListOfFunctionDefinitions
+ * construct.
  *
  * @copydetails doc_what_is_listof
+ */
+
+/**
+ * <!-- ~ ~ ~ ~ ~ Start of common documentation strings ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+ * The following text is used as common documentation blocks copied multiple
+ * times elsewhere in this file.  The use of @class is a hack needed because
+ * Doxygen's @copydetails command has limited functionality.  Symbols
+ * beginning with "doc_" are marked as ignored in our Doxygen configuration.
+ * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  -->
+ *
+ * @class doc_note_functiondefinition_setting_lv
+ * 
+ * @note Upon the addition of a FunctionDefinition object to an SBMLDocument
+ * (e.g., using Model::addFunctionDefinition(@if java FunctionDefinition
+ * f@endif)), the SBML Level, SBML Version and XML namespace of the document
+ * @em override the values used when creating the FunctionDefinition object
+ * via this constructor.  This is necessary to ensure that an SBML document
+ * is a consistent structure.  Nevertheless, the ability to supply the values
+ * at the time of creation of a FunctionDefinition is an important aid to
+ * producing valid SBML.  Knowledge of the intented SBML Level and Version
+ * determine whether it is valid to assign a particular value to an
+ * attribute, or whether it is valid to add an object to an existing
+ * SBMLDocument.
+ *
  */
 
 #ifndef FunctionDefinition_h
@@ -141,9 +166,12 @@ public:
    * @param version an unsigned int, the SBML Version to assign to this
    * FunctionDefinition
    *
-   * @copydetails doc_throw_exception_lv
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_functiondefinition_setting_lv
    */
   FunctionDefinition (unsigned int level, unsigned int version);
 
@@ -156,9 +184,12 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object.
    *
-   * @copydetails doc_throw_exception_namespace
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_functiondefinition_setting_lv
    */
   FunctionDefinition (SBMLNamespaces* sbmlns);
 
@@ -173,6 +204,9 @@ public:
    * Copy constructor; creates a copy of this FunctionDefinition.
    *
    * @param orig the object to copy.
+   * 
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   FunctionDefinition (const FunctionDefinition& orig);
 
@@ -182,11 +216,13 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   FunctionDefinition& operator=(const FunctionDefinition& rhs);
 
 
-  /** @cond doxygenLibsbmlInternal */
   /**
    * Accepts the given SBMLVisitor for this instance of FunctionDefinition.
    *
@@ -197,13 +233,12 @@ public:
    * the list of function definitions.
    */
   virtual bool accept (SBMLVisitor& v) const;
-  /** @endcond */
 
 
   /**
-   * Creates and returns a deep copy of this FunctionDefinition object.
-   *
-   * @return the (deep) copy of this FunctionDefinition object.
+   * Creates and returns a deep copy of this FunctionDefinition.
+   * 
+   * @return a (deep) copy of this FunctionDefinition.
    */
   virtual FunctionDefinition* clone () const;
 
@@ -272,9 +307,12 @@ public:
    *
    * @param sid the string to use as the identifier of this FunctionDefinition
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   virtual int setId (const std::string& sid);
 
@@ -286,9 +324,12 @@ public:
    *
    * @param name the new name for the FunctionDefinition
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   virtual int setName (const std::string& name);
 
@@ -300,9 +341,12 @@ public:
    * @param math an AST containing the mathematical expression to
    * be used as the formula for this FunctionDefinition.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
    */
   int setMath (const ASTNode* math);
 
@@ -310,9 +354,12 @@ public:
   /**
    * Unsets the value of the "name" attribute of this FunctionDefinition.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    */
   virtual int unsetName ();
 
@@ -391,7 +438,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for this object:
-   * @sbmlconstant{SBML_FUNCTION_DEFINITION, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_FUNCTION_DEFINITION SBML_FUNCTION_DEFINITION@endlink (default).
    *
    * @copydetails doc_warning_typecodes_not_unique
    *
@@ -425,11 +472,11 @@ public:
    * all the required attributes for this FunctionDefinition object
    * have been set.
    *
-   * The required attributes for a FunctionDefinition object are:
+   * @note The required attributes for a FunctionDefinition object are:
    * @li "id"
    *
-   * @return @c true if the required attributes have been set, @c false
-   * otherwise.
+   * @return a boolean value indicating whether all the required
+   * attributes for this object have been defined.
    */
   virtual bool hasRequiredAttributes() const ;
 
@@ -466,6 +513,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Subclasses should override this method to read (and store) XHTML,
    * MathML, etc. directly from the XMLInputStream.
@@ -545,10 +593,6 @@ public:
    * @param level the SBML Level
    * 
    * @param version the Version within the SBML Level
-   *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfFunctionDefinitions(unsigned int level, unsigned int version);
 
@@ -562,18 +606,14 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object that is used to determine the
    * characteristics of the ListOfFunctionDefinitions object to be created.
-   *
-   * @copydetails doc_throw_exception_namespace
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfFunctionDefinitions(SBMLNamespaces* sbmlns);
 
 
   /**
-   * Creates and returns a deep copy of this ListOfFunctionDefinitions object.
+   * Creates and returns a deep copy of this ListOfFunctionDefinitions instance.
    *
-   * @return the (deep) copy of this ListOfFunctionDefinitions object.
+   * @return a (deep) copy of this ListOfFunctionDefinitions.
    */
   virtual ListOfFunctionDefinitions* clone () const;
 
@@ -585,7 +625,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for the objects contained in this ListOf:
-   * @sbmlconstant{SBML_FUNCTION_DEFINITION, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_FUNCTION_DEFINITION SBML_FUNCTION_DEFINITION@endlink (default).
    *
    * @see getElementName()
    * @see getPackageName()
@@ -691,6 +731,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Get the ordinal position of this element in the containing object
    * (which in this case is the Model object).
@@ -711,6 +752,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Create and return an SBML object of this class, if present.
    *
@@ -924,9 +966,12 @@ FunctionDefinition_isSetMath (const FunctionDefinition_t *fd);
  *
  * @param sid the identifier to assign to the "id" attribute of @p fd
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with an id of NULL is equivalent to
  * unsetting the "id" attribute.
@@ -945,9 +990,12 @@ FunctionDefinition_setId (FunctionDefinition_t *fd, const char *sid);
  *
  * @param name the identifier to assign to the "name" attribute of @p fd
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with the name set to NULL is equivalent to
  * unsetting the "name" attribute.
@@ -969,9 +1017,12 @@ FunctionDefinition_setName (FunctionDefinition_t *fd, const char *name);
  * @param math the ASTNode_t structure to copy and assign to the "math"
  * subelement of the given FunctionDefinition_t structure
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof FunctionDefinition_t
  */
@@ -985,9 +1036,12 @@ FunctionDefinition_setMath (FunctionDefinition_t *fd, const ASTNode_t *math);
  * 
  * @param fd the FunctionDefinition_t structure
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof FunctionDefinition_t
  */

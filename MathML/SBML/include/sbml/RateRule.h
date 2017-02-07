@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,7 @@
  * ------------------------------------------------------------------------ -->
  * 
  * @class RateRule
- * @sbmlbrief{core} An SBML <em>rate rule</em> representing <em>dx/dt = f(<b>Y</b>)</em>.
+ * @sbmlbrief{core} Implementation of %SBML's %RateRule construct.
  *
  * The rule type RateRule is derived from the parent class Rule.  It is
  * used to express equations that determine the rates of change of
@@ -97,6 +97,29 @@
  * @copydetails doc_rules_general_summary
  */ 
 
+/**
+ * <!-- ~ ~ ~ ~ ~ Start of common documentation strings ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+ * The following text is used as common documentation blocks copied multiple
+ * times elsewhere in this file.  The use of @class is a hack needed because
+ * Doxygen's @copydetails command has limited functionality.  Symbols
+ * beginning with "doc_" are marked as ignored in our Doxygen configuration.
+ * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  -->
+ *
+ * @class doc_note_raterule_setting_lv
+ *
+ * @note Upon the addition of an RateRule object to an SBMLDocument
+ * (e.g., using Model::addRule(@if java Rule r@endif)), the SBML Level, SBML
+ * Version and XML namespace of the document @em override the values used
+ * when creating the RateRule object via the RateRule constructors.
+ * This is necessary to ensure that an SBML document has a consistent overall
+ * structure.  Nevertheless, the ability to supply the values at the time of
+ * creation of a RateRule is an important aid to producing valid SBML.
+ * Knowledge of the intented SBML Level and Version determine whether it is
+ * valid to assign a particular value to an attribute, or whether it is valid
+ * to add an object to an existing SBMLDocument.
+ * 
+ */
+
 #ifndef RateRule_h
 #define RateRule_h
 
@@ -131,9 +154,12 @@ public:
    * @param version an unsigned int, the SBML Version to assign to this
    * RateRule
    *
-   * @copydetails doc_throw_exception_lv
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_raterule_setting_lv
    */
   RateRule (unsigned int level, unsigned int version);
 
@@ -146,9 +172,13 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object.
    *
-   * @copydetails doc_throw_exception_namespace
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_raterule_setting_lv
+   *
    */
   RateRule (SBMLNamespaces* sbmlns);
 
@@ -159,14 +189,13 @@ public:
   virtual ~RateRule ();
 
   /**
-   * Creates and returns a deep copy of this RateRule object.
-   *
-   * @return the (deep) copy of this RateRule object.
+   * Creates and returns a deep copy of this Rule.
+   * 
+   * @return a (deep) copy of this Rule.
    */
   virtual RateRule* clone () const;
 
 
-  /** @cond doxygenLibsbmlInternal */
   /**
    * Accepts the given SBMLVisitor.
    *
@@ -177,7 +206,6 @@ public:
    * in the list of rules within which @em the present object is embedded.
    */
   virtual bool accept (SBMLVisitor& v) const;
-  /** @endcond */
 
 
   /**
@@ -185,7 +213,7 @@ public:
    * all the required attributes for this RateRule object
    * have been set.
    *
-   * In SBML Levels&nbsp;2&ndash;3, the only required attribute for a
+   * @note In SBML Levels&nbsp;2&ndash;3, the only required attribute for a
    * RateRule object is "variable".  For Level&nbsp;1, where the equivalent
    * attribute is known by different names ("compartment", "species", or
    * "name", depending on the type of object), there is an additional
@@ -198,13 +226,25 @@ public:
 
 
   /**
-   * @copydoc doc_renamesidref_common
+   * Renames all the @c SIdRef attributes on this element, including any
+   * found in MathML.
+   *
+   * @copydetails doc_what_is_sidref
+   * 
+   * This method works by looking at all attributes and (if appropriate)
+   * mathematical formulas, comparing the identifiers to the value of @p
+   * oldid.  If any matches are found, the matching identifiers are replaced
+   * with @p newid.  The method does @em not descend into child elements.
+   *
+   * @param oldid the old identifier
+   * @param newid the new identifier
    */
   virtual void renameSIdRefs(const std::string& oldid, const std::string& newid);
 
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /* the validator classes need to be friends to access the 
    * protected constructor that takes no arguments
    */
@@ -235,290 +275,6 @@ LIBSBML_CPP_NAMESPACE_END
 
 LIBSBML_CPP_NAMESPACE_BEGIN
 BEGIN_C_DECLS
-
-/**
- * Creates a new RateRule_t structure using the given SBML @p level and
- * @p version values.
- *
- * @param level an unsigned int, the SBML level to assign to this
- * RateRule_t structure.
- *
- * @param version an unsigned int, the SBML version to assign to this
- * RateRule_t structure.
- *
- * @returns the newly-created RateRule_t structure, or a null pointer if
- * an error occurred during construction.
- *
- * @copydetails doc_note_setting_lv
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-RateRule_t *
-RateRule_create(unsigned int level, unsigned int version);
-
-
-/**
- * Creates a new RateRule_t structure using the given SBMLNamespaces_t
- * structure, @p sbmlns.
- *
- * @copydetails doc_what_are_sbmlnamespaces
- *
- * @param sbmlns an SBMLNamespaces_t structure.
- *
- * @returns the newly-created RateRule_t structure, or a null pointer if
- * an error occurred during construction.
- *
- * @copydetails doc_note_setting_lv
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-RateRule_t *
-RateRule_createWithNS(SBMLNamespaces_t* sbmlns);
-
-
-/**
- * Frees the given RateRule_t structure.
- * 
- * @param rr the RateRule_t structure to be freed.
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-void
-RateRule_free(RateRule_t * rr);
-
-
-/**
- * Creates a deep copy of the given RateRule_t structure.
- * 
- * @param rr the RateRule_t structure to be copied.
- *
- * @returns a (deep) copy of the given RateRule_t structure, or a null
- * pointer if a failure occurred.
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-RateRule_t *
-RateRule_clone(RateRule_t * rr);
-
-
-/**
- * Returns the value of the "variable" attribute of the given RateRule_t
- * structure.
- *
- * @param rr the RateRule_t structure.
- *
- * @return the variable of this structure.
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-const char *
-RateRule_getVariable(const RateRule_t * rr);
-
-
-/**
- * Gets the mathematical expression of this RateRule_t structure as an
- * ASTNode_t structure.
- *
- * @param rr the RateRule_t structure.
- *
- * @return the math for this RateRule_t, as an ASTNode_t.
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-const ASTNode_t*
-RateRule_getMath(const RateRule_t * rr);
-
-
-/**
- * @note SBML Level 1 uses a text-string format for mathematical formulas.
- * SBML Level 2 uses MathML, an XML format for representing mathematical
- * expressions.  LibSBML provides an Abstract Syntax Tree API for working
- * with mathematical expressions; this API is more powerful than working
- * with formulas directly in text form, and ASTs can be translated into
- * either MathML or the text-string syntax.  The libSBML methods that
- * accept text-string formulas directly (such as this one) are
- * provided for SBML Level 1 compatibility, but developers are encouraged
- * to use the AST mechanisms.  
- *
- * @return the formula for this RateRule_t.
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-const char *
-RateRule_getFormula (const RateRule_t *r);
-
-
-/**
- * Predicate returning @c 1 if the given RateRule_t structure's "variable"
- * is set.
- *
- * @param rr the RateRule_t structure.
- *
- * @return @c 1 if the "variable" of this RateRule_t structure is
- * set, @c 0 otherwise.
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-int
-RateRule_isSetVariable(const RateRule_t * rr);
-
-
-/**
- * Predicate returning @c 1 if the given RateRule_t structure's "math"
- * is set.
- *
- * @param rr the RateRule_t structure.
- *
- * @return @c 1 if the "math" of this RateRule_t structure is
- * set, @c 0 otherwise.
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-int
-RateRule_isSetMath(const RateRule_t * rr);
-
-
-/**
- * @return true (non-zero) if the formula (or equivalently the math) for
- * this RateRule_t is set, false (0) otherwise.
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-int
-RateRule_isSetFormula (const RateRule_t *r);
-
-
-/**
- * Sets the "variable" attribute of the given RateRule_t structure.
- *
- * This function copies the string given in @p string.  If the string is
- * a null pointer, this function performs RateRule_unsetVariable() instead.
- *
- * @param rr the RateRule_t structure.
- *
- * @param variable the string to which the structures "variable" attribute should be
- * set.
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
- *
- * @note Using this function with a null pointer for @p name is equivalent to
- * unsetting the value of the "name" attribute.
- * 
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-int
-RateRule_setVariable(RateRule_t * rr, const char * variable);
-
-
-/**
- * Sets the mathematical expression of the given RateRule_t structure.
- *
- * @param rr the RateRule_t structure.
- *
- * @param math an ASTNode_t structure to be assigned as the "math"
- * subelement of this RateRule_t.
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-int
-RateRule_setMath(RateRule_t * rr, const ASTNode_t* math);
-
-
-/**
- * Sets the formula of this RateRule_t to a copy of string.
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
- *
- * @note SBML Level 1 uses a text-string format for mathematical formulas.
- * SBML Level 2 uses MathML, an XML format for representing mathematical
- * expressions.  LibSBML provides an Abstract Syntax Tree API for working
- * with mathematical expressions; this API is more powerful than working
- * with formulas directly in text form, and ASTs can be translated into
- * either MathML or the text-string syntax.  The libSBML methods that
- * accept text-string formulas directly (such as this one) are
- * provided for SBML Level 1 compatibility, but developers are encouraged
- * to use the AST mechanisms.
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-int
-RateRule_setFormula (RateRule_t *r, const char *formula);
-
-
-/**
- * Unsets the value of the "variable" attribute of the given 
- * RateRule_t structure.
- *
- * @param ar the RateRule_t structure.
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-int
-RateRule_unsetVariable(RateRule_t * ar);
-
-
-/**
- * Predicate returning @c 1 or *c 0 depending on whether all the required
- * attributes of the given RateRule_t structure have been set.
- *
- * @param rr the RateRule_t structure to check.
- *
- * @return @c 1 if all the required attributes for this
- * structure have been defined, @c 0 otherwise.
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-int
-RateRule_hasRequiredAttributes(const RateRule_t * rr);
-
-
-/**
- * Predicate returning @c 1 or *c 0 depending on whether all the required
- * sub-elements of the given RateRule_t structure have been set.
- *
- * @param rr the RateRule_t structure to check.
- *
- * @return @c 1 if all the required sub-elements for this
- * structure have been defined, @c 0 otherwise.
- *
- * @memberof RateRule_t
- */
-LIBSBML_EXTERN
-int
-RateRule_hasRequiredElements(const RateRule_t * rr);
-
-
-
 
 END_C_DECLS
 LIBSBML_CPP_NAMESPACE_END

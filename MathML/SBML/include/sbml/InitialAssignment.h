@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,7 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class InitialAssignment
- * @sbmlbrief{core} An SBML <em>initial assignment</em>, evaluated once only.
+ * @sbmlbrief{core} Implementation of %SBML's %InitialAssignment construct.
  *
  * SBML Level 2 Versions 2&ndash;4 and SBML Level&nbsp;3 provide two ways of assigning initial
  * values to entities in a model.  The simplest and most basic is to set
@@ -141,7 +141,7 @@
  * rules for the same entity.  That is, there cannot be <em>both</em> an
  * InitialAssignment and an AssignmentRule for the same symbol in a model,
  * because both kinds of constructs apply prior to and at the start of
- * simulated time---allowing both to exist for a given symbol would
+ * simulated time&mdash;allowing both to exist for a given symbol would
  * result in indeterminism).
  * 
  * The ordering of InitialAssignment objects is not significant.  The
@@ -172,7 +172,8 @@
  * <!---------------------------------------------------------------------- -->
  *
  * @class ListOfInitialAssignments
- * @sbmlbrief{core} A list of InitialAssignment objects.
+ * @sbmlbrief{core} Implementation of SBML's %ListOfInitialAssignments
+ * construct.
  *
  * @copydetails doc_what_is_listof
  */
@@ -185,6 +186,20 @@
  * beginning with "doc_" are marked as ignored in our Doxygen configuration.
  * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  -->
  *
+ * @class doc_note_initialassignment_setting_lv
+ *
+ * @note Upon the addition of a InitialAssignment object to an SBMLDocument
+ * (e.g., using Model::addInitialAssignment(@if java InitialAssignment
+ * ia@endif)), the SBML Level, SBML Version and XML namespace of the document
+ * @em override the values used when creating the InitialAssignment object
+ * via this constructor.  This is necessary to ensure that an SBML document
+ * is a consistent structure.  Nevertheless, the ability to supply the values
+ * at the time of creation of a InitialAssignment is an important aid to
+ * producing valid SBML.  Knowledge of the intented SBML Level and Version
+ * determine whether it is valid to assign a particular value to an
+ * attribute, or whether it is valid to add an object to an existing
+ * SBMLDocument.
+ *
  * @class doc_initialassignment_units
  *
  * @par
@@ -194,9 +209,8 @@
  * InitialAssignment::getDerivedUnitDefinition() returns the calculated
  * units, to the extent that libSBML can compute them.
  *
- * <!---------------------------------------------------------------------- -->
  * @class doc_warning_initialassignment_math_literals
- *
+ * 
  * @warning <span class="warning">Note that it is possible the "math"
  * expression in the InitialAssignment contains literal numbers or parameters
  * with undeclared units.  In those cases, it is not possible to calculate
@@ -248,9 +262,12 @@ public:
    * @param version an unsigned int, the SBML Version to assign to this
    * InitialAssignment
    *
-   * @copydetails doc_throw_exception_lv
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_initialassignment_setting_lv
    */
   InitialAssignment (unsigned int level, unsigned int version);
 
@@ -263,9 +280,12 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object.
    *
-   * @copydetails doc_throw_exception_namespace
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_initialassignment_setting_lv 
    */
   InitialAssignment (SBMLNamespaces* sbmlns);
 
@@ -280,6 +300,9 @@ public:
    * Copy constructor; creates a copy of this InitialAssignment.
    *
    * @param orig the object to copy.
+   * 
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   InitialAssignment (const InitialAssignment& orig);
 
@@ -289,11 +312,13 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   InitialAssignment& operator=(const InitialAssignment& rhs);
 
 
-  /** @cond doxygenLibsbmlInternal */
   /**
    * Accepts the given SBMLVisitor for this instance of InitialAssignment.
    *
@@ -304,13 +329,12 @@ public:
    * the list of compartment types.
    */
   virtual bool accept (SBMLVisitor& v) const;
-  /** @endcond */
 
 
   /**
-   * Creates and returns a deep copy of this InitialAssignment object.
-   *
-   * @return the (deep) copy of this InitialAssignment object.
+   * Creates and returns a deep copy of this InitialAssignment.
+   * 
+   * @return a (deep) copy of this InitialAssignment.
    */
   virtual InitialAssignment* clone () const;
 
@@ -359,21 +383,13 @@ public:
    * @param sid the identifier of a Species, Compartment or Parameter
    * object defined elsewhere in this Model.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   int setSymbol (const std::string& sid);
-
-
-  /**
-   * Unsets the "symbol" attribute value of this InitialAssignment.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
-   */
-  int unsetSymbol ();
 
 
   /**
@@ -384,9 +400,11 @@ public:
    * @param math an AST containing the mathematical expression to
    * be used as the formula for this InitialAssignment.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
    */
   int setMath (const ASTNode* math);
 
@@ -469,7 +487,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for this object:
-   * @sbmlconstant{SBML_INITIAL_ASSIGNMENT, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_INITIAL_ASSIGNMENT SBML_INITIAL_ASSIGNMENT@endlink (default).
    *
    * @copydetails doc_warning_typecodes_not_unique
    *
@@ -502,11 +520,11 @@ public:
    * Predicate returning @c true if all the required attributes for this
    * InitialAssignment object have been set.
    *
-   * The required attributes for an InitialAssignment object are:
+   * @note The required attributes for an InitialAssignment object are:
    * @li "symbol"
    *
-   * @return @c true if the required attributes have been set, @c false
-   * otherwise.
+   * @return a boolean value indicating whether all the required
+   * attributes for this object have been defined.
    */
   virtual bool hasRequiredAttributes() const ;
 
@@ -540,13 +558,35 @@ public:
 
 
   /**
-   * @copydoc doc_renamesidref_common
+   * Renames all the @c SIdRef attributes on this element, including any
+   * found in MathML.
+   *
+   * @copydetails doc_what_is_sidref
+   * 
+   * This method works by looking at all attributes and (if appropriate)
+   * mathematical formulas, comparing the identifiers to the value of @p
+   * oldid.  If any matches are found, the matching identifiers are replaced
+   * with @p newid.  The method does @em not descend into child elements.
+   *
+   * @param oldid the old identifier
+   * @param newid the new identifier
    */
   virtual void renameSIdRefs(const std::string& oldid, const std::string& newid);
 
 
   /**
-   * @copydoc doc_renameunitsidref_common
+   * Renames all the @c UnitSIdRef attributes on this element.
+   *
+   * @copydetails doc_what_is_unitsidref
+   *
+   * This method works by looking at all unit identifier attribute values
+   * (including, if appropriate, inside mathematical formulas), comparing the
+   * unit identifiers to the value of @p oldid.  If any matches are found,
+   * the matching identifiers are replaced with @p newid.  The method does
+   * @em not descend into child elements.
+   * 
+   * @param oldid the old identifier
+   * @param newid the new identifier
    */
   virtual void renameUnitSIdRefs(const std::string& oldid, const std::string& newid);
 
@@ -578,6 +618,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Subclasses should override this method to read (and store) XHTML,
    * MathML, etc. directly from the XMLInputStream.
@@ -656,10 +697,6 @@ public:
    * @param level the SBML Level
    * 
    * @param version the Version within the SBML Level
-   *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfInitialAssignments (unsigned int level, unsigned int version);
           
@@ -673,18 +710,14 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object that is used to determine the
    * characteristics of the ListOfInitialAssignments object to be created.
-   *
-   * @copydetails doc_throw_exception_namespace
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfInitialAssignments (SBMLNamespaces* sbmlns);
 
 
   /**
-   * Creates and returns a deep copy of this ListOfInitialAssignments object.
+   * Creates and returns a deep copy of this ListOfInitialAssignments instance.
    *
-   * @return the (deep) copy of this ListOfInitialAssignments object.
+   * @return a (deep) copy of this ListOfInitialAssignments.
    */
   virtual ListOfInitialAssignments* clone () const;
 
@@ -696,7 +729,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for the objects contained in this ListOf:
-   * @sbmlconstant{SBML_INITIAL_ASSIGNMENT, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_INITIAL_ASSIGNMENT SBML_INITIAL_ASSIGNMENT@endlink (default).
    *
    * @see getElementName()
    * @see getPackageName()
@@ -817,6 +850,7 @@ public:
   
   
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Get the ordinal position of this element in the containing object
    * (which in this case is the Model object).
@@ -837,6 +871,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Create and return an SBML object of this class, if present.
    *
@@ -1021,9 +1056,12 @@ InitialAssignment_isSetMath (const InitialAssignment_t *ia);
  * @param sid the identifier of a Species_t, Compartment_t or Parameter_t
  * structure defined elsewhere in this Model_t.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with an id of NULL is equivalent to
  * unsetting the "symbol" attribute.
@@ -1036,22 +1074,6 @@ InitialAssignment_setSymbol (InitialAssignment_t *ia, const char *sid);
 
 
 /**
- * Unsets the "symbol" attribute value of this InitialAssignment_t
- *
- * @param ia the InitialAssignment_t structure
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
- *
- * @memberof InitialAssignment_t
- */
-LIBSBML_EXTERN
-int
-InitialAssignment_unsetSymbol (InitialAssignment_t *ia);
-
-
-/**
  * Sets the "math" subelement of this InitialAssignment_t
  *
  * The ASTNode tree passed in @p math is copied.
@@ -1061,9 +1083,12 @@ InitialAssignment_unsetSymbol (InitialAssignment_t *ia);
  * @param math an ASTNode_t tree containing the mathematical expression to
  * be used as the formula for this InitialAssignment_t.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof InitialAssignment_t
  */

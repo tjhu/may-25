@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -30,8 +30,8 @@
  * and also available online as http://sbml.org/software/libsbml/license.html
  * ------------------------------------------------------------------------ -->
  *
- * @enum UnitKind_t
- * @brief Enumeration of predefined SBML base units.
+ * @var typedef enum UnitKind_t
+ * @brief Enumeration of predefined SBML base units
  *
  * For more information, please refer to the class documentation for Unit.
  * 
@@ -48,6 +48,9 @@
 LIBSBML_CPP_NAMESPACE_BEGIN
 BEGIN_C_DECLS
 
+/**
+ * @var typedef enum UnitKind_t
+ */
 typedef enum
 {
     UNIT_KIND_AMPERE /*!< Ampere ('A'); SI base unit of electrical current (<i>I</i>) */
@@ -97,8 +100,8 @@ typedef enum
  * This function behaves exactly like C's <code>==</code> operator, except
  * for the following two cases:
  * <ul>
-  * <li>@sbmlconstant{UNIT_KIND_LITER, UnitKind_t} <code>==</code> @sbmlconstant{UNIT_KIND_LITRE, UnitKind_t}
- * <li>@sbmlconstant{UNIT_KIND_METER, UnitKind_t} <code>==</code> @sbmlconstant{UNIT_KIND_METRE, UnitKind_t}
+ * <li>@link UnitKind_t#UNIT_KIND_LITER UNIT_KIND_LITER@endlink <code>==</code> @link UnitKind_t#UNIT_KIND_LITRE UNIT_KIND_LITRE@endlink
+ * <li>@link UnitKind_t#UNIT_KIND_METER UNIT_KIND_METER@endlink <code>==</code> @link UnitKind_t#UNIT_KIND_METRE UNIT_KIND_METRE@endlink
  * </ul>
  *
  * In the two cases above, C equality comparison would yield @c false

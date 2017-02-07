@@ -9,7 +9,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -33,7 +33,8 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class SBMLErrorLog
- * @sbmlbrief{core} Log of diagnostics reported during processing.
+ * @sbmlbrief{core} Log of errors and other events encountered during SBML
+ * processing.
  *
  * @htmlinclude not-sbml-warning.html
  *
@@ -136,28 +137,6 @@ public:
 
 
   /**
-   * Returns the <i>n</i>th SBMLError object with given severity in this log.
-   *
-   * Index @p n is counted from 0.  Callers should first inquire about the
-   * number of items in the log by using the
-   * @if java SBMLErrorLog::getNumFailsWithSeverity(long severity)@else getNumFailsWithSeverity()@endif@~ method.
-   * Attempts to use an error index number that exceeds the actual number
-   * of errors in the log will result in a @c NULL being returned.
-   *
-   * @param n the index number of the error to retrieve (with 0 being the
-   * first error).
-   * @param severity the severity of the error to retrieve 
-   *
-   * @return the <i>n</i>th SBMLError in this log, or @c NULL if @p n is
-   * greater than or equal to
-   * @if java SBMLErrorLog::getNumFailsWithSeverity(long severity)@else getNumFailsWithSeverity()@endif.
-   *
-   * @see getNumFailsWithSeverity(unsigned int severity)
-   */
-  const SBMLError* getErrorWithSeverity(unsigned int n, unsigned int severity) const;
-
-
-  /**
    * Returns the number of errors that have been logged with the given
    * severity code.
    *
@@ -200,6 +179,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Creates a new, empty SBMLErrorLog.
    */
@@ -249,7 +229,7 @@ public:
    * @param category an integer indicating the category to which the error
    * belongs.
    *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
+   * @if notcpp @htmlinclude warn-default-args-in-docs.html @endif@~
    */
   void logError
   (
@@ -321,18 +301,11 @@ public:
 
 
   /**
-   * Removes all errors having errorId from the SBMLError list.
-   *
-   * @param errorId the error identifier of the error to be removed.
-   */
-  void removeAll(const unsigned int errorId);
-
-  /**
    * Returns true if SBMLErrorLog contains an errorId
    *
    * @param errorId the error identifier of the error to be found.
    */
-  bool contains (const unsigned int errorId) const;
+  bool contains (const unsigned int errorId);
 
 
   /** @endcond */

@@ -11,7 +11,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -36,8 +36,6 @@
  *
  * @class ASTBasePlugin
  * @sbmlbrief{core} Base class for extensions that plug into AST classes.
- *
- * @htmlinclude not-sbml-warning.html
  */
 
 #ifndef ASTBasePlugin_h
@@ -52,9 +50,8 @@
 #include <sbml/SBMLErrorLog.h>
 #include <sbml/math/ASTBase.h>
 #include <sbml/SBMLDocument.h>
-#include <sbml/util/StringBuffer.h>
 
-#include <sbml/math/L3ParserSettings.h>
+
 
 #ifdef __cplusplus
 
@@ -80,8 +77,8 @@ public:
 
   /**
    * Creates and returns a deep copy of this ASTBasePlugin object.
-   *
-   * @return the (deep) copy of this ASTBasePlugin object.
+   * 
+   * @return a (deep) copy of this SBase object
    */
   virtual ASTBasePlugin* clone () const;
 
@@ -133,7 +130,7 @@ public:
    * This function is called when this object is created by
    * the parent element.
    * Subclasses must override this this function if they have one
-   * or more child elements. Also, ASTBasePlugin::connectToParent(@if java SBase@endif)
+   * or more child elements. Also, ASTBasePlugin::connectToParent(@if java SBase *sbase@endif)
    * must be called in the overridden function.
    *
    * @param sbase the SBase object to use
@@ -226,9 +223,12 @@ public:
    * Version 1 Core must set the namespace to 
    * "http://www.sbml.org/sbml/level3/version1/layout/version1/"
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   int setElementNamespace(const std::string &uri);
 
@@ -285,7 +285,7 @@ public:
 
   virtual int removeChild(unsigned int n);
 
-  virtual int replaceChild(unsigned int n, ASTBase* newChild, bool delreplaced);
+  virtual int replaceChild(unsigned int n, ASTBase* newChild);
 
   virtual int swapChildren(ASTFunction* that);
 
@@ -321,9 +321,6 @@ public:
   virtual bool representsUnaryFunction(int type) const;
   virtual bool representsBinaryFunction(int type) const;
   virtual bool representsNaryFunction(int type) const;
-
-  virtual bool hasCorrectNumberArguments(int type) const;
-  virtual bool isWellFormedNode(int type) const;
   
   virtual bool isTopLevelMathMLFunctionNodeTag(const std::string& name) const;
 
@@ -334,38 +331,6 @@ public:
   virtual const char * getNameFromType(int type) const;
 
   /* end doxygen comment */
-  friend class L3ParserSettings;
-  friend class ASTBase;
-
-  //The following functions don't do anything on their own, and are meant to be overridden by relevant plugins.
-  /**
-   * Renames all the SIdRef attributes on this node and its child nodes.
-   *
-   * @param oldid the old identifier.
-   * @param newid the new identifier.
-   */
-  virtual void renameSIdRefs(const std::string& oldid, const std::string& newid);
-
-
-  /**
-   * Renames all the UnitSIdRef attributes on this node and its child nodes.
-   *
-   * The only place UnitSIDRefs appear in MathML <code>&lt;cn&gt;</code>
-   * elements, so the effects of this method are limited to that.
-   *
-   * @param oldid the old identifier.
-   * @param newid the new identifier.
-   */
-  virtual void renameUnitSIdRefs(const std::string& oldid, const std::string& newid);
-
-
-  /** @cond doxygenLibsbmlInternal */
-  /**
-   * Replace any nodes of type AST_NAME with the name 'id' from the child
-   * 'math' object with the provided ASTNode.
-   *
-   */
-  virtual void replaceIDWithFunction(const std::string& id, const ASTNode* function);
 
 protected:
   /* open doxygen comment */
@@ -383,65 +348,6 @@ protected:
   ASTBasePlugin(const ASTBasePlugin& orig);
 
 
-  /**
-   * Returns true if this is a package function which should be written as
-   * "functionname(argumentlist)", false otherwise.
-   */
-  virtual bool isPackageInfixFunction() const;
-
-  /**
-   * Returns true if this is a package function which should be written
-   * special syntax that the package knows about, false otherwise.
-   */
-  virtual bool hasPackageOnlyInfixSyntax() const;
-
-  /**
-   * Get the precedence of this package function, or -1 if unknown
-   */
-  virtual int getL3PackageInfixPrecedence() const;
-
-  /**
-   * Returns true if this is a package function which should be written
-   * special syntax that the package knows about, false otherwise.
-   */
-  virtual bool hasUnambiguousPackageInfixGrammar(const ASTNode *child) const;
-
-  /**
-   * Visits the given ASTNode_t and continues the inorder traversal for nodes whose syntax are determined by packages.
-   */
-  virtual void visitPackageInfixSyntax ( const ASTNode *parent,
-                                         const ASTNode *node,
-                                         StringBuffer_t  *sb,
-                                         const L3ParserSettings* settings) const;
-
-  /**
-   * This function checks the provided ASTNode function to see if it is a 
-   * known function with the wrong number of arguments.  If so, 'error' is
-   * set and '-1' is returned.  If it has the correct number of arguments,
-   * '1' is returned.  If the plugin knows nothing about the function, '0' 
-   * is returned.
-   */
-  virtual int checkNumArguments(const ASTNode* function, std::stringstream& error) const;
-
-  /**
-   * The generic parsing function for grammar lines that packages recognize, but not core.
-   * When a package recognizes the 'type', it will parse and return the correct ASTNode.
-   * If it does not recognize the 'type', or if the arguments are incorrect, NULL is returend.
-   */
-  virtual ASTNode* parsePackageInfix(L3ParserGrammarLineType_t type, 
-    std::vector<ASTNode*> *nodeList = NULL, std::vector<std::string*> *stringList = NULL,
-    std::vector<double> *doubleList = NULL) const;
-
-
-  /**
-   * The user input a string of the form "name(...)", and we want to know if
-   * 'name' is recognized by a package as being a particular function.  We already
-   * know that it is not used in the Model as a FunctionDefinition.  Should do
-   * caseless string comparison.  Return the type of the function, or AST_UNKNOWN
-   * if nothing found.
-   */
-  virtual int getPackageFunctionFor(const std::string& name) const;
-
   /*-- data members --*/
 
   //
@@ -454,7 +360,7 @@ protected:
   // Parent ASTNode object to which this plugin object
   // connected.
   //
-  ASTBase                *mParentASTNode;
+  ASTBase                *mParent;
 
   //
   // XML namespace of corresponding package extension
@@ -492,5 +398,6 @@ LIBSBML_CPP_NAMESPACE_END
 #endif /* LIBSBML_USE_LEGACY_MATH */
 
 #endif  /* ASTBasePlugin_h */
+
 /** @endcond */
 

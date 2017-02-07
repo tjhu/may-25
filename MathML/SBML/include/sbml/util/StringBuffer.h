@@ -9,7 +9,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -91,26 +91,12 @@ StringBuffer_reset (StringBuffer_t *sb);
  * Appends the given string to this  StringBuffer_t.
  *
  * @param sb the StringBuffer_t structure.
- * @param s the string to be appended
  *
  * @memberof StringBuffer_t
  */
 LIBSBML_EXTERN
 void
 StringBuffer_append (StringBuffer_t *sb, const char *s);
-
-/**
- * Appends the given string to this  StringBuffer_t.
- *
- * @param sb the StringBuffer_t structure.
- * @param s the string to be appended
- * @param len number of characters of s to append
- *
- * @memberof StringBuffer_t
- */
-LIBSBML_EXTERN
-void
-StringBuffer_appendWithLength (StringBuffer_t *sb, const char *s, unsigned long len);
 
 /**
  * Appends the given character to this StringBuffer_t.
@@ -289,4 +275,5 @@ END_C_DECLS
 LIBSBML_CPP_NAMESPACE_END
 
 #endif  /** StringBuffer_h **/
+
 /** @endcond */

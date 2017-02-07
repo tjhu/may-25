@@ -1,28 +1,30 @@
 /**
  * @file    SBMLDocumentPlugin.h
- * @brief   Definition of SBMLDocumentPlugin, the derived class of SBasePlugin.
+ * @brief   Definition of SBMLDocumentPlugin, the derived class of
+ *          SBasePlugin.
  * @author  Akiya Jouraku
+ *
  *
  * <!--------------------------------------------------------------------------
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
  *
- * Copyright (C) 2009-2013 jointly by the following organizations:
+ * Copyright (C) 2009-2013 jointly by the following organizations: 
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
- *
+ *  
  * Copyright (C) 2006-2008 by the California Institute of Technology,
- *     Pasadena, CA, USA
- *
- * Copyright (C) 2002-2005 jointly by the following organizations:
+ *     Pasadena, CA, USA 
+ *  
+ * Copyright (C) 2002-2005 jointly by the following organizations: 
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. Japan Science and Technology Agency, Japan
- *
+ * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation.  A copy of the license agreement is provided
@@ -31,22 +33,15 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class SBMLDocumentPlugin
- * @sbmlbrief{core} Base class for extending SBMLDocument in packages.
+ * @sbmlbrief{core} Template class for the %SBMLDocument Plugin class needed
+ * by all packages.
  *
- * @htmlinclude not-sbml-warning.html
- *
- * The SBMLDocumentPlugin class is a specialization of SBasePlugin
- * designed specifically for extending SBMLDocument.  All package
- * extensions must extend SBMLDocument to implement support for SBML
- * Level&nbsp;3 packages; these extensions can be subclasses of this
- * class or from a derived class of this class.
- *
- * @if clike
- * @section sbmldocumentplugin-howto How to extend SBMLDocumentPlugin for a package implementation
- * @copydetails doc_extension_sbmldocumentplugin
- * @else
- * @copydetails doc_basics_of_extensions
- * @endif@~
+ * Plugin objects for the SBMLDocument element must be this class or a
+ * derived class of this class.  Package developers should use this class
+ * as-is if only "required" attribute is added in the SBMLDocument element by
+ * their packages.  Otherwise, developers must implement a derived class of
+ * this class and use that class as the plugin object for the SBMLDocument
+ * element.
  */
 
 #ifndef SBMLDocumentPlugin_h
@@ -70,52 +65,37 @@ class LIBSBML_EXTERN SBMLDocumentPlugin : public SBasePlugin
 public:
 
   /**
-   * Creates a new SBMLDocumentPlugin object using the given parameters.
+   *  Constructor
    *
-   * @copydetails doc_what_are_xmlnamespaces
-   *
-   * @copydetails doc_what_are_sbmlnamespaces
-   *
-   * @param uri the URI of the SBML Level&nbsp;3 package implemented by
-   * this libSBML package extension.
-   *
-   * @param prefix the XML namespace prefix being used for the package.
-   *
-   * @param sbmlns the SBMLNamespaces object for the package.
+   * @param uri the URI of package 
+   * @param prefix the prefix for the given package
+   * @param sbmlns the SBMLNamespaces object for the package
    */
   SBMLDocumentPlugin (const std::string &uri, const std::string &prefix,
                       SBMLNamespaces *sbmlns);
 
 
   /**
-   * Copy constructor.
-   *
-   * This creates a copy of this object.
-   *
-   * @param orig the SBMLDocumentPlugin instance to copy.
+   * Copy constructor. Creates a copy of this object.
    */
   SBMLDocumentPlugin(const SBMLDocumentPlugin& orig);
 
 
   /**
-   * Destroy this SBMLDocumentPlugin object.
+   * Destroy this object.
    */
   virtual ~SBMLDocumentPlugin ();
 
-
   /**
    * Assignment operator for SBMLDocumentPlugin.
-   *
-   * @param rhs The object whose values are used as the basis of the
-   * assignment.
    */
-  SBMLDocumentPlugin& operator=(const SBMLDocumentPlugin& rhs);
+  SBMLDocumentPlugin& operator=(const SBMLDocumentPlugin& orig);
 
 
   /**
    * Creates and returns a deep copy of this SBMLDocumentPlugin object.
-   *
-   * @return the (deep) copy of this SBMLDocumentPlugin object.
+   * 
+   * @return a (deep) copy of this object
    */
   virtual SBMLDocumentPlugin* clone () const;
 
@@ -130,6 +110,7 @@ public:
 #ifndef SWIG
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Subclasses should override this method to get the list of
    * expected attributes.
@@ -161,53 +142,46 @@ public:
 
   // -----------------------------------------------------------
   //
-  // Additional public functions for manipulating attributes of
+  // Additional public functions for manipulating attributes of 
   // corresponding package in SBMLDocument element.
   //
   // -----------------------------------------------------------
 
 
   /**
-   * Sets the SBML "required" attribute value.
    *
-   * @copydetails doc_what_is_required_attribute
+   * Sets the bool value of "required" attribute of corresponding package
+   * in SBMLDocument element.
    *
-   * @param value the value to be assigned to the "required" attribute.
-   * The "required" attribute takes a Boolean value, either @c true or
-   * @c false.
+   * @param value the bool value of "required" attribute of corresponding 
+   * package in SBMLDocument element.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
-   *
-   * @see getRequired()
-   * @see isSetRequired()
-   * @see unsetRequired()
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
    */
   virtual int setRequired(bool value);
 
 
   /**
-   * Returns the value of the "required" attribute.
    *
-   * @copydetails doc_what_is_required_attribute
+   * Returns the bool value of "required" attribute of corresponding 
+   * package in SBMLDocument element.
    *
-   * @return the bool value of "required" attribute for the SBML package.
-   *
-   * @see setRequired(bool value)
-   * @see isSetRequired()
-   * @see unsetRequired()
+   * @return the bool value of "required" attribute of corresponding
+   * package in SBMLDocument element.
    */
   virtual bool getRequired() const;
 
 
   /**
-   * Returns the value of the "required" attribute.
+   * Predicate returning @c true or @c false depending on whether this
+   * SBMLDocumentPlugin's "required" attribute has been set.
    *
-   * @copydetails doc_what_is_required_attribute
-   *
-   * @return @c true if the "required" attribute of this SBMLDocument
-   * has been set to @c true, @c false otherwise.
+   * @return @c true if the "required" attribute of this SBMLDocument has been
+   * set, @c false otherwise.
    */
   virtual bool isSetRequired() const;
 
@@ -215,12 +189,18 @@ public:
   /**
    * Unsets the value of the "required" attribute of this SBMLDocumentPlugin.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    */
   virtual int unsetRequired();
 
+  /** @cond doxygenLibsbmlInternal */
 
+  
   /** @cond doxygenLibsbmlInternal */
   virtual bool isCompFlatteningImplemented() const;
   /** @endcond */
@@ -234,24 +214,20 @@ public:
   /** @endcond */
 
 
-  /** @cond doxygenLibsbmlInternal */
-  /**
-   * Accepts the given SBMLVisitor.
-   *
-   * @return the result of calling <code>v.visit()</code>, which indicates
-   * whether or not the Visitor would like to visit the SBML object's next
-   * sibling object (if available).
-   */
-  virtual bool accept (SBMLVisitor& v) const;
   /** @endcond */
+
 
 protected:
+  /** @cond doxygenLibsbmlInternal */
+
+
   /*-- data members --*/
 
-  /** @cond doxygenLibsbmlInternal */
   bool mRequired;
   bool mIsSetRequired;
+
   /** @endcond */
+
 };
 
 LIBSBML_CPP_NAMESPACE_END
@@ -280,24 +256,8 @@ BEGIN_C_DECLS
  */
 LIBSBML_EXTERN
 SBMLDocumentPlugin_t*
-SBMLDocumentPlugin_create(const char* uri, const char* prefix,
+SBMLDocumentPlugin_create(const char* uri, const char* prefix, 
       SBMLNamespaces_t* sbmlns);
-
-/**
- * Frees the given SBMLDocumentPlugin_t structure
- *
- * @param plugin the SBMLDocumentPlugin_t structure to be freed
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
- *
- *
- * @memberof SBMLDocumentPlugin_t
- */
-LIBSBML_EXTERN
-int
-SBMLDocumentPlugin_free(SBMLDocumentPlugin_t* plugin);
 
 /**
  * Creates a deep copy of the given SBMLDocumentPlugin_t structure
@@ -321,15 +281,18 @@ SBMLDocumentPlugin_clone(SBMLDocumentPlugin_t* plugin);
  * @param plugin the SBMLDocumentPlugin_t structure
  * @param attributes the ExpectedAttributes_t structure
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof SBMLDocumentPlugin_t
  */
 LIBSBML_EXTERN
 int
-SBMLDocumentPlugin_addExpectedAttributes(SBMLDocumentPlugin_t* plugin,
+SBMLDocumentPlugin_addExpectedAttributes(SBMLDocumentPlugin_t* plugin, 
       ExpectedAttributes_t* attributes);
 
 /**
@@ -340,16 +303,19 @@ SBMLDocumentPlugin_addExpectedAttributes(SBMLDocumentPlugin_t* plugin,
  * @param attributes the XMLAttributes_t structure
  * @param expectedAttributes the ExpectedAttributes_t structure
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof SBMLDocumentPlugin_t
  */
 LIBSBML_EXTERN
 int
-SBMLDocumentPlugin_readAttributes(SBMLDocumentPlugin_t* plugin,
-      const XMLAttributes_t* attributes,
+SBMLDocumentPlugin_readAttributes(SBMLDocumentPlugin_t* plugin, 
+      const XMLAttributes_t* attributes, 
       const ExpectedAttributes_t* expectedAttributes);
 
 /**
@@ -359,15 +325,18 @@ SBMLDocumentPlugin_readAttributes(SBMLDocumentPlugin_t* plugin,
  * @param plugin the SBMLDocumentPlugin_t structure
  * @param stream the XMLOutputStream_t structure
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof SBMLDocumentPlugin_t
  */
 LIBSBML_EXTERN
 int
-SBMLDocumentPlugin_writeAttributes(SBMLDocumentPlugin_t* plugin,
+SBMLDocumentPlugin_writeAttributes(SBMLDocumentPlugin_t* plugin, 
       XMLOutputStream_t* stream);
 
 
@@ -415,7 +384,7 @@ SBMLDocumentPlugin_setRequired(SBMLDocumentPlugin_t* plugin, int required);
  * SBMLDocumentPlugin_t structure's "required" attribute is set.
  *
  * @param plugin the SBMLDocumentPlugin_t structure to query
- *
+ * 
  * @return @c non-zero (true) if the "required" attribute of the given
  * SBMLDocumentPlugin_t structure is set, zero (false) otherwise.
  *
@@ -428,12 +397,15 @@ SBMLDocumentPlugin_isSetRequired(SBMLDocumentPlugin_t* plugin);
 
 /**
  * Unsets the "required" attribute of this SBMLDocumentPlugin_t structure.
- *
+ * 
  * @param plugin the SBMLDocumentPlugin_t structure whose "required" attribute is to be unset.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof SBMLDocumentPlugin_t
  */

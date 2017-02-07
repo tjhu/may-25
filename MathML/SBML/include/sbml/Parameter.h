@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,7 @@
  * ------------------------------------------------------------------------ -->
  * 
  * @class Parameter.
- * @sbmlbrief{core} An SBML parameter: a named symbol with a value.
+ * @sbmlbrief{core} Implementation of SBML's %Parameter construct.
  *
  * A Parameter is used in SBML to define a symbol associated with a value;
  * this symbol can then be used in mathematical formulas in a model.  By
@@ -127,7 +127,7 @@
  *
  * <!-- ------------------------------------------------------------------- -->
  * @class ListOfParameters
- * @sbmlbrief{core} A list of Parameter objects.
+ * @sbmlbrief{core} Implementation of SBML's %ListOfParameters construct.
  * 
  * @copydetails doc_what_is_listof
  */
@@ -139,6 +139,19 @@
  * Doxygen's @copydetails command has limited functionality.  Symbols
  * beginning with "doc_" are marked as ignored in our Doxygen configuration.
  * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  -->
+ *
+ * @class doc_note_parameter_setting_lv
+ *
+ * @note Upon the addition of a Parameter object to an SBMLDocument
+ * (e.g., using Model::addParameter(@if java Parameter p@endif)), the SBML Level, SBML Version
+ * and XML namespace of the document @em override the values used
+ * when creating the Parameter object via this constructor.  This is
+ * necessary to ensure that an SBML document is a consistent structure.
+ * Nevertheless, the ability to supply the values at the time of creation
+ * of a Parameter is an important aid to producing valid SBML.  Knowledge
+ * of the intented SBML Level and Version determine whether it is valid
+ * to assign a particular value to an attribute, or whether it is valid
+ * to add an object to an existing SBMLDocument.
  *
  * @class doc_note_parameter_about_constant
  *
@@ -193,9 +206,12 @@ public:
    * @param version an unsigned int, the SBML Version to assign to this
    * Parameter
    *
-   * @copydetails doc_throw_exception_lv
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_parameter_setting_lv
    */
   Parameter (unsigned int level, unsigned int version);
 
@@ -216,9 +232,12 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object.
    *
-   * @copydetails doc_throw_exception_namespace
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_parameter_setting_lv
    */
   Parameter (SBMLNamespaces* sbmlns);
 
@@ -233,7 +252,10 @@ public:
    * Copy constructor; creates a copy of a Parameter.
    * 
    * @param orig the Parameter instance to copy.
-     */
+   * 
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
+   */
   Parameter(const Parameter& orig);
 
 
@@ -242,11 +264,13 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   Parameter& operator=(const Parameter& rhs);
 
 
-  /** @cond doxygenLibsbmlInternal */
   /**
    * Accepts the given SBMLVisitor for this instance of Parameter.
    *
@@ -258,13 +282,12 @@ public:
    * embedded.
    */
   virtual bool accept (SBMLVisitor& v) const;
-  /** @endcond */
 
 
   /**
-   * Creates and returns a deep copy of this Parameter object.
-   *
-   * @return the (deep) copy of this Parameter object.
+   * Creates and returns a deep copy of this Parameter.
+   * 
+   * @return a (deep) copy of this Parameter.
    */
   virtual Parameter* clone () const;
 
@@ -282,7 +305,7 @@ public:
    *
    * @see getConstant()
    * @see isSetConstant()
-   * @see setConstant(@if java boolean@endif)
+   * @see setConstant(@if java boolean flag@endif)
    */
   void initDefaults ();
 
@@ -337,7 +360,7 @@ public:
    * @copydetails doc_note_unassigned_unit_are_not_a_default
    * 
    * @see isSetUnits()
-   * @see setUnits(@if java String@endif)
+   * @see setUnits(@if java String units@endif)
    * @see getValue()
    */
   const std::string& getUnits () const;
@@ -352,7 +375,7 @@ public:
    * @copydetails doc_note_parameter_about_constant
    * 
    * @see isSetConstant()
-   * @see setConstant(@if java boolean@endif)
+   * @see setConstant(@if java boolean flag@endif)
    */
   virtual bool getConstant () const;
 
@@ -426,7 +449,7 @@ public:
    * @copydetails doc_note_parameter_about_constant
    *
    * @see getConstant()
-   * @see setConstant(@if java boolean@endif)
+   * @see setConstant(@if java boolean flag@endif)
    */
   virtual bool isSetConstant () const;
 
@@ -440,9 +463,10 @@ public:
    *
    * @param sid the string to use as the identifier of this Parameter
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   virtual int setId (const std::string& sid);
 
@@ -454,9 +478,11 @@ public:
    *
    * @param name the new name for the Parameter
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   int setName (const std::string& name);
 
@@ -467,8 +493,10 @@ public:
    *
    * @param value a @c double, the value to assign
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
    */
   int setValue (double value);
 
@@ -480,9 +508,11 @@ public:
    * @param units a string, the identifier of the units to assign to this
    * Parameter instance
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   int setUnits (const std::string& units);
 
@@ -494,9 +524,11 @@ public:
    * @param flag a boolean, the value for the "constant" attribute of this
    * Parameter instance
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
    *
    * @copydetails doc_note_parameter_about_constant
    *
@@ -509,32 +541,22 @@ public:
   /**
    * Unsets the value of the "name" attribute of this Parameter.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    */
   virtual int unsetName ();
 
 
   /**
-   * Unsets the value of the "constant" attribute of this Parameter object.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
-   *
-   * @see isSetConstant()
-   * @see setConstant(@if java boolean@endif)
-   * @see getConstant()
-   */
-  int unsetConstant ();
-
-
-  /**
    * Unsets the "value" attribute of this Parameter instance.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
    *
    * In SBML Level&nbsp;1 Version&nbsp;1, parameters are required to have
    * values and therefore, the value of a Parameter <b>should always be
@@ -547,9 +569,11 @@ public:
   /**
    * Unsets the "units" attribute of this Parameter instance.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    */
   int unsetUnits ();
 
@@ -630,7 +654,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for this object:
-   * @sbmlconstant{SBML_PARAMETER, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_PARAMETER SBML_PARAMETER@endlink (default).
    *
    * @copydetails doc_warning_typecodes_not_unique
    *
@@ -664,12 +688,12 @@ public:
    * all the required attributes for this Parameter object
    * have been set.
    *
-   * The required attributes for a Parameter object are:
+   * @note The required attributes for a Parameter object are:
    * @li "id" (or "name" in SBML Level&nbsp;1)
    * @li "value" (required in Level&nbsp;1, optional otherwise)
    *
-   * @return @c true if the required attributes have been set, @c false
-   * otherwise.
+   * @return a boolean value indicating whether all the required
+   * attributes for this object have been defined.
    */
   virtual bool hasRequiredAttributes() const ;
 
@@ -692,6 +716,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /* set a flag to indicate that a parameter should 
    * calculate its units from math */
   virtual void setCalculatingUnits(bool calculatingUnits);
@@ -701,7 +726,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
-  Parameter (SBMLNamespaces* sbmlns, bool isLocal);
+
 
   /**
    * Subclasses should override this method to get the list of
@@ -795,6 +820,7 @@ private:
   /** @endcond */
 
   /** @cond doxygenLibsbmlInternal */
+
   /* flag to indicate that a parameter should calculate its units from math */
   bool getCalculatingUnits() const;
   
@@ -818,10 +844,6 @@ public:
    * @param level the SBML Level
    * 
    * @param version the Version within the SBML Level
-   *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfParameters (unsigned int level, unsigned int version);
           
@@ -835,18 +857,14 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object that is used to determine the
    * characteristics of the ListOfParameters object to be created.
-   *
-   * @copydetails doc_throw_exception_namespace
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfParameters (SBMLNamespaces* sbmlns);
 
 
   /**
-   * Creates and returns a deep copy of this ListOfParameters object.
+   * Creates and returns a deep copy of this ListOfParameters instance.
    *
-   * @return the (deep) copy of this ListOfParameters object.
+   * @return a (deep) copy of this ListOfParameters.
    */
   virtual ListOfParameters* clone () const;
 
@@ -858,7 +876,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for this objects contained in this list:
-   * @sbmlconstant{SBML_PARAMETER, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_PARAMETER SBML_PARAMETER@endlink (default).
    *
    * @see getElementName()
    * @see getPackageName()
@@ -966,6 +984,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Gets the ordinal position of this element in the containing object
    * (which in this case is the Model object).
@@ -986,6 +1005,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Create a ListOfParameters object corresponding to the next token in
    * the XML input stream.
@@ -1284,9 +1304,12 @@ Parameter_isSetConstant (const Parameter_t *p);
  * @param p the Parameter_t structure to set.
  * @param sid the string to use as the identifier.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with an id of NULL is equivalent to
  * unsetting the "id" attribute.
@@ -1306,9 +1329,12 @@ Parameter_setId (Parameter_t *p, const char *sid);
  * @param p the Parameter_t structure to set.
  * @param name the string to use as the name.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with the name set to NULL is equivalent to
  * unsetting the "name" attribute.
@@ -1326,8 +1352,11 @@ Parameter_setName (Parameter_t *p, const char *name);
  * @param p the Parameter_t structure to set.
  * @param value the @c double value to use.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
  *
  * @memberof Parameter_t
  */
@@ -1344,9 +1373,12 @@ Parameter_setValue (Parameter_t *p, double value);
  * @param p the Parameter_t structure to set.
  * @param units the string to use as the identifier of the units to assign.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with units set to NULL is equivalent to
  * unsetting the "units" attribute.
@@ -1365,9 +1397,12 @@ Parameter_setUnits (Parameter_t *p, const char *units);
  * @param value the value to assign as the "constant" attribute
  * of the parameter, either zero for false or nonzero for true.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
  *
  * @memberof Parameter_t
  */
@@ -1381,33 +1416,18 @@ Parameter_setConstant (Parameter_t *p, int value);
  * 
  * @param p the Parameter_t structure whose name is to be unset.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof Parameter_t
  */
 LIBSBML_EXTERN
 int
 Parameter_unsetName (Parameter_t *p);
-
-
-/**
- * Unsets the value of the "constant" attribute of the given Parameter_t
- * structure.
- *
- * @param c the Parameter_t structure.
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
- *
- * @memberof Parameter_t
- */
-LIBSBML_EXTERN
-int
-Parameter_unsetConstant (Parameter_t *c);
 
 
 /**
@@ -1420,8 +1440,11 @@ Parameter_unsetConstant (Parameter_t *c);
  *
  * @param p the Parameter_t structure whose value is to be unset.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
  *
  * @memberof Parameter_t
  */
@@ -1435,9 +1458,12 @@ Parameter_unsetValue (Parameter_t *p);
  * 
  * @param p the Parameter_t structure whose units are to be unset.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof Parameter_t
  */
@@ -1471,11 +1497,11 @@ Parameter_getDerivedUnitDefinition(Parameter_t *p);
  * all the required attributes for this Parameter_t structure
  * have been set.
  *
- * The required attributes for a Parameter_t structure are:
+ * @param p the Parameter_t structure to check.
+ *
+ * @note The required attributes for a Parameter_t structure are:
  * @li id (name in L1)
  * @li constant (in L3 only)
- *
- * @param p the Parameter_t structure to check.
  *
  * @return a true if all the required
  * attributes for this structure have been defined, false otherwise.

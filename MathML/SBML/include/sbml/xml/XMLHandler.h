@@ -9,7 +9,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -33,9 +33,10 @@
  * ---------------------------------------------------------------------- -->
  *
  * @class XMLHandler
- * @sbmlbrief{core} Unified interface to different XML parsers.
+ * @sbmlbrief{core} Class providing a unified interface to different XML
+ * parsers.
  *
- * @ifnot clike @internal @endif@~
+ * @if notclike @internal @endif@~
  */
 
 #ifndef XMLHandler_h
@@ -131,4 +132,5 @@ LIBSBML_CPP_NAMESPACE_END
 
 #endif  /* __cplusplus */
 #endif  /* XMLHandler_h */
+
 /** @endcond */

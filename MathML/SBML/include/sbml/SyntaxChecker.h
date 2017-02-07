@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,8 @@
  * ---------------------------------------------------------------------- -->
  *
  * @class SyntaxChecker
- * @sbmlbrief{core} Methods for checking the validity of SBML identifiers.
+ * @sbmlbrief{core} Methods for checking syntax of SBML identifiers and other
+ * strings.
  * 
  * @htmlinclude not-sbml-warning.html
  * 
@@ -254,13 +255,14 @@ public:
    *
    * @copydetails doc_note_static_methods
    *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
+   * @if notcpp @htmlinclude warn-default-args-in-docs.html @endif@~
    */
   static bool hasExpectedXHTMLSyntax(const XMLNode * xhtml, 
                                      SBMLNamespaces * sbmlns = NULL); 
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Returns true @c true or @c false depending on whether the argument
    * string conforms to the syntax of SBML identifiers or is empty.
@@ -278,6 +280,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /*
    * return true has the xhtml ns correctly declared
    */
@@ -287,6 +290,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /*
    * return true if the html tag contains both a title
    * and a body tag 

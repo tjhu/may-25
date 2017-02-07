@@ -9,7 +9,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -34,11 +34,6 @@
  *
  * @class SBasePluginCreatorBase
  * @sbmlbrief{core} Base class of %SBasePluginCreator.
- *
- * @htmlinclude not-sbml-warning.html
- *
- * This is the base class of the SBasePluginCreator template class.  This
- * contains virtual methods that need to be overridden by subclasses.
  */
 
 #ifndef SBasePluginCreatorBase_h
@@ -63,91 +58,62 @@ public:
   typedef std::vector<std::string>::iterator SupportedPackageURIListIter;
 
   /**
-   * Destroys this SBasePluginCreatorBase object.
+   * Destructor
    */
   virtual ~SBasePluginCreatorBase ();
 
 
   /**
-   * Creates an SBasePlugin object with a URI and package prefix.
-   *
-   * @param uri the XML namespace URI for the SBML package
-   *
-   * @param prefix the namespace prefix
-   *
-   * @param xmlns an XMLNamespaces object that identifies namespaces in
-   * use by this package extension
+   * Creates an SBasePlugin with the given uri and the prefix
+   * of the target package extension.
    */
-  virtual SBasePlugin* createPlugin(const std::string& uri,
+  virtual SBasePlugin* createPlugin(const std::string& uri, 
                                     const std::string& prefix,
                                     const XMLNamespaces *xmlns) const = 0;
 
 
   /**
-   * Creates and returns a deep copy of this SBasePluginCreatorBase.
-   *
+   * Creates and returns a deep copy of this SBasePluginCreatorBase.  Must be overridden by child classes.
+   * 
    * @return a (deep) copy of this SBasePluginCreatorBase.
    */
   virtual SBasePluginCreatorBase* clone() const = 0;
 
 
   /**
-   * Returns the number of package URIs supported by this creator object.
-   *
-   * @return the number of package URIs supported.
-   *
-   * @see getSupportedPackageURI()
+   * Returns the number of supported packages by this creator object.
    */
   unsigned int getNumOfSupportedPackageURI() const;
 
 
   /**
-   * Returns the URI of the ith package supported by this creator object.
-   *
-   * @param i the index of the URI being sought.
-   *
-   * @return the URI being sought, in the form of a string.  If no such
-   * URI exists, this method will return an empty string.
-   *
-   * @see getNumOfSupportedPackageURI()
+   * Returns the supported package to the given index.
    */
-  std::string getSupportedPackageURI(unsigned int i) const;
+  std::string getSupportedPackageURI(unsigned int) const;
 
 
   /**
-   * Returns a libSBML type code tied to this creator object.
-   *
-   * @return the integer type code.
+   * Returns an SBMLTypeCode tied to this creator object.
    */
   int getTargetSBMLTypeCode() const;
 
 
   /**
    * Returns the target package name of this creator object.
-   *
-   * @return a string, the package name
    */
   const std::string& getTargetPackageName() const;
 
 
   /**
-   * Returns an SBaseExtensionPoint object tied to this creator object.
-   *
-   * @return the extension point associated with this creator object.
+   * Returns an SBaseExtensionPoint tied to this creator object.
    */
   const SBaseExtensionPoint& getTargetExtensionPoint() const;
 
 
   /**
-   * Returns @c true if a package with the given namespace URI is supported.
-   *
-   * @param uri the XML namespace URI to test.
-   *
-   * @return @c true if the URI applies to this package extension, @c false
-   * otherwise.
+   * Returns true if a package with the given namespace is supported.
    */
   bool isSupported(const std::string& uri) const;
-
 
 protected:
 
@@ -164,6 +130,7 @@ protected:
   SBasePluginCreatorBase (const SBasePluginCreatorBase&);
 
   /** @cond doxygenLibsbmlInternal */
+
   SupportedPackageURIList  mSupportedPackageURI;
   SBaseExtensionPoint       mTargetExtensionPoint;
 
@@ -207,23 +174,6 @@ LIBSBML_EXTERN
 SBasePlugin_t*
 SBasePluginCreator_createPlugin(SBasePluginCreatorBase_t* creator, 
   const char* uri, const char* prefix, const XMLNamespaces_t* xmlns);
-
-
-/**
- * Frees the given SBasePluginCreatorBase_t structure
- * 
- * @param plugin the SBasePluginCreatorBase_t structure to be freed
- * 
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
- *
- * @memberof SBasePlugin_t
- */
-LIBSBML_EXTERN
-int
-SBasePluginCreator_free(SBasePluginCreatorBase_t* creator);
-
 
 /**
  * Creates a deep copy of the given SBasePluginCreatorBase_t structure

@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -204,30 +204,6 @@ typedef CLASS_OR_STRUCT StoichiometryMath          StoichiometryMath_t;
  * @copydoc Priority
  */
 typedef CLASS_OR_STRUCT Priority                     Priority_t;
-
-/**
- * @var typedef class AlgebraicRule AlgebraicRule_t
- * @copydoc AlgebraicRule
- */
-typedef CLASS_OR_STRUCT AlgebraicRule                AlgebraicRule_t;
-
-/**
- * @var typedef class AssignmentRule AssignmentRule_t
- * @copydoc AssignmentRule
- */
-typedef CLASS_OR_STRUCT AssignmentRule                AssignmentRule_t;
-
-/**
- * @var typedef class RateRule RateRule_t
- * @copydoc RateRule
- */
-typedef CLASS_OR_STRUCT RateRule                RateRule_t;
-
-/**
- * @var typedef class ModifierSpeciesReference ModifierSpeciesReference_t
- * @copydoc ModifierSpeciesReference
- */
-typedef CLASS_OR_STRUCT ModifierSpeciesReference                ModifierSpeciesReference_t;
 
 /**
  * @var typedef class SBMLReader SBMLReader_t
@@ -434,3 +410,4 @@ LIBSBML_CPP_NAMESPACE_END
 #undef CLASS_OR_STRUCT
 
 #endif  /* sbmlfwd_h  */
+

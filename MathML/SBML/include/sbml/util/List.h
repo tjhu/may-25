@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,8 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class List
- * @sbmlbrief{core} Simple, plain, generic lists.
+ * @sbmlbrief{core} Simple, plain, generic lists, and associated list
+ * utilities.
  *
  * @htmlinclude not-sbml-warning.html
  *
@@ -109,7 +110,7 @@ typedef void (*ListDeleteItemFunc) (void *item);
  *
  * 
  * @class ListNode
- * @sbmlbrief{core} A node in a plain List.
+ * @sbmlbrief{core} The node element of the List class.
  *
  * @htmlinclude not-sbml-warning.html
  *
@@ -133,13 +134,12 @@ class LIBSBML_EXTERN List
 public:
 
   /**
-   * Creates a new List object.
+   * Creates a new List.
    */
   List ();
 
-
   /**
-   * Destroys this List object.
+   * Destroys the given List.
    *
    * This function does not delete List items.  It destroys only the List
    * and its constituent ListNodes (if any).
@@ -275,6 +275,7 @@ public:
   void transferFrom(List* list);
 
   /** @cond doxygenLibsbmlInternal */
+
  /**
   * Delete all child elements of the given list, and then the list itself.
   *
@@ -285,8 +286,11 @@ public:
   static void deleteListAndChildrenWith(List* list, ListDeleteItemFunc delteFunc);
 
   /** @cond doxygenLibsbmlInternal */
+
+
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   unsigned int size;
   ListNode*    head;
   ListNode*    tail;

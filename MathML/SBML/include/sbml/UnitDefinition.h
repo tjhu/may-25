@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,7 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class UnitDefinition
- * @sbmlbrief{core} A definition of a unit used in an SBML model.
+ * @sbmlbrief{core} Implementation of SBML's %UnitDefinition construct.
  *
  * Units of measurement may be supplied in a number of contexts in an SBML
  * model.  The SBML unit definition facility uses two classes of objects,
@@ -123,14 +123,12 @@
  * predefined unit names, @c meter and @c liter.  This is explained in
  * somewhat greater detail in the description of the Unit class.
  *
- * <ul>
  * <li> In SBML Level&nbsp;2 (all Versions), there is an additional set of
  * reserved identifiers: @c substance, @c volume, @c area, @c length, and
  * @c time.  Using one of these values for the attribute "id" of a
  * UnitDefinition has the effect of redefining the model-wide default units
  * for the corresponding quantities.  The list of special unit names in
  * SBML Level&nbsp;2 is given in the table below:
- * </ul>
  *
  *   @htmlinclude predefined-units.html
  *
@@ -145,6 +143,8 @@
  * @c time are not defined by SBML Level&nbsp;3, which uses a different
  * approach to setting model-wide inherited units.
  *
+ * </ul>
+ * 
  *
  * @section sbml-units-limits Further comments about SBML's unit definition system
  * 
@@ -234,9 +234,33 @@
  *  
  * <!-- ------------------------------------------------------------------- -->
  * @class ListOfUnitDefinitions
- * @sbmlbrief{core} A list of UnitDefinition objects.
+ * @sbmlbrief{core} Implementation of SBML's %ListOfUnitDefinitions
+ * construct.
  * 
  * @copydetails doc_what_is_listof
+ */
+
+/**
+ * <!-- ~ ~ ~ ~ ~ Start of common documentation strings ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+ * The following text is used as common documentation blocks copied multiple
+ * times elsewhere in this file.  The use of @class is a hack needed because
+ * Doxygen's @copydetails command has limited functionality.  Symbols
+ * beginning with "doc_" are marked as ignored in our Doxygen configuration.
+ * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  -->
+ *
+ * @class doc_note_unitdefinition_setting_lv
+ * 
+ * @note Upon the addition of a UnitDefinition object to an SBMLDocument
+ * (e.g., using Model::addUnitDefinition(@if java UnitDefinition ud@endif)), the SBML Level, SBML Version
+ * and XML namespace of the document @em override the values used
+ * when creating the UnitDefinition object via this constructor.  This is
+ * necessary to ensure that an SBML document is a consistent structure.
+ * Nevertheless, the ability to supply the values at the time of creation
+ * of a UnitDefinition is an important aid to producing valid SBML.
+ * Knowledge of the intented SBML Level and Version determine whether it
+ * is valid to assign a particular value to an attribute, or whether it
+ * is valid to add an object to an existing SBMLDocument.
+ *
  */
 
 #ifndef UnitDefinition_h
@@ -274,9 +298,12 @@ public:
    * @param version an unsigned int, the SBML Version to assign to this
    * UnitDefinition
    *
-   * @copydetails doc_throw_exception_lv
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_unitdefinition_setting_lv
    */
   UnitDefinition (unsigned int level, unsigned int version);
 
@@ -289,9 +316,12 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object.
    *
-   * @copydetails doc_throw_exception_namespace
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_unitdefinition_setting_lv
    */
   UnitDefinition (SBMLNamespaces* sbmlns);
 
@@ -306,6 +336,9 @@ public:
    * Copy constructor; creates a copy of this UnitDefinition.
    *
    * @param orig the object to copy.
+   * 
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   UnitDefinition(const UnitDefinition& orig);
 
@@ -315,11 +348,13 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   UnitDefinition& operator=(const UnitDefinition& rhs);
 
 
-  /** @cond doxygenLibsbmlInternal */
   /**
    * Accepts the given SBMLVisitor for this instance of UnitDefinition.
    *
@@ -331,13 +366,12 @@ public:
    * the ListOfUnitDefinitions located in the enclosing Model instance).
    */
   virtual bool accept (SBMLVisitor& v) const;
-  /** @endcond */
 
 
   /**
-   * Creates and returns a deep copy of this UnitDefinition object.
-   *
-   * @return the (deep) copy of this UnitDefinition object.
+   * Creates and returns a deep copy of this UnitDefinition.
+   * 
+   * @return a (deep) copy of this UnitDefinition.
    */
   virtual UnitDefinition* clone () const;
 
@@ -418,9 +452,11 @@ public:
    *
    * @param sid the string to use as the identifier of this UnitDefinition
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   virtual int setId (const std::string& sid);
 
@@ -432,9 +468,11 @@ public:
    *
    * @param name the new name for the UnitDefinition
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   virtual int setName (const std::string& name);
 
@@ -442,9 +480,11 @@ public:
   /**
    * Unsets the value of the "name" attribute of this UnitDefinition.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    */
   virtual int unsetName ();
 
@@ -545,12 +585,14 @@ public:
    *
    * @param u the Unit instance to add to this UnitDefinition.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_LEVEL_MISMATCH LIBSBML_LEVEL_MISMATCH @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_VERSION_MISMATCH LIBSBML_VERSION_MISMATCH @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    * 
    * @copydetails doc_note_object_is_copied 
    *
@@ -568,9 +610,9 @@ public:
    * @note It is worth emphasizing that the attribute "kind" value of a
    * Unit is a required attribute for a valid Unit definition.  The
    * createUnit() method does not assign a valid kind to the constructed
-   * unit (instead, it sets the "kind" to @sbmlconstant{UNIT_KIND_INVALID, UnitKind_t}).
+   * unit (instead, it sets the "kind" to @link UnitKind_t#UNIT_KIND_INVALID UNIT_KIND_INVALID@endlink).
    * Callers are cautioned to set the newly-constructed Unit's kind using
-   * Unit::setKind(@if java int@endif) soon after calling this method.
+   * Unit::setKind(@if java int kind@endif) soon after calling this method.
    *
    * @see addUnit(const Unit* u)
    */
@@ -685,7 +727,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for this object:
-   * @sbmlconstant{SBML_UNIT_DEFINITION, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_UNIT_DEFINITION SBML_UNIT_DEFINITION@endlink (default).
    *
    * @copydetails doc_warning_typecodes_not_unique
    *
@@ -766,7 +808,7 @@ public:
    * objects are considered identical when they contain identical lists of
    * Unit objects.  Pairs of Unit objects in the lists are in turn
    * considered identical if they satisfy the predicate
-   * Unit::areIdentical(@if java Unit, %Unit@endif).
+   * Unit::areIdentical(@if java Unit u1, %Unit u2@endif).
    * The predicate compares every attribute of the
    * Unit objects.
    *
@@ -793,7 +835,7 @@ public:
    * objects are considered equivalent when they contain @em equivalent
    * list of Unit objects.  Unit objects are in turn considered equivalent
    * if they satisfy the predicate
-   * Unit::areEquivalent(@if java Unit, %Unit@endif).
+   * Unit::areEquivalent(@if java Unit u1, %Unit u2@endif).
    * The predicate tests a subset of the objects's attributes.
    *
    * @param ud1 the first UnitDefinition object to compare
@@ -812,6 +854,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   static bool areIdenticalSIUnits(const UnitDefinition * ud1, 
     const UnitDefinition * ud2);
   /** @endcond */
@@ -858,7 +901,7 @@ public:
    * Expresses the given definition in a plain-text form.
    *
    * For example,
-   * UnitDefinition::printUnits(@if java UnitDefinition@endif)
+   * UnitDefinition::printUnits(@if java UnitDefinition u@endif)
    * applied to
    * @verbatim
  <unitDefinition>
@@ -903,11 +946,11 @@ public:
    * all the required attributes for this UnitDefinition object
    * have been set.
    *
-   * The required attributes for a UnitDefinition object are:
+   * @note The required attributes for a UnitDefinition object are:
    * @li "id"
    *
-   * @return @c true if the required attributes have been set, @c false
-   * otherwise.
+   * @return a boolean value indicating whether all the required
+   * attributes for this object have been defined.
    */
   virtual bool hasRequiredAttributes() const ;
 
@@ -928,6 +971,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Create and return a unitDefinition object, if present.
    *
@@ -1010,10 +1054,6 @@ public:
    * @param level the SBML Level
    * 
    * @param version the Version within the SBML Level
-   *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfUnitDefinitions (unsigned int level, unsigned int version);
           
@@ -1027,18 +1067,14 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object that is used to determine the
    * characteristics of the ListOfUnitDefinitions object to be created.
-   *
-   * @copydetails doc_throw_exception_namespace
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfUnitDefinitions (SBMLNamespaces* sbmlns);
 
 
   /**
-   * Creates and returns a deep copy of this ListOfUnitDefinitions object.
+   * Creates and returns a deep copy of this ListOfUnitDefinitions instance.
    *
-   * @return the (deep) copy of this ListOfUnitDefinitions object.
+   * @return a (deep) copy of this ListOfUnitDefinitions.
    */
   virtual ListOfUnitDefinitions* clone () const;
 
@@ -1050,7 +1086,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for objects contained in this list:
-   * @sbmlconstant{SBML_UNIT_DEFINITION, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_UNIT_DEFINITION SBML_UNIT_DEFINITION@endlink (default).
    *
    * @see getElementName()
    * @see getPackageName()
@@ -1172,6 +1208,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Get the ordinal position of this element in the containing object
    * (which in this case is the Model object).
@@ -1192,6 +1229,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Create and return a listOfUnitDefinitions object, if present.
    *
@@ -1511,9 +1549,12 @@ UnitDefinition_isVariantOfSubstancePerTime (const UnitDefinition_t *ud);
  * @param ud the UnitDefinition_t structure whose id is to be set
  * @param sid a string, the new identifier for the UnitDefinition_t structure
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with an id of NULL is equivalent to
  * unsetting the "id" attribute.
@@ -1532,9 +1573,12 @@ UnitDefinition_setId (UnitDefinition_t *ud, const char *sid);
  * @param ud the UnitDefinition_t structure whose name is to be set
  * @param name a string, the new name for the UnitDefinition_t structure
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with the name set to NULL is equivalent to
  * unsetting the "name" attribute.
@@ -1551,9 +1595,12 @@ UnitDefinition_setName (UnitDefinition_t *ud, const char *name);
  *
  * @param ud the UnitDefinition_t whose name is to be unset.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof UnitDefinition_t
  */
@@ -1568,12 +1615,15 @@ UnitDefinition_unsetName (UnitDefinition_t *ud);
  * @param ud the UnitDefinition_t structure.
  * @param u the Unit_t instance to add.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_DUPLICATE_OBJECT_ID, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_LEVEL_MISMATCH LIBSBML_LEVEL_MISMATCH @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_VERSION_MISMATCH LIBSBML_VERSION_MISMATCH @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_DUPLICATE_OBJECT_ID LIBSBML_DUPLICATE_OBJECT_ID @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof UnitDefinition_t
  */
@@ -1766,7 +1816,7 @@ UnitDefinition_areIdentical(UnitDefinition_t * ud1, UnitDefinition_t * ud2);
  * structures are considered equivalent when they contain @em equivalent
  * list of Unit_t structures.  Unit_t structures are in turn considered equivalent
  * if they satisfy the predicate
- * Unit::areEquivalent(@if java Unit, %Unit@endif).
+ * Unit::areEquivalent(@if java Unit u1, %Unit u2@endif).
  * The predicate tests a subset of the_t structures's attributes.
  *
  * @param ud1 the first UnitDefinition_t structure to compare
@@ -1854,7 +1904,7 @@ UnitDefinition_divide(UnitDefinition_t * ud1, UnitDefinition_t * ud2);
  * @memberof UnitDefinition_t
  */
 LIBSBML_EXTERN
-char *
+const char *
 UnitDefinition_printUnits(UnitDefinition_t * ud, int compact);
 
 

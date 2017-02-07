@@ -11,7 +11,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -35,9 +35,10 @@
  * ---------------------------------------------------------------------- -->
  *
  * @class XMLParser
- * @sbmlbrief{core} Unified interface to different XML parsers.
+ * @sbmlbrief{core} Class providing a unified interface to different XML
+ * parsers.
  *
- * @ifnot clike @internal @endif@~
+ * @if notclike @internal @endif@~
  */
 
 #ifndef XMLParser_h
@@ -71,7 +72,7 @@ public:
    * If the XML compatibility layer has been linked against only a single
    * XML library, the library parameter is ignored.
    *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
+   * @if notcpp @htmlinclude warn-default-args-in-docs.html @endif@~
    */
   static XMLParser* create (  XMLHandler&       handler
                             , const std::string library = "" );
@@ -92,7 +93,7 @@ public:
    *
    * @return true if the parse was successful, false otherwise.
    *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
+   * @if notcpp @htmlinclude warn-default-args-in-docs.html @endif@~
    */
   virtual bool parse (const char* content, bool isFile = true) = 0;
 
@@ -113,7 +114,7 @@ public:
    * @return true if the first step of the progressive parse was
    * successful, false otherwise.
    *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
+   * @if notcpp @htmlinclude warn-default-args-in-docs.html @endif@~
    */
   virtual bool parseFirst (const char* content, bool isFile = true) = 0;
 
@@ -163,9 +164,11 @@ public:
   /**
    * Sets the XMLErrorLog this parser will use to log errors.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    */
   int setErrorLog (XMLErrorLog* log);
 
@@ -188,4 +191,5 @@ LIBSBML_CPP_NAMESPACE_END
 
 #endif  /* __cplusplus */
 #endif  /* XMLParser_h */
+
 /** @endcond */

@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,15 +31,15 @@
  * ------------------------------------------------------------------------ -->
  * 
  * @class Reaction
- * @sbmlbrief{core} An SBML reaction between species in an SBML model.
+ * @sbmlbrief{core} Implementation of SBML's %Reaction construct.
  *
  * A @em reaction represents any transformation, transport or binding
  * process, typically a chemical reaction, that can change the quantity of
  * one or more species.  In SBML, a reaction is defined primarily in terms
  * of the participating reactants and products (and their corresponding
  * stoichiometries), along with optional modifier species, an optional rate
- * at which the reaction takes place, and optional parameters.
- *
+ * at which the reaction takes place, and optional parameters.  
+ * 
  * As with other major objects in SBML, Reaction has a mandatory attribute,
  * "id", used to give the compartment type an identifier.  The identifier
  * must be a text string conforming to the identifer syntax permitted in
@@ -82,7 +82,7 @@
  * object in an instance of a Reaction component is optional, there is no
  * useful default that can be substituted in place of a missing rate
  * expression in a reaction.  Moreover, a reaction's rate cannot be defined
- * in any other way in SBML---InitialAssignment, AssignmentRule,
+ * in any other way in SBML&mdash;InitialAssignment, AssignmentRule,
  * RateRule, AlgebraicRule, Event, and other constructs in SBML cannot be
  * used to set the reaction rate separately.  Nevertheless, for some
  * modeling applications, reactions without any defined rate can be
@@ -151,7 +151,7 @@
  * 
  * <!-- ------------------------------------------------------------------- -->
  * @class ListOfReactions
- * @sbmlbrief{core} A list of Reaction objects.
+ * @sbmlbrief{core} Implementation of SBML's %ListOfReactions construct.
  * 
  * @copydetails doc_what_is_listof
  */
@@ -163,6 +163,19 @@
  * Doxygen's @copydetails command has limited functionality.  Symbols
  * beginning with "doc_" are marked as ignored in our Doxygen configuration.
  * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  -->
+ *
+ * @class doc_note_reaction_setting_lv
+ * 
+ * @note Upon the addition of a Reaction object to an SBMLDocument (e.g.,
+ * using Model::addReaction(@if java Reaction r@endif)), the SBML Level, SBML Version and
+ * XML namespace of the document @em override the values used when
+ * creating the Reaction object via this constructor.  This is necessary
+ * to ensure that an SBML document is a consistent structure.
+ * Nevertheless, the ability to supply the values at the time of creation
+ * of a Reaction is an important aid to producing valid SBML.  Knowledge
+ * of the intented SBML Level and Version determine whether it is valid
+ * to assign a particular value to an attribute, or whether it is valid
+ * to add an object to an existing SBMLDocument.
  *
  * @class doc_warning_reaction_cant_ignore_fast
  * 
@@ -216,9 +229,12 @@ public:
    * @param version an unsigned int, the SBML Version to assign to this
    * Reaction
    *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
+   * 
+   * @copydetails doc_note_reaction_setting_lv
    */
   Reaction (unsigned int level, unsigned int version);
 
@@ -227,13 +243,16 @@ public:
    * Creates a new Reaction using the given SBMLNamespaces object
    * @p  sbmlns.
    *
-   * @copydetails doc_what_are_sbmlnamespaces
+   * @copydetails doc_what_are_sbmlnamespaces 
    *
    * @param sbmlns an SBMLNamespaces object.
    *
-   * @copydetails doc_throw_exception_namespace
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_reaction_setting_lv
    */
   Reaction (SBMLNamespaces* sbmlns);
 
@@ -248,6 +267,9 @@ public:
    * Copy constructor; creates a copy of this Reaction.
    *
    * @param orig the object to copy.
+   * 
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   Reaction (const Reaction& orig);
 
@@ -257,11 +279,13 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   Reaction& operator=(const Reaction& rhs);
 
 
-  /** @cond doxygenLibsbmlInternal */
   /**
    * Accepts the given SBMLVisitor for this instance of Reaction.
    *
@@ -270,13 +294,12 @@ public:
    * @return the result of calling <code>v.visit()</code>.
    */
   virtual bool accept (SBMLVisitor& v) const;
-  /** @endcond */
 
 
   /**
-   * Creates and returns a deep copy of this Reaction object.
-   *
-   * @return the (deep) copy of this Reaction object.
+   * Creates and returns a deep copy of this Reaction.
+   * 
+   * @return a (deep) copy of this Reaction.
    */
   virtual Reaction* clone () const;
 
@@ -313,7 +336,18 @@ public:
   
   
   /**
-   * @copydoc doc_renamesidref_common
+   * Renames all the @c SIdRef attributes on this element, including any
+   * found in MathML.
+   *
+   * @copydetails doc_what_is_sidref
+   * 
+   * This method works by looking at all attributes and (if appropriate)
+   * mathematical formulas, comparing the identifiers to the value of @p
+   * oldid.  If any matches are found, the matching identifiers are replaced
+   * with @p newid.  The method does @em not descend into child elements.
+   *
+   * @param oldid the old identifier
+   * @param newid the new identifier
    */
   virtual void renameSIdRefs(const std::string& oldid, const std::string& newid);
 
@@ -474,9 +508,12 @@ public:
    *
    * @param sid the string to use as the identifier of this Reaction
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   virtual int setId (const std::string& sid);
 
@@ -488,9 +525,12 @@ public:
    *
    * @param name the new name for the Reaction
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   virtual int setName (const std::string& name);
 
@@ -501,10 +541,13 @@ public:
    *
    * @param kl the KineticLaw object to use.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_LEVEL_MISMATCH LIBSBML_LEVEL_MISMATCH @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_VERSION_MISMATCH LIBSBML_VERSION_MISMATCH @endlink
   */
   int setKineticLaw (const KineticLaw* kl);
 
@@ -514,8 +557,11 @@ public:
    *
    * @param value the value of the "reversible" attribute.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
    */
   int setReversible (bool value);
 
@@ -525,8 +571,11 @@ public:
    *
    * @param value the value of the "fast" attribute.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
    * 
    * @copydetails doc_warning_reaction_cant_ignore_fast
    */
@@ -540,10 +589,13 @@ public:
    *
    * @param sid the string to use as the compartment of this Reaction
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    *
    * @note The "compartment" attribute is available in SBML
    * Level&nbsp;3 Version&nbsp;1 Core, but is not present on Reaction in
@@ -555,9 +607,12 @@ public:
   /**
    * Unsets the value of the "name" attribute of this Reaction.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    */
   virtual int unsetName ();
 
@@ -565,9 +620,12 @@ public:
   /**
    * Unsets the "kineticLaw" subelement of this Reaction.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    */
   int unsetKineticLaw ();
 
@@ -575,9 +633,12 @@ public:
   /**
    * Unsets the value of the "fast" attribute of this Reaction.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    *
    * @copydetails doc_warning_reaction_cant_ignore_fast
    */
@@ -587,27 +648,19 @@ public:
   /**
    * Unsets the value of the "compartment" attribute of this Reaction.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    *
    * @note The "compartment" attribute is available in SBML
    * Level&nbsp;3 Version&nbsp;1 Core, but is not present on Reaction in
    * lower Levels of SBML.
    */
   int unsetCompartment ();
-
-
-  /**
-   * Unsets the value of the "reversible" attribute of this Reaction.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
-   */
-  int unsetReversible ();
 
 
   /**
@@ -618,13 +671,16 @@ public:
    * @param sr a SpeciesReference object referring to a Species in the
    * enclosing Model
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_DUPLICATE_OBJECT_ID, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_LEVEL_MISMATCH LIBSBML_LEVEL_MISMATCH @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_VERSION_MISMATCH LIBSBML_VERSION_MISMATCH @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_DUPLICATE_OBJECT_ID LIBSBML_DUPLICATE_OBJECT_ID @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    *
    * @copydetails doc_note_object_is_copied 
    *
@@ -632,36 +688,6 @@ public:
    */
   int addReactant (const SpeciesReference* sr);
 
-  /**
-   * Adds the given species as a reactant with the given stoichiometry
-   *
-   * @param species the species to be added as reactant
-   *
-   * @param stoichiometry an optional parameter specifying the
-   *        stoichiometry of the product (defaulting to 1)
-   *
-   * @param id an optional id to be given to the species reference that will
-   *        be created. (defaulting to empty string, i.e. not set)
-   *
-   * @param constant an attribute specifying whether the species reference is
-   *        constant or not (defaulting to true)
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_DUPLICATE_OBJECT_ID, OperationReturnValues_t}
-   *
-   * @copydetails doc_note_object_is_copied
-   *
-   * @note the Species object itself is NOT added to the model
-   *
-   * @see createProduct()
-   */
-  int addReactant(const Species* species,
-                  double stoichiometry = 1.0,
-                  const std::string& id = "",
-                  bool constant = true);
 
   /**
    * Adds a given SpeciesReference object as a product in this Reaction.
@@ -671,11 +697,14 @@ public:
    * @param sr a SpeciesReference object referring to a Species in the
    * enclosing Model
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_LEVEL_MISMATCH LIBSBML_LEVEL_MISMATCH @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_VERSION_MISMATCH LIBSBML_VERSION_MISMATCH @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    *
    * @copydetails doc_note_object_is_copied 
    *
@@ -683,36 +712,6 @@ public:
    */
   int addProduct (const SpeciesReference* sr);
 
-  /**
-   * Adds the given species as a product with the given stoichiometry
-   *
-   * @param species the species to be added as product
-   *
-   * @param stoichiometry an optional parameter specifying the
-   *        stoichiometry of the product (defaulting to 1)
-   *
-   * @param id an optional id to be given to the species reference that will
-   *        be created. (defaulting to empty string, i.e. not set)
-   *
-   * @param constant an attribute specifying whether the species reference is
-   *        constant or not (defaulting to true)
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_DUPLICATE_OBJECT_ID, OperationReturnValues_t}
-   *
-   * @copydetails doc_note_object_is_copied
-   *
-   * @note the Species object itself is NOT added to the model
-   *
-   * @see createProduct()
-   */
-  int addProduct(const Species* species,
-                 double stoichiometry = 1.0,
-                 const std::string& id = "",
-                 bool constant = true);
 
   /**
    * Adds a given ModifierSpeciesReference object as a product in this
@@ -723,13 +722,16 @@ public:
    * @param msr a ModifierSpeciesReference object referring to a Species in
    * the enclosing Model
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_DUPLICATE_OBJECT_ID, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_LEVEL_MISMATCH LIBSBML_LEVEL_MISMATCH @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_DUPLICATE_OBJECT_ID LIBSBML_DUPLICATE_OBJECT_ID @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_VERSION_MISMATCH LIBSBML_VERSION_MISMATCH @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    *
    * @copydetails doc_note_object_is_copied 
    *
@@ -737,28 +739,6 @@ public:
    */
   int addModifier (const ModifierSpeciesReference* msr);
 
-  /**
-   * Adds the given species as a modifier to this reaction
-   *
-   * @param species the species to be added as modifier
-   *
-   * @param id an optional id to be given to the species reference that will
-   *        be created. (defaulting to empty string, i.e. not set)
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_DUPLICATE_OBJECT_ID, OperationReturnValues_t}
-   *
-   * @copydetails doc_note_object_is_copied
-   *
-   * @note the Species object itself is NOT added to the model
-   *
-   * @see createModifier()
-   */
-  int addModifier(const Species *species,
-                  const std::string &id = "");
 
   /**
    * Creates a new SpeciesReference, adds it to this Reaction's list of
@@ -1144,6 +1124,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Sets the parent SBMLDocument of this SBML object.
    */
@@ -1184,7 +1165,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for this object:
-   * @sbmlconstant{SBML_REACTION, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_REACTION SBML_REACTION@endlink (default).
    *
    * @copydetails doc_warning_typecodes_not_unique
    *
@@ -1217,19 +1198,20 @@ public:
    * Predicate returning @c true if all the required attributes for this
    * Reaction object have been set.
    *
-   * The required attributes for a Reaction object are:
+   * @note The required attributes for a Reaction object are:
    * @li "id" (or "name" in SBML Level&nbsp;1)
    * @li "fast" (in Level&nbsp;3 only, where it is defined as a required attribute)
    * @li "reversible" (in Level&nbsp;3 only, where it is defined as a required attribute)
    *
-   * @return @c true if the required attributes have been set, @c false
-   * otherwise.
+   * @return a boolean value indicating whether all the required
+   * attributes for this object have been defined.
    */
   virtual bool hasRequiredAttributes() const ;
 
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Create and return an SBML object of this class, if present.
    *
@@ -1327,10 +1309,6 @@ public:
    * @param level the SBML Level
    * 
    * @param version the Version within the SBML Level
-   *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfReactions (unsigned int level, unsigned int version);
           
@@ -1344,18 +1322,14 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object that is used to determine the
    * characteristics of the ListOfReactions object to be created.
-   *
-   * @copydetails doc_throw_exception_namespace
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfReactions (SBMLNamespaces* sbmlns);
 
 
   /**
-   * Creates and returns a deep copy of this ListOfReactions object.
+   * Creates and returns a deep copy of this ListOfReactions instance.
    *
-   * @return the (deep) copy of this ListOfReactions object.
+   * @return a (deep) copy of this ListOfReactions.
    */
   virtual ListOfReactions* clone () const;
 
@@ -1367,7 +1341,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for objects contained in this list:
-   * @sbmlconstant{SBML_REACTION, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_REACTION SBML_REACTION@endlink (default).
    *
    * @see getElementName()
    * @see getPackageName()
@@ -1466,6 +1440,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Return the position of this element.
    *
@@ -1479,6 +1454,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Create and return an SBML object of this class, if present.
    *
@@ -1733,9 +1709,12 @@ Reaction_isSetReversible (const Reaction_t *r);
 /**
  * Sets the id of this Reaction_t to a copy of sid.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with an id of NULL is equivalent to
  * unsetting the "id" attribute.
@@ -1750,9 +1729,12 @@ Reaction_setId (Reaction_t *r, const char *sid);
 /**
  * Sets the name of this Reaction_t to a copy of name.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with the name set to NULL is equivalent to
  * unsetting the "name" attribute.
@@ -1767,10 +1749,13 @@ Reaction_setName (Reaction_t *r, const char *name);
 /**
  * Sets the KineticLaw_t of this Reaction_t to a copy of the given KineticLaw_t.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_LEVEL_MISMATCH LIBSBML_LEVEL_MISMATCH @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_VERSION_MISMATCH LIBSBML_VERSION_MISMATCH @endlink
  *
  * @memberof Reaction_t
  */
@@ -1782,8 +1767,11 @@ Reaction_setKineticLaw (Reaction_t *r, const KineticLaw_t *kl);
 /**
  * Sets the reversible status of this Reaction_t to value (boolean).
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
  *
  * @memberof Reaction_t
  */
@@ -1795,8 +1783,11 @@ Reaction_setReversible (Reaction_t *r, int value);
 /**
  * Sets the fast status of this Reaction_t to value (boolean).
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
  *
  * @memberof Reaction_t
  */
@@ -1808,10 +1799,13 @@ Reaction_setFast (Reaction_t *r, int value);
 /**
  * Sets the compartment of this Reaction_t to a copy of compartment.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with the compartment set to NULL is equivalent to
  * unsetting the "compartment" attribute.
@@ -1826,9 +1820,12 @@ Reaction_setCompartment (Reaction_t *r, const char *compartment);
 /**
  * Unsets the name of this Reaction_t.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof Reaction_t
  */
@@ -1840,10 +1837,13 @@ Reaction_unsetName (Reaction_t *r);
 /**
  * Unsets the compartment of this Reaction_t.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof Reaction_t
  */
@@ -1855,9 +1855,12 @@ Reaction_unsetCompartment (Reaction_t *r);
 /**
  * Unsets the KineticLaw_t of this Reaction_t.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof Reaction_t
  */
@@ -1869,9 +1872,12 @@ Reaction_unsetKineticLaw (Reaction_t *r);
 /**
  * Unsets the fast status of this Reation_t.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * In L1, fast is optional with a default of false, which means it is
  * effectively always set.  In L2, however, fast is optional with no
@@ -1885,31 +1891,16 @@ Reaction_unsetFast (Reaction_t *r);
 
 
 /**
- * Unsets the reversible status of this Reaction_t.
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
- *
- * @memberof Reaction_t
- */
-LIBSBML_EXTERN
-int
-Reaction_unsetReversible (Reaction_t *r);
-
-
-/**
  * Predicate returning @c true or @c false depending on whether
  * all the required attributes for this Reaction_t structure
  * have been set.
  *
- * The required attributes for a Reaction_t structure are:
+ * @param r the Reaction_t structure to check.
+ *
+ * @note The required attributes for a Reaction_t structure are:
  * @li id (name in L1)
  * @li fast (in L3 only)
  * @li reversible (in L3 only)
- *
- * @param r the Reaction_t structure to check.
  *
  * @return a true if all the required
  * attributes for this structure have been defined, false otherwise.
@@ -1924,11 +1915,14 @@ Reaction_hasRequiredAttributes (Reaction_t *r);
 /**
  * Adds a copy of the given reactant (SpeciesReference_t) to this Reaction_t.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_LEVEL_MISMATCH LIBSBML_LEVEL_MISMATCH @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_VERSION_MISMATCH LIBSBML_VERSION_MISMATCH @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof Reaction_t
  */
@@ -1940,11 +1934,14 @@ Reaction_addReactant (Reaction_t *r, const SpeciesReference_t *sr);
 /**
  * Adds a copy of the given product (SpeciesReference_t) to this Reaction_t.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_LEVEL_MISMATCH LIBSBML_LEVEL_MISMATCH @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_VERSION_MISMATCH LIBSBML_VERSION_MISMATCH @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof Reaction_t
  */
@@ -1957,97 +1954,21 @@ Reaction_addProduct (Reaction_t *r, const SpeciesReference_t *sr);
  * Adds a copy of the given modifier (modifier SpeciesReference_t) to this
  * Reaction_t.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_LEVEL_MISMATCH LIBSBML_LEVEL_MISMATCH @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_VERSION_MISMATCH LIBSBML_VERSION_MISMATCH @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof Reaction_t
  */
 LIBSBML_EXTERN
 int
 Reaction_addModifier (Reaction_t *r, const SpeciesReference_t *msr);
-
-/**
- * Adds a copy of the given Species_t object as a reactant to this Reaction_t.
- *
- * @param r the Reaction_t structure to which the reactant is added
- * @param s the Species_t structure to be added as reactant
- * @param stoichiometry of the product
- * @param id be given to the species reference that will
- *        be created. 
- * @param constant an attribute specifying whether the species reference is
- *        constant or not
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
- *
- * @note the Species_t structure itself is NOT added to the model
- *
- * @memberof Reaction_t
- */
-LIBSBML_EXTERN
-int
-Reaction_addReactantBySpecies (Reaction_t *r, const Species_t *s, 
-                               double stoichiometry, const char *id,
-                               int constant);
-
-
-/**
- * Adds a copy of the given Species_t object as a product to this Reaction_t.
- *
- * @param r the Reaction_t structure to which the product is added
- * @param s the Species_t structure to be added as product
- * @param stoichiometry of the product
- * @param id be given to the species reference that will
- *        be created. 
- * @param constant an attribute specifying whether the species reference is
- *        constant or not
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
- *
- * @note the Species_t structure itself is NOT added to the model
- *
- * @memberof Reaction_t
- */
-LIBSBML_EXTERN
-int
-Reaction_addProductBySpecies (Reaction_t *r, const Species_t *s, 
-                               double stoichiometry, const char *id,
-                               int constant);
-
-
-/**
- * Adds a copy of the given Species_t object as a modifier to this Reaction_t.
- *
- * @param r the Reaction_t structure to which the modifier is added
- * @param s the Species_t structure to be added as modifier
- * @param id be given to the species reference that will
- *        be created. 
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
- *
- * @note the Species_t structure itself is NOT added to the model
- *
- * @memberof Reaction_t
- */
-LIBSBML_EXTERN
-int
-Reaction_addModifierBySpecies (Reaction_t *r, const Species_t *s, 
-                               const char *id);
 
 
 /**

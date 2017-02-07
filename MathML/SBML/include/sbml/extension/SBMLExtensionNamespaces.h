@@ -1,28 +1,30 @@
 /**
  * @file    SBMLExtensionNamespaces.h
- * @brief   Class to store the SBML Level, Version and namespace of a package.
+ * @brief   SBMLExtensionNamespaces class to store level/version and namespace of
+ *          SBML extension package
  * @author  Akiya Jouraku
+ *
  *
  * <!--------------------------------------------------------------------------
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
  *
- * Copyright (C) 2009-2013 jointly by the following organizations:
+ * Copyright (C) 2009-2013 jointly by the following organizations: 
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
- *
+ *  
  * Copyright (C) 2006-2008 by the California Institute of Technology,
- *     Pasadena, CA, USA
- *
- * Copyright (C) 2002-2005 jointly by the following organizations:
+ *     Pasadena, CA, USA 
+ *  
+ * Copyright (C) 2002-2005 jointly by the following organizations: 
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. Japan Science and Technology Agency, Japan
- *
+ * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation.  A copy of the license agreement is provided
@@ -31,21 +33,9 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class SBMLExtensionNamespaces
- * @sbmlbrief{core} Set of SBML Level + Version + namespace triples.
+ * @sbmlbrief{core} Class to store the Level, Version and XML namespace
+ * information of an SBML extension package.
  *
- * @htmlinclude not-sbml-warning.html
- *
- * SBMLExtensionNamespaces is a template class.  It is extended from
- * SBMLNamespaces and is meant to be used by package extensions to store the
- * SBML Level, Version within a Level, and package version of the SBML
- * Level&nbsp;3 package implemented by a libSBML package extension.
- *
- * @if clike
- * @section sbmlextensionnamespaces-howto How to use SBMLExtensionNamespaces for a package implementation
- * @copydetails doc_extension_sbmlextensionnamespaces
- * @else
- * @copydetails doc_basics_of_extensions
- * @endif@~
  */
 
 #ifndef SBMLExtensionNamespaces_h
@@ -78,21 +68,21 @@ public:
    * Creates a new SBMLExtensionNamespaces object corresponding to the given SBML
    * @p level, @p version and @p package version.
    *
-   * @param level   the SBML Level
-   * @param version the SBML Version
+   * @note SBMLExtensionException will be thrown if the extension module
+   *       that supports the combination of the given sbml level, sbml version, 
+   *       package name, and package version has not been registered.
+   * 
+   * @param level   the SBML level
+   * @param version the SBML version
    * @param pkgVersion the package version
-   * @param prefix  the prefix of the package namespace (e.g. "layout", "multi")
-   *        to be added. The package's name will be used if the given string is empty
+   * @param prefix  the prefix of the package namespace (e.g. "layout", "multi") 
+   *        to be added. The package's name will be used if the given string is empty 
    *        (default).
-   *
-   * @throws SBMLExtensionException if the extension module that supports the
-   * combination of the given SBML Level, SBML Version, package name, and
-   * package version has not been registered.
    */
-  SBMLExtensionNamespaces(unsigned int level        = SBMLExtensionType::getDefaultLevel(),
-                          unsigned int version      = SBMLExtensionType::getDefaultVersion(),
-                          unsigned int pkgVersion   = SBMLExtensionType::getDefaultPackageVersion(),
-                          const std::string& prefix = SBMLExtensionType::getPackageName())
+  SBMLExtensionNamespaces(unsigned int level        = SBMLExtensionType::getDefaultLevel(), 
+                          unsigned int version      = SBMLExtensionType::getDefaultVersion(), 
+                          unsigned int pkgVersion   = SBMLExtensionType::getDefaultPackageVersion(), 
+                          const std::string& prefix = SBMLExtensionType::getPackageName()) 
 #ifndef SWIG
     : ISBMLExtensionNamespaces(level, version, SBMLExtensionType::getPackageName(), pkgVersion, prefix)
      ,mPackageVersion(pkgVersion), mPackageName(prefix)
@@ -106,17 +96,17 @@ public:
   /**
    * Destroys this SBMLExtensionNamespaces object.
    */
-  virtual ~SBMLExtensionNamespaces()
+  virtual ~SBMLExtensionNamespaces() 
 #ifndef SWIG
   {}
 #else
   ;
 #endif //SWIG
 
-
+  
   /**
    * Copy constructor; creates a copy of a SBMLExtensionNamespaces.
-   *
+   * 
    * @param orig the SBMLExtensionNamespaces instance to copy.
    */
   SBMLExtensionNamespaces(const SBMLExtensionNamespaces& orig)
@@ -131,17 +121,15 @@ public:
 
   /**
    * Assignment operator for SBMLExtensionNamespaces.
-   *
-   * @param rhs the SBMLExtensionNamespaces instance to assign from.
    */
-  SBMLExtensionNamespaces& operator=(const SBMLExtensionNamespaces& rhs)
+  SBMLExtensionNamespaces& operator=(const SBMLExtensionNamespaces& orig)
 #ifndef SWIG
   {
-    if (this == &rhs) return *this;
+    if (this == &orig) return *this;
 
-    SBMLNamespaces::operator=(rhs);
-    mPackageVersion = rhs.mPackageVersion;
-    mPackageName = rhs.mPackageName;
+    SBMLNamespaces::operator=(orig);
+    mPackageVersion = orig.mPackageVersion;
+    mPackageName = orig.mPackageName;
 
     return *this;
   }
@@ -151,9 +139,9 @@ public:
 
 
   /**
-   * Creates and returns a deep copy of this SBMLExtensionNamespaces object.
-   *
-   * @return a (deep) copy of this SBMLExtensionNamespaces object.
+   * Creates and returns a deep copy of this SBMLExtensionNamespaces.
+   * 
+   * @return a (deep) copy of this SBMLExtensionNamespaces.
    */
   virtual ISBMLExtensionNamespaces* clone () const
 #ifndef SWIG
@@ -166,10 +154,11 @@ public:
 
 
   /**
-   * Returns a string representing the SBML XML namespace of this package.
+   * Returns a string representing the Package XML namespace of this
+   * object.
    *
    * @return a string representing the SBML namespace that reflects the
-   * SBML Level and Version, and package version, of this package.
+   * SBML Level and Version of this object.
    */
   virtual std::string getURI() const
 #ifndef SWIG
@@ -180,11 +169,10 @@ public:
 #else
   ;
 #endif //SWIG
-
+  
 
   /**
-   * Returns the version of the SBML package represented by this namespace
-   * object.
+   * Get the SBML Package Version of this SBMLExtensionNamespaces object.
    *
    * @return the SBML Package Version of this SBMLExtensionNamespaces object.
    */
@@ -197,25 +185,24 @@ public:
   ;
 #endif //SWIG
 
-
-  /**
-   * Returns the name of the SBML package represented by this namespace
-   * object.
-   *
-   * @return a string, the name of package.
-   */
-  virtual const std::string& getPackageName() const
+	/**
+	 * Returns the name of the main package for this namespace.
+	 *
+	 * @return the name of the main package for this namespace.
+	 * 
+	 */
+	virtual const std::string& getPackageName() const
 #ifndef SWIG
-  {
-    return mPackageName;
-  }
+	{
+		return mPackageName;
+	}
 #else
-  ;
-#endif //SWIG
-
-
+	;
+#endif //SWIG	
+	
 #ifndef SWIG
   /** @cond doxygenLibsbmlInternal */
+
   void setPackageVersion(unsigned int pkgVersion)
   {
     mPackageVersion = pkgVersion;
@@ -225,8 +212,9 @@ public:
 #endif //SWIG
 
 
-protected:
+protected:  
   /** @cond doxygenLibsbmlInternal */
+
   unsigned int mPackageVersion;
   std::string mPackageName;
 
@@ -237,7 +225,7 @@ LIBSBML_CPP_NAMESPACE_END
 
 #endif  /* __cplusplus */
 
-
+  
 #ifndef SWIG
 
 LIBSBML_CPP_NAMESPACE_BEGIN
@@ -246,9 +234,9 @@ BEGIN_C_DECLS
 
 /**
  * Creates a deep copy of the given SBMLExtensionNamespaces_t structure
- *
+ * 
  * @param extns the SBMLExtensionNamespaces_t structure to be copied
- *
+ * 
  * @return a (deep) copy of the given SBMLExtensionNamespaces_t structure.
  *
  * @memberof SBMLExtensionNamespaces_t
@@ -259,12 +247,15 @@ SBMLExtensionNamespaces_clone(SBMLExtensionNamespaces_t* extns);
 
 /**
  * Frees the given SBMLExtensionNamespaces_t structure
- *
+ * 
  * @param extns the SBMLExtensionNamespaces_t structure to be freed
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * 
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof SBMLExtensionNamespaces_t
  */
@@ -276,9 +267,9 @@ SBMLExtensionNamespaces_free(SBMLExtensionNamespaces_t* extns);
  * Returns a copy of the string representing the Package XML namespace of the
  * given namespace structure.
  *
- * @param extns the SBMLExtensionNamespaces_t structure
+ * @param extns the SBMLExtensionNamespaces_t structure 
  *
- * @return a copy of the string representing the SBML namespace that reflects
+ * @return a copy of the string representing the SBML namespace that reflects 
  * the SBML Level and Version of the namespace structure.
  *
  * @memberof SBMLExtensionNamespaces_t
@@ -290,7 +281,7 @@ SBMLExtensionNamespaces_getURI(SBMLExtensionNamespaces_t* extns);
 /**
  * Return the SBML Package Version of the SBMLExtensionNamespaces_t structure.
  *
- * @param extns the SBMLExtensionNamespaces_t structure
+ * @param extns the SBMLExtensionNamespaces_t structure 
  *
  * @return the SBML Package Version of the SBMLExtensionNamespaces_t structure.
  *
@@ -304,9 +295,9 @@ SBMLExtensionNamespaces_getPackageVersion(SBMLExtensionNamespaces_t* extns);
  * Returns a copy of the string representing the Package name of the
  * given namespace structure.
  *
- * @param extns the SBMLExtensionNamespaces_t structure
+ * @param extns the SBMLExtensionNamespaces_t structure 
  *
- * @return a copy of the string representing the package name that of the
+ * @return a copy of the string representing the package name that of the 
  * namespace structure.
  *
  * @memberof SBMLExtensionNamespaces_t
@@ -318,12 +309,15 @@ SBMLExtensionNamespaces_getPackageName(SBMLExtensionNamespaces_t* extns);
 /**
  * Sets the package version of the namespace structure.
  *
- * @param extns the SBMLExtensionNamespaces_t structure
+ * @param extns the SBMLExtensionNamespaces_t structure 
  * @param pkgVersion the package version to use
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof SBMLExtensionNamespaces_t
  */

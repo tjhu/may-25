@@ -2,27 +2,27 @@
  * @file    ConversionOption.h
  * @brief   Definition of ConversionOption, the class encapsulating conversion options.
  * @author  Frank Bergmann
- *
+ * 
  * <!--------------------------------------------------------------------------
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
  *
- * Copyright (C) 2009-2013 jointly by the following organizations:
+ * Copyright (C) 2009-2013 jointly by the following organizations: 
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
- *
+ *  
  * Copyright (C) 2006-2008 by the California Institute of Technology,
- *     Pasadena, CA, USA
- *
- * Copyright (C) 2002-2005 jointly by the following organizations:
+ *     Pasadena, CA, USA 
+ *  
+ * Copyright (C) 2002-2005 jointly by the following organizations: 
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. Japan Science and Technology Agency, Japan
- *
+ * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation.  A copy of the license agreement is provided
@@ -31,8 +31,8 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class ConversionOption
- * @sbmlbrief{core} A single configuration setting for an SBML converter.
- *
+ * @sbmlbrief{core} Class of object that encapsulates a conversion option.
+ * 
  * @htmlinclude libsbml-facility-only-warning.html
  *
  * LibSBML provides a number of converters that can perform transformations
@@ -42,15 +42,11 @@
  * such objects, individual options are encapsulated using ConversionOption
  * objects.
  *
- * A ConversionOption @if conly structure @else object@endif@~ consists of
- * four parts:
- * @li A @em key, acting as the name of the option.
- * @li A @em value of this option.
- * @li A @em type for the value; the type code is chosen from @if clike
- * an enumeration @else a set of integer constants@endif@~ whose names all
- * begin with the prefix <code>CNV_TYPE_</code>.  (See the separate <a
- * class="el" href="#ConversionOptionType_t">subsection</a> below for more
- * information.)
+ * A ConversionOption object consists of four parts:
+ * @li A @em key, acting as the name of the option;
+ * @li A @em value of this option;
+ * @li A @em type for the value; this is chosen from  the enumeration type
+ * <a class="el" href="#ConversionOptionType_t">ConversionOptionType_t</a>; and
  * @li A @em description consisting of a text string that describes the
  * option in some way.
  *
@@ -61,11 +57,10 @@
  *
  * An option in ConversionOption must have a data type declared, to
  * indicate whether it is a string value, an integer, and so forth.  The
- * possible types of values are taken from
- * @if clike the enumeration #ConversionOptionType_t @else a set of
- * constants whose symbol names begin with the prefix
- * <code>CNV_TYPE_</code>@endif. The following are the possible values:
- *
+ * possible types of values are taken from the enumeration <a
+ * class="el" href="#ConversionOptionType_t">ConversionOptionType_t</a>.
+ * The following are the possible values:
+ * 
  * <p>
  * <center>
  * <table width="90%" cellspacing="1" cellpadding="1" border="0" class="normal-font">
@@ -74,49 +69,29 @@
  *      <td><strong>Meaning</strong></td>
  *  </tr>
  * <tr>
- * <td><code>@sbmlconstant{CNV_TYPE_BOOL, ConversionOptionType_t}</code></td>
+ * <td><code>@link ConversionOptionType_t#CNV_TYPE_BOOL CNV_TYPE_BOOL@endlink</code></td>
  * <td>Indicates the value type is a Boolean.</td>
  * </tr>
  * <tr>
- * <td><code>@sbmlconstant{CNV_TYPE_DOUBLE, ConversionOptionType_t}</code></td>
+ * <td><code>@link ConversionOptionType_t#CNV_TYPE_DOUBLE CNV_TYPE_DOUBLE@endlink</code></td>
  * <td>Indicates the value type is a double-sized float.</td>
  * </tr>
  * <tr>
- * <td><code>@sbmlconstant{CNV_TYPE_INT, ConversionOptionType_t}</code></td>
+ * <td><code>@link ConversionOptionType_t#CNV_TYPE_INT CNV_TYPE_INT@endlink</code></td>
  * <td>Indicates the value type is an integer.</td>
  * </tr>
  * <tr>
- * <td><code>@sbmlconstant{CNV_TYPE_SINGLE, ConversionOptionType_t}</code></td>
+ * <td><code>@link ConversionOptionType_t#CNV_TYPE_SINGLE CNV_TYPE_SINGLE@endlink</code></td>
  * <td>Indicates the value type is a float.</td>
  * </tr>
  * <tr>
-  * <td><code>@sbmlconstant{CNV_TYPE_STRING, ConversionOptionType_t}</code></td>
+ * <td><code>@link ConversionOptionType_t#CNV_TYPE_STRING CNV_TYPE_STRING@endlink</code></td>
  * <td>Indicates the value type is a string.</td>
  * </tr>
  * </table>
  * </center>
  *
  * @see ConversionProperties
- */
-
-/**
- * <!-- ~ ~ ~ ~ ~ Start of common documentation strings ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
- * The following text is used as common documentation blocks copied multiple
- * times elsewhere in this file.  The use of @class is a hack needed because
- * Doxygen's @copydetails command has limited functionality.  Symbols
- * beginning with "doc_" are marked as ignored in our Doxygen configuration.
- * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  -->
- *
- * @class doc_cnv_type
- *
- * @par
- * The conversion @p type argument value must be one of
- * @if clike the values defined in the enumeration
- * #ConversionOptionType_t.@endif@if java the constants whose names begin
- * with the characters <code>CNV_TYPE_</code> in the interface class
- * {@link libsbmlConstants}.@endif@if python the constants whose names begin
- * with the characters <code>CNV_TYPE_</code> in the interface class
- * @link libsbml libsbml@endlink.@endif
  */
 
 #ifndef ConversionOption_h
@@ -153,96 +128,84 @@ LIBSBML_CPP_NAMESPACE_BEGIN
 class LIBSBML_EXTERN ConversionOption
 {
 public:
-
   /**
    * Creates a new ConversionOption.
    *
    * This is the general constructor, taking arguments for all aspects of
    * an option.  Other constructors exist with different arguments.
-   *
-   * @copydetails doc_cnv_type
-   *
+   * 
    * @param key the key for this option
    * @param value an optional value for this option
    * @param type the type of this option
    * @param description the description for this option
-   *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
    */
-  ConversionOption(const std::string& key, const std::string& value="",
-                   ConversionOptionType_t type=CNV_TYPE_STRING,
-                   const std::string& description="");
+  ConversionOption(std::string key, std::string value="", 
+                   ConversionOptionType_t type=CNV_TYPE_STRING, 
+                   std::string description="");
 
-
+  
   /**
    * Creates a new ConversionOption specialized for string-type options.
-   *
+   * 
    * @param key the key for this option
    * @param value the value for this option
    * @param description an optional description
-   *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
    */
-  ConversionOption(const std::string& key, const char* value,
-                   const std::string& description="");
+  ConversionOption(std::string key, const char* value, 
+                   std::string description="");
 
 
   /**
    * Creates a new ConversionOption specialized for Boolean-type options.
-   *
+   * 
    * @param key the key for this option
    * @param value the value for this option
    * @param description an optional description
-   *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
    */
-  ConversionOption(const std::string& key, bool value,
-                   const std::string& description="");
+  ConversionOption(std::string key, bool value, 
+                   std::string description="");
 
 
   /**
    * Creates a new ConversionOption specialized for double-type options.
-   *
+   * 
    * @param key the key for this option
    * @param value the value for this option
    * @param description an optional description
-   *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
    */
-  ConversionOption(const std::string& key, double value,
-                   const std::string& description="");
+  ConversionOption(std::string key, double value, 
+                   std::string description="");
 
 
   /**
    * Creates a new ConversionOption specialized for float-type options.
-   *
+   * 
    * @param key the key for this option
    * @param value the value for this option
    * @param description an optional description
-   *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
    */
-  ConversionOption(const std::string& key, float value,
-                   const std::string& description="");
+  ConversionOption(std::string key, float value, 
+                   std::string description="");
 
 
   /**
    * Creates a new ConversionOption specialized for integer-type options.
-   *
+   * 
    * @param key the key for this option
    * @param value the value for this option
    * @param description an optional description
-   *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
    */
-  ConversionOption(const std::string& key, int value,
-                   const std::string& description="");
+  ConversionOption(std::string key, int value, 
+                   std::string description="");
 
 
   /**
    * Copy constructor; creates a copy of an ConversionOption object.
    *
    * @param orig the ConversionOption object to copy.
+   * 
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   ConversionOption(const ConversionOption& orig);
 
@@ -252,104 +215,105 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   ConversionOption& operator=(const ConversionOption& rhs);
 
 
   /**
    * Destroys this object.
-   */
+   */ 
   virtual ~ConversionOption();
 
 
-  /**
+  /** 
    * Creates and returns a deep copy of this ConversionOption object.
-   *
-   * @return the (deep) copy of this ConversionOption object.
+   * 
+   * @return a (deep) copy of this ConversionOption object.
    */
   virtual ConversionOption* clone() const;
 
 
   /**
    * Returns the key for this option.
-   *
+   * 
    * @return the key, as a string.
    */
-  const std::string& getKey() const;
+  virtual std::string getKey() const; 
 
 
   /**
    * Sets the key for this option.
-   *
+   * 
    * @param key a string representing the key to set.
    */
-  void setKey(const std::string& key);
+  virtual void setKey(std::string key);
 
 
   /**
    * Returns the value of this option.
-   *
+   * 
    * @return the value of this option, as a string.
    */
-  const std::string& getValue() const;
+  virtual std::string getValue() const;
 
 
   /**
    * Sets the value for this option.
-   *
+   * 
    * @param value the value to set, as a string.
    */
-  void setValue(const std::string& value);
+  virtual void setValue(std::string value);
 
 
   /**
    * Returns the description string for this option.
-   *
+   * 
    * @return the description of this option.
    */
-  const std::string& getDescription() const;
+  virtual std::string getDescription() const;
 
 
   /**
    * Sets the description text for this option.
-   *
+   * 
    * @param description the description to set for this option.
    */
-  void setDescription(const std::string& description);
+  virtual void setDescription(std::string description);
 
 
   /**
    * Returns the type of this option
-   *
+   * 
    * @return the type of this option.
    */
-  ConversionOptionType_t getType() const;
+  virtual ConversionOptionType_t getType() const;
 
 
   /**
    * Sets the type of this option.
-   *
-   * @copydetails doc_cnv_type
-   *
+   * 
    * @param type the type value to use.
    */
-  void setType(ConversionOptionType_t type);
+  virtual void setType(ConversionOptionType_t type);
 
 
   /**
    * Returns the value of this option as a Boolean.
-   *
+   * 
    * @return the value of this option.
-   */
+   */   
   virtual bool getBoolValue() const;
 
 
-  /**
+  /** 
    * Set the value of this option to a given Boolean value.
    *
    * Invoking this method will also set the type of the option to
-   * @sbmlconstant{CNV_TYPE_BOOL, ConversionOptionType_t}.
-   *
+   * @link ConversionOptionType_t#CNV_TYPE_BOOL CNV_TYPE_BOOL@endlink.
+   * 
    * @param value the Boolean value to set
    */
   virtual void setBoolValue(bool value);
@@ -357,18 +321,18 @@ public:
 
   /**
    * Returns the value of this option as a @c double.
-   *
+   * 
    * @return the value of this option.
-   */
+   */   
   virtual double getDoubleValue() const;
 
 
-  /**
+  /** 
    * Set the value of this option to a given @c double value.
    *
    * Invoking this method will also set the type of the option to
-   * @sbmlconstant{CNV_TYPE_DOUBLE, ConversionOptionType_t}.
-   *
+   * @link ConversionOptionType_t#CNV_TYPE_DOUBLE CNV_TYPE_DOUBLE@endlink.
+   * 
    * @param value the value to set
    */
   virtual void setDoubleValue(double value);
@@ -376,18 +340,18 @@ public:
 
   /**
    * Returns the value of this option as a @c float.
-   *
+   * 
    * @return the value of this option as a float
-   */
+   */   
   virtual float getFloatValue() const;
 
 
-  /**
+  /** 
    * Set the value of this option to a given @c float value.
    *
    * Invoking this method will also set the type of the option to
-   * @sbmlconstant{CNV_TYPE_SINGLE, ConversionOptionType_t}.
-   *
+   * @link ConversionOptionType_t#CNV_TYPE_SINGLE CNV_TYPE_SINGLE@endlink.
+   * 
    * @param value the value to set
    */
   virtual void setFloatValue(float value);
@@ -395,25 +359,26 @@ public:
 
   /**
    * Returns the value of this option as an @c integer.
-   *
+   * 
    * @return the value of this option, as an int
-   */
+   */   
   virtual int getIntValue() const;
 
 
-  /**
+  /** 
    * Set the value of this option to a given @c int value.
    *
    * Invoking this method will also set the type of the option to
-   * @sbmlconstant{CNV_TYPE_INT, ConversionOptionType_t}.
-   *
+   * @link ConversionOptionType_t#CNV_TYPE_INT CNV_TYPE_INT@endlink.
+   * 
    * @param value the value to set
    */
   virtual void setIntValue(int value);
 
 
-protected:
+protected: 
   /** @cond doxygenLibsbmlInternal */
+
   std::string mKey;
   std::string mValue;
   ConversionOptionType_t mType;
@@ -442,9 +407,9 @@ LIBSBML_EXTERN
 ConversionOption_t*
 ConversionOption_create(const char* key);
 
-/**
+/** 
  * Creates and returns a deep copy of the ConversionOption_t structure.
- *
+ * 
  * @param co the conversion option to clone
  *
  * @return a (deep) copy of the ConversionOption_t structure.
@@ -469,7 +434,7 @@ ConversionOption_createWithKeyAndType(const char* key, ConversionOptionType_t ty
 
 /**
  * Returns the key for the given option.
- *
+ * 
  * @param co the conversion option
  *
  * @return the key, as a string.
@@ -482,7 +447,7 @@ ConversionOption_getKey(const ConversionOption_t* co);
 
 /**
  * Returns the description for the given option.
- *
+ * 
  * @param co the conversion option
  *
  * @return the description, as a string.
@@ -495,7 +460,7 @@ ConversionOption_getDescription(const ConversionOption_t* co);
 
 /**
  * Returns the value for the given option.
- *
+ * 
  * @param co the conversion option
  *
  * @return the value, as a string.
@@ -508,7 +473,7 @@ ConversionOption_getValue(const ConversionOption_t* co);
 
 /**
  * Returns the value (as boolean) for the given option.
- *
+ * 
  * @param co the conversion option
  *
  * @return the value, as a boolean.
@@ -521,7 +486,7 @@ ConversionOption_getBoolValue(const ConversionOption_t* co);
 
 /**
  * Returns the value (as integer) for the given option.
- *
+ * 
  * @param co the conversion option
  *
  * @return the value, as a integer.
@@ -534,7 +499,7 @@ ConversionOption_getIntValue(const ConversionOption_t* co);
 
 /**
  * Returns the value (as float) for the given option.
- *
+ * 
  * @param co the conversion option
  *
  * @return the value, as a float.
@@ -547,7 +512,7 @@ ConversionOption_getFloatValue(const ConversionOption_t* co);
 
 /**
  * Returns the value (as double) for the given option.
- *
+ * 
  * @param co the conversion option
  *
  * @return the value, as a double.
@@ -560,7 +525,7 @@ ConversionOption_getDoubleValue(const ConversionOption_t* co);
 
 /**
  * Returns the type for the given option.
- *
+ * 
  * @param co the conversion option
  *
  * @return the type
@@ -573,7 +538,7 @@ ConversionOption_getType(const ConversionOption_t* co);
 
 /**
  * Sets the key for the option.
- *
+ * 
  * @param co the conversion option
  * @param key a string representing the key to set.
  *
@@ -585,7 +550,7 @@ ConversionOption_setKey(ConversionOption_t* co, const char* key);
 
 /**
  * Sets the description for the option.
- *
+ * 
  * @param co the conversion option
  * @param description a string representing the description to set.
  *
@@ -597,7 +562,7 @@ ConversionOption_setDescription(ConversionOption_t* co, const char* description)
 
 /**
  * Sets the value for the option.
- *
+ * 
  * @param co the conversion option
  * @param value a string representing the value to set.
  *
@@ -609,7 +574,7 @@ ConversionOption_setValue(ConversionOption_t* co, const char* value);
 
 /**
  * Sets the value for the option.
- *
+ * 
  * @param co the conversion option
  * @param value a bool representing the value to set.
  *
@@ -621,7 +586,7 @@ ConversionOption_setBoolValue(ConversionOption_t* co, int value);
 
 /**
  * Sets the value for the option.
- *
+ * 
  * @param co the conversion option
  * @param value an integer representing the value to set.
  *
@@ -633,7 +598,7 @@ ConversionOption_setIntValue(ConversionOption_t* co, int value);
 
 /**
  * Sets the value for the option.
- *
+ * 
  * @param co the conversion option
  * @param value a float representing the value to set.
  *
@@ -645,7 +610,7 @@ ConversionOption_setFloatValue(ConversionOption_t* co, float value);
 
 /**
  * Sets the value for the option.
- *
+ * 
  * @param co the conversion option
  * @param value a double representing the value to set.
  *
@@ -657,7 +622,7 @@ ConversionOption_setDoubleValue(ConversionOption_t* co, double value);
 
 /**
  * Sets the type for the option.
- *
+ * 
  * @param co the conversion option
  * @param type the type for this option.
  *

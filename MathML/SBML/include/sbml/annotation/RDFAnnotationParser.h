@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,8 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class RDFAnnotationParser
- * @sbmlbrief{core} MIRIAM-compliant RDF annotation reader/writer.
+ * @sbmlbrief{core} Read/write/manipulate RDF annotations stored in SBML
+ * annotation elements.
  *
  * @htmlinclude not-sbml-warning.html
  *
@@ -47,7 +48,7 @@
  * Format</a>).  The general scheme is as follows.  A set of RDF-based
  * annotations attached to a given SBML <code>&lt;annotation&gt;</code>
  * element are read by RDFAnnotationParser and converted into a list of
- * CVTerm objects.  There are different versions of the main method, @if clike RDFAnnotationParser::parseRDFAnnotation(const XMLNode *annotation, %List *CVTerms) @endif@if java RDFAnnotationParser::parseRDFAnnotation(XMLNode, %CVTermList) @endif@~ and
+ * CVTerm objects.  There are different versions of the main method, @if clike RDFAnnotationParser::parseRDFAnnotation(const XMLNode *annotation, %List *CVTerms) @endif@if java RDFAnnotationParser::parseRDFAnnotation(const XMLNode *annotation, %CVTermList *CVTerms) @endif@~ and
  * RDFAnnotationParser::parseRDFAnnotation(const XMLNode *annotation), used
  * depending on whether the annotation in question concerns the MIRIAM model
  * history or other MIRIAM resource annotations.  A special object class,
@@ -143,48 +144,48 @@ public:
    * created, containing MIRIAM-style annotations, and that @c sbmlObject
    * is an SBML object derived from SBase (e.g., a Model, or a Species, or
    * a Compartment, etc.).  Then:@if clike
-@code{.cpp}
-int success;                              // Status code variable.
+@verbatim
+int success;                              // Status code variable, used below.
 
-XMLNode *RDF = createRDFAnnotation();     // Create XML structure.
+XMLNode *RDF = createRDFAnnotation();     // Create RDF annotation XML structure.
 success = RDF->addChild(...content...);   // Put some content into it.
-...                                       // Check return code value.
+...                                       // Check "success" return code value.
 
-XMLNode *ann = createAnnotation();        // Create <annotation>.
-success = ann->addChild(RDF);             // Put the annotation into it.
-...                                       // Check return code value.
+XMLNode *ann = createAnnotation();        // Create <annotation> container.
+success = ann->addChild(RDF);             // Put the RDF annotation into it.
+...                                       // Check "success" return code value.
 
-success = sbmlObject->setAnnotation(ann); // Set object's annotation.
-...                                       // Check return code value.
-@endcode
+success = sbmlObject->setAnnotation(ann); // Set object's annotation to what we built.
+...                                       // Check "success" return code value.
+@endverbatim
    * @endif@if java
-@code{.java}
-int success;                                   // Status code variable.
+@verbatim
+int success;                                   // Status code variable, used below.
 
-XMLNode RDF = createRDFAnnotation();          // Create XML structure.
+XMLNode RDF = createRDFAnnotation();          // Create RDF annotation XML structure.
 success      = RDF.addChild(...content...);    // Put some content into it.
-...                                            // Check return code value.
+...                                            // Check "success" return code value.
 
-XMLNode ann = createAnnotation();             // Create <annotation>.
-success      = ann.addChild(RDF);              // Put the annotation into it.
-...                                            // Check return code value.
+XMLNode ann = createAnnotation();             // Create <annotation> container.
+success      = ann.addChild(RDF);              // Put the RDF annotation into it.
+...                                            // Check "success" return code value.
 
-success      = sbmlObject.setAnnotation(ann); // Set object's annotation.
-...                                            // Check return code value.
-@endcode
+success      = sbmlObject.setAnnotation(ann); // Set object's annotation to what we built.
+...                                            // Check "success" return code value.
+@endverbatim
    * @endif@if python
-@code{.py}
-RDF     = RDFAnnotationParser.createRDFAnnotation() # Create XML structure.
+@verbatim
+RDF     = RDFAnnotationParser.createRDFAnnotation() # Create RDF annotation XML structure.
 success = RDF.addChild(...content...)               # Put some content into it.
-...                                                 # Check return code value.
+...                                                 # Check "success" return code value.
 
-annot   = RDFAnnotationParser.createAnnotation()    # Create <annotation>.
-success = annot.addChild(RDF)                       # Put the annotation into it.
-...                                                 # Check return code value.
+annot   = RDFAnnotationParser.createAnnotation()    # Create <annotation> container.
+success = annot.addChild(RDF)                       # Put the RDF annotation into it.
+...                                                 # Check "success" return code value.
 
-success = sbmlObject.setAnnotation(annot)           # Set object's annotation.
-...                                                 # Check return code value.
-@endcode
+success = sbmlObject.setAnnotation(annot)           # Set object's annotation to what we built.
+...                                                 # Check "success" return code value.
+@endverbatim
    * @endif@~
    * The SBML specification contains more information about the format of
    * annotations.  We urge readers to consult Section&nbsp;6 of the SBML
@@ -228,8 +229,7 @@ success = sbmlObject.setAnnotation(annot)           # Set object's annotation.
    *
    * @see @if clike createAnnotation() @else RDFAnnotationParser::createAnnotation() @endif@~
    */
-  static XMLNode * createRDFAnnotation(unsigned int level = 3, 
-                                       unsigned int version = 1);
+  static XMLNode * createRDFAnnotation();
 
 
   /**
@@ -405,6 +405,7 @@ success = sbmlObject.setAnnotation(annot)           # Set object's annotation.
 
 
   /** @cond doxygenLibsbmlInternal */
+
   
   static bool hasRDFAnnotation(const XMLNode *annotation);
 
@@ -422,6 +423,7 @@ success = sbmlObject.setAnnotation(annot)           # Set object's annotation.
   protected:
 
   /** @cond doxygenLibsbmlInternal */
+
   static XMLNode * createRDFDescription(const std::string& metaid);
 
   
@@ -431,16 +433,7 @@ success = sbmlObject.setAnnotation(annot)           # Set object's annotation.
   static XMLNode * createRDFDescriptionWithHistory(const SBase *obj);
 
 
-  static XMLNode * createBagElement(const CVTerm * term, unsigned int level,
-                                    unsigned int version);
-
-
-  static XMLNode * createQualifierElement(const CVTerm * term,
-                                   unsigned int level, unsigned int version);
-
-
-  static void deriveCVTermsFromAnnotation(const XMLNode *annotation, 
-                                          List *CVTerms);
+  static void deriveCVTermsFromAnnotation(const XMLNode *annotation, List *CVTerms);
 
   
   static ModelHistory* deriveHistoryFromAnnotation(const XMLNode *annotation);
@@ -532,27 +525,6 @@ RDFAnnotationParser_createAnnotation();
   */
 XMLNode_t *
 RDFAnnotationParser_createRDFAnnotation();
-
-/**
-  * Creates blank RDF annotation content organized in the form defined in
-  * Section 6 of the SBML Level 2 Version 4 specification .
-  *
-  * The annotation created by this method has namespace declarations for
-  * all the relevant XML namespaces used in RDF annotations and also has
-  * an empty RDF element.  Note that this is not the containing
-  * <code>&lt;annotation&gt;</code> element; the method createAnnotation()
-  * is available for that purpose.
-  *
-  * @param level unsigned int giving the SBML level to target.
-  * @param version unsigned int giving the SBML version to target.
-  *
-  * @return a pointer to an XMLNode_t represting the annotation.
-  *
-  * @memberof RDFAnnotationParser_t
-  */
-XMLNode_t *
-RDFAnnotationParser_createRDFAnnotationForLevelAndVersion(unsigned int level,
-                                                         unsigned int version);
 
 /**
   * Deletes any RDF annotation found in the given XMLNode_t tree and returns

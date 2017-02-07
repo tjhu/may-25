@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,8 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class SpeciesType
- * @sbmlbrief{core} A <em>species type</em> in SBML Level 2.
+ * @sbmlbrief{core} Implementation of SBML Level&nbsp;2's %SpeciesType
+ * construct.
  *
  * The term @em species @em type refers to reacting entities independent of
  * location.  These include simple ions (e.g., protons, calcium), simple
@@ -70,9 +71,33 @@
  * 
  * <!---------------------------------------------------------------------- -->
  * @class ListOfSpeciesTypes
- * @sbmlbrief{core} A list of SpeciesType objects.
+ * @sbmlbrief{core} Implementation of SBML's %ListOfSpeciesTypes construct.
  *
  * @copydetails doc_what_is_listof
+ */
+
+/**
+ * <!-- ~ ~ ~ ~ ~ Start of common documentation strings ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+ * The following text is used as common documentation blocks copied multiple
+ * times elsewhere in this file.  The use of @class is a hack needed because
+ * Doxygen's @copydetails command has limited functionality.  Symbols
+ * beginning with "doc_" are marked as ignored in our Doxygen configuration.
+ * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  -->
+ *
+ * @class doc_note_speciestype_setting_lv
+ * 
+ * @note Upon the addition of a SpeciesType object to an SBMLDocument
+ * (e.g., using Model::addSpeciesType(@if java SpeciesType st@endif)),
+ * the SBML Level, SBML Version and XML namespace of the document @em
+ * override the values used when creating the SpeciesType object via this
+ * constructor.  This is necessary to ensure that an SBML document is a
+ * consistent structure.  Nevertheless, the ability to supply the values
+ * at the time of creation of a SpeciesType is an important aid to
+ * producing valid SBML.  Knowledge of the intented SBML Level and
+ * Version determine whether it is valid to assign a particular value to
+ * an attribute, or whether it is valid to add an object to an existing
+ * SBMLDocument.
+ *
  */
 
 #ifndef SpeciesType_h
@@ -109,9 +134,12 @@ public:
    * @param version an unsigned int, the SBML Version to assign to this
    * SpeciesType
    *
-   * @copydetails doc_throw_exception_lv
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_speciestype_setting_lv
    */
   SpeciesType (unsigned int level, unsigned int version);
 
@@ -127,13 +155,16 @@ public:
    * (identifier) attribute of a SpeciesType object is required to have a value.
    * Thus, callers are cautioned to assign a value after calling this
    * constructor.  Setting the identifier can be accomplished using the
-   * method SBase::setId(@if java String@endif).
+   * method SBase::setId(@if java String id@endif).
    *
    * @param sbmlns an SBMLNamespaces object.
    *
-   * @copydetails doc_throw_exception_namespace
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_speciestype_setting_lv
    */
   SpeciesType (SBMLNamespaces* sbmlns);
 
@@ -149,6 +180,9 @@ public:
    * Copy constructor; creates a copy of this SpeciesType.
    *
    * @param orig the object to copy.
+   * 
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   SpeciesType(const SpeciesType& orig);
 
@@ -158,11 +192,13 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   SpeciesType& operator=(const SpeciesType& rhs);
 
 
-  /** @cond doxygenLibsbmlInternal */
   /**
    * Accepts the given SBMLVisitor for this instance of SpeciesType.
    *
@@ -173,13 +209,12 @@ public:
    * the list of compartment types.
    */
   virtual bool accept (SBMLVisitor& v) const;
-  /** @endcond */
 
 
   /**
-   * Creates and returns a deep copy of this SpeciesType object.
-   *
-   * @return the (deep) copy of this SpeciesType object.
+   * Creates and returns a deep copy of this SpeciesType.
+   * 
+   * @return a (deep) copy of this SpeciesType.
    */
   virtual SpeciesType* clone () const;
 
@@ -229,9 +264,12 @@ public:
    *
    * @param sid the string to use as the identifier of this SpeciesType
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   virtual int setId (const std::string& sid);
 
@@ -243,9 +281,12 @@ public:
    *
    * @param name the new name for the SpeciesType
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   virtual int setName (const std::string& name);
 
@@ -253,9 +294,12 @@ public:
   /**
    * Unsets the value of the "name" attribute of this SpeciesType.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    */
   virtual int unsetName ();
 
@@ -266,7 +310,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for this object:
-   * @sbmlconstant{SBML_SPECIES_TYPE, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_SPECIES_TYPE SBML_SPECIES_TYPE@endlink (default).
    *
    * @copydetails doc_warning_typecodes_not_unique
    *
@@ -300,17 +344,18 @@ public:
    * all the required attributes for this SpeciesType object
    * have been set.
    *
-   * The required attributes for a SpeciesType object are:
+   * @note The required attributes for a SpeciesType object are:
    * @li "id"
    *
-   * @return @c true if the required attributes have been set, @c false
-   * otherwise.
+   * @return a boolean value indicating whether all the required
+   * attributes for this object have been defined.
    */
   virtual bool hasRequiredAttributes() const ;
 
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Subclasses should override this method to get the list of
    * expected attributes.
@@ -382,10 +427,6 @@ public:
    * @param level the SBML Level
    * 
    * @param version the Version within the SBML Level
-   *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfSpeciesTypes (unsigned int level, unsigned int version);
           
@@ -399,18 +440,14 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object that is used to determine the
    * characteristics of the ListOfSpeciesTypes object to be created.
-   *
-   * @copydetails doc_throw_exception_namespace
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfSpeciesTypes (SBMLNamespaces* sbmlns);
 
 
   /**
-   * Creates and returns a deep copy of this ListOfSpeciesTypes object.
+   * Creates and returns a deep copy of this ListOfSpeciesTypes instance.
    *
-   * @return the (deep) copy of this ListOfSpeciesTypes object.
+   * @return a (deep) copy of this ListOfSpeciesTypes.
    */
   virtual ListOfSpeciesTypes* clone () const;
 
@@ -422,7 +459,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for objects contained in this list:
-   * @sbmlconstant{SBML_SPECIES_TYPE, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_SPECIES_TYPE SBML_SPECIES_TYPE@endlink (default).
    *
    * @see getElementName()
    * @see getPackageName()
@@ -527,6 +564,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Get the ordinal position of this element in the containing object
    * (which in this case is the Model object).
@@ -547,6 +585,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Create a ListOfSpeciesTypes object corresponding to the next token
    * in the XML input stream.
@@ -730,9 +769,12 @@ SpeciesType_isSetName (const SpeciesType_t *st);
  * @param st the SpeciesType_t structure to set.
  * @param sid the string to use as the identifier.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with an id of NULL is equivalent to
  * unsetting the "id" attribute.
@@ -752,9 +794,12 @@ SpeciesType_setId (SpeciesType_t *st, const char *sid);
  * @param st the SpeciesType_t structure to set.
  * @param name the string to use as the name.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with the name set to NULL is equivalent to
  * unsetting the "name" attribute.
@@ -771,9 +816,12 @@ SpeciesType_setName (SpeciesType_t *st, const char *name);
  * 
  * @param st the SpeciesType_t structure whose name is to be unset.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof SpeciesType_t
  */

@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,8 @@
  * ---------------------------------------------------------------------- -->
  *
  * @class VConstraint
- * @sbmlbrief{core} Helper class for SBML validators.
+ * @sbmlbrief{core} Helper class for implementing SBML validation and
+ * consistency-checking
  * 
  * @htmlinclude not-sbml-warning.html
  *
@@ -95,7 +96,7 @@ public:
   /**
    * Get the severity of this constraint.
    *
-   * Severity codes are defined by the enumeration #SBMLErrorSeverity_t.
+   * Severity codes are defined by the enumeration SBMLErrorSeverity_t.
    * See the documentation included in SBMLError for more information.
    * 
    * @return the severity for violating this Constraint.
@@ -107,6 +108,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Logs a constraint failure to the validator for the given SBML object.
    */
@@ -132,6 +134,7 @@ protected:
 
 
 /** @cond doxygenLibsbmlInternal */
+
 template <typename T>
 class TConstraint : public VConstraint
 {
@@ -158,13 +161,15 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * The check method delegates to this virtual method.
    */
-  virtual void check_ (const Model&, const T&) { };
+  virtual void check_ (const Model& m, const T& object) { };
 
   /** @endcond */
 };
+
 /** @endcond */
 
 LIBSBML_CPP_NAMESPACE_END

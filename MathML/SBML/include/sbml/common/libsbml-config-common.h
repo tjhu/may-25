@@ -10,7 +10,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -104,6 +104,6 @@
 /* #undef EXIT_ON_ERROR */
 
 /* Define to specify that the legacy math implementation ought to be used. */
-#define LIBSBML_USE_LEGACY_MATH 1
+/* #undef LIBSBML_USE_LEGACY_MATH */
 
-#include <sbml/common/libsbml-config-packages.h>
+#include "libsbml-config-packages.h"

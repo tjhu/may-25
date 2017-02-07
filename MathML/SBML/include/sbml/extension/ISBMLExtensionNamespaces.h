@@ -9,7 +9,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -33,9 +33,8 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class ISBMLExtensionNamespaces
- * @sbmlbrief{core}
+ * @sbmlpackage{core}
  *
- * @htmlinclude not-sbml-warning.html
  */
 
 #ifndef ISBMLExtensionNamespaces_h
@@ -79,4 +78,5 @@ LIBSBML_CPP_NAMESPACE_END
 
 
 #endif  /* ISBMLExtensionNamespaces_h */
+
 /** @endcond */

@@ -9,7 +9,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -64,19 +64,19 @@ public:
   /**
    * Appends id to the list of ids.
    */
-  void append (const std::string& id) { mIds.push_back(id); }
+  void append (const std::string id) { mIds.push_back(id); }
 
   /**
    * Returns true if id is already in this IdList, false otherwise.
    *
    * @return true if id is already in this IdList, false otherwise.
    */
-  bool contains (const std::string& id) const;
+  bool contains (const std::string id) const;
 
   /**
    * Removes all ids in this IdList before the given @p id.
    */
-  void removeIdsBefore (const std::string& id);
+  void removeIdsBefore (const std::string id);
 
   /**
    * Returns the number of ids in this IdList.
@@ -109,7 +109,7 @@ public:
 
   void clear() { mIds.clear(); }
 
-  std::string at(int n) { return mIds.at((std::string::size_type)n); }
+  std::string at(int n) { return mIds.at(n); }
 
 private:
 
@@ -120,4 +120,5 @@ LIBSBML_CPP_NAMESPACE_END
 
 #endif  /* __cplusplus */
 #endif  /* IdList_h */
+
 /** @endcond */

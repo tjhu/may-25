@@ -1,30 +1,33 @@
-#include <sbml/SBMLTypes.h>
-#pragma comment(lib, "libsbml.lib")
-#pragma comment(lib, "bzip2.lib")
-#pragma comment(lib, "iconv.lib")
-#pragma comment(lib, "libxml2.lib")
-#pragma comment(lib, "zdll.lib")
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include "alglib/integration.h"
 
-#include <iostream>
-
-
-int
-main(int argc, char *argv[])
+using namespace alglib;
+void int_function_1_func(double x, double xminusa, double bminusx, double &y, void *ptr)
 {
-	const char* expected = "1 + f(x)";
-	const char* s = "<?xml version='1.0' encoding='UTF-8'?>"
-		"<math xmlns='http://www.w3.org/1998/Math/MathML'>"
-		"  <apply> <plus/> <cn> 1 </cn>"
-		"                  <apply> <ci> f </ci> <ci> x </ci> </apply>"
-		"  </apply>"
-		"</math>";
-	ASTNode* ast = readMathMLFromString(s);
-	char*    result = SBML_formulaToString(ast);
-	if (strcmp(result, expected) == 0)
-		std::cout << "Got expected result" << std::endl;
-	else
-		std::cout << "Mismatch after readMathMLFromString()" << std::endl;
-	ASTNode* new_mathml = SBML_parseFormula(result);
-	char*    new_s = writeMathMLToString(new_mathml);
-	std::cout << "Result of writing AST:" << std::endl << new_s << std::endl;
+	// this callback calculates f(x)=exp(x)
+	y = sin(x);
+}
+
+int main(int argc, char **argv)
+{
+	//
+	// This example demonstrates integration of f=exp(x) on [0,1]:
+	// * first, autogkstate is initialized
+	// * then we call integration function
+	// * and finally we obtain results with autogkresults() call
+	//
+	double a = 0;
+	double b = 3;
+	autogkstate s;
+	double v;
+	autogkreport rep;
+
+	autogksmooth(a, b, s);
+	alglib::autogkintegrate(s, int_function_1_func);
+	autogkresults(s, v, rep);
+
+	printf("%.15f\n", double(v)); // EXPECTED: 1.7182
+	return 0;
 }

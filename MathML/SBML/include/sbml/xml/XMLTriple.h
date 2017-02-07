@@ -2,27 +2,27 @@
  * @file    XMLTriple.h
  * @brief   Stores an XML namespace triple.
  * @author  Ben Bornstein
- *
+ * 
  * <!--------------------------------------------------------------------------
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
  *
- * Copyright (C) 2009-2013 jointly by the following organizations:
+ * Copyright (C) 2009-2013 jointly by the following organizations: 
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
- *
+ *  
  * Copyright (C) 2006-2008 by the California Institute of Technology,
- *     Pasadena, CA, USA
- *
- * Copyright (C) 2002-2005 jointly by the following organizations:
+ *     Pasadena, CA, USA 
+ *  
+ * Copyright (C) 2002-2005 jointly by the following organizations: 
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. Japan Science and Technology Agency, Japan
- *
+ * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation.  A copy of the license agreement is provided
@@ -31,20 +31,19 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class XMLTriple
- * @sbmlbrief{core} A qualified XML name.
+ * @sbmlbrief{core} Representation of a qualified XML name.
  *
  * @htmlinclude not-sbml-warning.html
  *
  * A "triple" in the libSBML XML layer encapsulates the notion of qualified
  * name, meaning an element name or an attribute name with an optional
- * namespace qualifier.  Triples by themselves are not entities in an XML
- * stream&mdash;they are not, for example, elements or attributes; rather,
- * XMLTriple is used in libSBML to construct these other kinds of objects.
+ * namespace qualifier.  An XMLTriple instance carries up to three data items:
+ * 
+ * <ul>
  *
- * An XMLTriple instance carries up to three data items:
- * <ol>
  * <li> The name of the attribute or element; that is, the attribute name
  * as it appears in an XML document or data stream;
+ *
  * <li> The XML namespace prefix (if any) of the attribute.  For example,
  * in the following fragment of XML, the namespace prefix is the string
  * <code>mysim</code> and it appears on both the element
@@ -54,18 +53,15 @@
  * @verbatim
 <mysim:someelement mysim:attribA="value" />
 @endverbatim
+ *
  * <li> The XML namespace URI with which the prefix is associated.  In
  * XML, every namespace used must be declared and mapped to a URI.
- * </ol>
+ *
+ * </ul>
  *
  * XMLTriple objects are the lowest-level data item in the XML layer
  * of libSBML.  Other objects such as XMLToken make use of XMLTriple
  * objects.
- *
- * @see XMLToken
- * @see XMLNode
- * @see XMLAttributes
- * @see XMLNamespaces
  */
 
 #ifndef XMLTriple_h
@@ -86,18 +82,21 @@ class LIBLAX_EXTERN XMLTriple
 public:
 
   /**
-   * Creates a new, empty XMLTriple object.
+   * Creates a new, empty XMLTriple.
    */
   XMLTriple ();
 
 
   /**
-   * Creates a new XMLTriple object with a given @p name, @p uri and and @p
+   * Creates a new XMLTriple with the given @p name, @p uri and and @p
    * prefix.
    *
-   * @param name a string, the name for the entity represented by this object.
-   * @param uri a string, the XML namespace URI associated with the prefix.
-   * @param prefix a string, the XML namespace prefix for this triple.
+   * @param name a string, name for the XMLTriple.
+   * @param uri a string, URI of the XMLTriple.
+   * @param prefix a string, prefix for the URI of the XMLTriple,
+   *
+   * @throws @if python ValueError @else XMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   XMLTriple (  const std::string&  name
              , const std::string&  uri
@@ -105,32 +104,33 @@ public:
 
 
   /**
-   * Creates an XMLTriple object by splitting a given string at a given
-   * separator character.
+   * Creates a new XMLTriple by splitting the given @p triplet on the
+   * separator character @p sepchar.
    *
-   * The "triplet" in this case is a string that may be in one of the
-   * following three possible formats:
-   * <ol>
-   * <li> <span style="background-color: lightblue; padding-left: 2px; padding-right: 2px">name</span> </li>
-   * <li> <span style="background-color: #ccc; padding-left: 2px; padding-right: 2px">URI</span><span style="background-color: purple; color: white; padding-left: 2px; padding-right: 2px">x</span><span style="background-color: lightblue; padding-left: 2px; padding-right: 2px">name</span></li>
-   * <li> <span style="background-color: #ccc; padding-left: 2px; padding-right: 2px">URI</span><span style="background-color: purple; color: white; padding-left: 2px; padding-right: 2px">x</span><span style="background-color: lightblue; padding-left: 2px; padding-right: 2px">name</span><span style="background-color: purple; color: white; padding-left: 2px; padding-right: 2px">x</span><span style="background-color: #d0d0fd; padding-left: 2px; padding-right: 2px">prefix</span></li>
-   * </ol>
-   *
-   * where <span style="background-color: purple; color: white; padding-left: 2px; padding-right: 2px">x</span>
-   * represents the separator character, @p sepchar.
-   *
-   * @param triplet a string representing the triplet as shown above
+   * Triplet may be in one of the following formats:
+   * <ul>
+   * <li> name
+   * <li> URI sepchar name
+   * <li> URI sepchar name sepchar prefix
+   * </ul>
+   * @param triplet a string representing the triplet as above
    * @param sepchar a character, the sepchar used in the triplet
    *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
+   * @throws @if python ValueError @else XMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
+   *
+   * @if notcpp @htmlinclude warn-default-args-in-docs.html @endif@~
    */
   XMLTriple (const std::string& triplet, const char sepchar = ' ');
 
-
+  
   /**
-   * Copy constructor; creates a copy of this XMLTriple object.
+   * Copy constructor; creates a copy of this XMLTriple set.
    *
    * @param orig the XMLTriple object to copy.
+   *
+   * @throws @if python ValueError @else XMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   XMLTriple(const XMLTriple& orig);
 
@@ -140,38 +140,41 @@ public:
    *
    * @param rhs The XMLTriple object whose values are used as the basis
    * of the assignment.
+   *
+   * @throws @if python ValueError @else XMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   XMLTriple& operator=(const XMLTriple& rhs);
 
 
   /**
-   * Creates and returns a deep copy of this XMLTriple object.
-   *
-   * @return the (deep) copy of this XMLTriple object.
+   * Creates and returns a deep copy of this XMLTriple set.
+   * 
+   * @return a (deep) copy of this XMLTriple set.
    */
   XMLTriple* clone () const;
 
 
   /**
-   * Returns the @em name portion of this XMLTriple object.
+   * Returns the @em name portion of this XMLTriple.
    *
-   * @return a string, the name portion of this XMLTriple object.
+   * @return a string, the name from this XMLTriple.
    */
   const std::string& getName () const;
 
 
   /**
-   * Returns the @em prefix portion of this XMLTriple object.
+   * Returns the @em prefix portion of this XMLTriple.
    *
-   * @return a string, the prefix portion of this XMLTriple object.
+   * @return a string, the @em prefix portion of this XMLTriple.
    */
   const std::string& getPrefix () const;
 
 
   /**
-   * Returns the @em URI portion of this XMLTriple object.
+   * Returns the @em URI portion of this XMLTriple.
    *
-   * @return URI a string, the URI portion of this XMLTriple object.
+   * @return URI a string, the @em prefix portion of this XMLTriple.
    */
   const std::string& getURI () const;
 
@@ -179,24 +182,22 @@ public:
   /**
    * Returns the prefixed name from this XMLTriple.
    *
-   * @return a string, the prefixed name from this XMLTriple.  This is
-   * constructed by concatenating the @em prefix stored in this XMLTriple
-   * object, followed by a colon character <code>":"</code>, followed by the
-   * @em name stored in this XMLTriple object.
+   * @return a string, the prefixed name from this XMLTriple.
    */
   const std::string getPrefixedName () const;
 
 
   /**
-   * Returns @c true if this XMLTriple object is empty.
-   *
+   * Predicate returning @c true or @c false depending on whether 
+   * this XMLTriple is empty.
+   * 
    * @return @c true if this XMLTriple is empty, @c false otherwise.
    */
   bool isEmpty () const;
 
-
 private:
   /** @cond doxygenLibsbmlInternal */
+
   std::string  mName;
   std::string  mURI;
   std::string  mPrefix;
@@ -207,7 +208,7 @@ private:
 
 /**
  * Comparison (equal-to) operator for XMLTriple.
- *
+ *  
  * @param lhs XMLTriple object to be compared with rhs.
  * @param rhs XMLTriple object to be compared with lhs.
  *
@@ -227,7 +228,6 @@ bool operator==(const XMLTriple& lhs, const XMLTriple& rhs);
  * prefix of lhs is not equal to that of rhs @c zero (false) otherwise.
  */
 bool operator!=(const XMLTriple& lhs, const XMLTriple& rhs);
-
 
 LIBSBML_CPP_NAMESPACE_END
 
@@ -280,9 +280,9 @@ XMLTriple_free (XMLTriple_t *triple);
 
 /**
  * Creates a deep copy of the given XMLTriple_t structure
- *
+ * 
  * @param triple the XMLTriple_t structure to be copied
- *
+ * 
  * @return a (deep) copy of the given XMLTriple_t structure.
  *
  * @memberof XMLTriple_t
@@ -349,9 +349,9 @@ XMLTriple_getPrefixedName (const XMLTriple_t *triple);
 
 
 /**
- * Predicate returning @c true or @c false depending on whether
+ * Predicate returning @c true or @c false depending on whether 
  * this XMLTriple_t is empty.
- *
+ * 
  * @param triple XMLTriple_t structure to be queried.
  *
  * @return @c non-zero (true) if this XMLTriple_t is empty, @c zero (false) otherwise.
@@ -364,14 +364,14 @@ XMLTriple_isEmpty(const XMLTriple_t *triple);
 
 
 /**
- * Predicate returning @c true or @c false depending on whether
+ * Predicate returning @c true or @c false depending on whether 
  * this XMLTriple_t is equal to the given XMLTriple_t.
- *
+ * 
  * @param lhs XMLTriple_t structure to be required.
  * @param rhs XMLTriple_t structure to be compared with this XMLTriple_t.
  *
  * @return @c non-zero (true) if the combination of name, URI, and prefix of this
- * XMLTriple_t is equal to that of the given XMLTriple_t,
+ * XMLTriple_t is equal to that of the given XMLTriple_t, 
  * @c zero (false) otherwise.
  *
  * @memberof XMLTriple_t
@@ -382,14 +382,14 @@ XMLTriple_equalTo(const XMLTriple_t *lhs, const XMLTriple_t* rhs);
 
 
 /**
- * Predicate returning @c true or @c false depending on whether
+ * Predicate returning @c true or @c false depending on whether 
  * this XMLTriple_t is not equal to the given XMLTriple_t.
- *
+ * 
  * @param lhs XMLTriple_t structure to be required.
  * @param rhs XMLTriple_t structure to be compared with this XMLTriple_t.
  *
  * @return @c non-zero (true) if the combination of name, URI, and prefix of this
- * XMLTriple_t is not equal to that of the given XMLTriple_t,
+ * XMLTriple_t is not equal to that of the given XMLTriple_t, 
  * @c zero (false) otherwise.
  *
  * @memberof XMLTriple_t

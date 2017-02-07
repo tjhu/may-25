@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,7 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class SBMLWriter
- * @sbmlbrief{core} File and text-string SBML writer.
+ * @sbmlbrief{core} Methods for writing SBML to files and text strings.
  *
  * @htmlinclude not-sbml-warning.html
  *
@@ -41,18 +41,18 @@
  * for writing SBML all take an SBMLDocument object and a destination.  
  * They return a boolean or integer value to indicate success or failure.
  *
- * @section sbmlwriter-compression Support for writing compressed files
+ * @section compression Support for writing compressed files
  *
  * LibSBML provides support for writing (as well as reading) compressed
  * SBML files.  The process is transparent to the calling
- * application---the application does not need to do anything
+ * application&mdash;the application does not need to do anything
  * deliberate to invoke the functionality.  If a given SBML filename ends
  * with an extension for the @em gzip, @em zip or @em bzip2 compression
  * formats (respectively, <code>&quot;.gz&quot;</code>,
  * <code>&quot;.zip&quot;</code>, or <code>&quot;.bz2&quot;</code>),
  * then the methods
- * SBMLWriter::writeSBML(@if java SBMLDocument, String@endif)
- * and SBMLReader::readSBML(@if java String@endif)
+ * SBMLWriter::writeSBML(@if java SBMLDocument d, String filename@endif)
+ * and SBMLReader::readSBML(@if java String filename@endif)
  * will automatically compress and decompress the file while writing and
  * reading it.  If the filename has no such extension, it
  * will be written and read uncompressed as normal.
@@ -126,7 +126,7 @@ public:
    * write out the SBMLDocument.
    *
    * If the program name and version are set (see
-   * SBMLWriter::setProgramVersion(@if java String@endif)), the
+   * SBMLWriter::setProgramVersion(@if java String version@endif)), the
    * following XML comment, intended for human consumption, will be written
    * at the beginning of the XML document:
    * @verbatim
@@ -140,8 +140,10 @@ public:
    * @param name the name of this program (where "this program" refers to
    * program in which libSBML is embedded, not libSBML itself!)
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
    * 
    * @see setProgramVersion(const std::string& version)
    */
@@ -153,7 +155,7 @@ public:
    * write out the SBMLDocument.
    *
    * If the program version and name are set (see
-   * SBMLWriter::setProgramName(@if java String@endif)), the
+   * SBMLWriter::setProgramName(@if java String name@endif)), the
    * following XML comment, intended for human consumption, will be written
    * at the beginning of the document:
    * @verbatim
@@ -167,8 +169,10 @@ public:
    * @param version the version of this program (where "this program"
    * refers to program in which libSBML is embedded, not libSBML itself!)
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
    *
    * @see setProgramName(const std::string& name)
    */
@@ -213,6 +217,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Writes the given SBML document to an in-memory string and returns a
    * pointer to it.
@@ -270,22 +275,6 @@ public:
    */
   char* writeSBMLToString (const SBMLDocument* d);
 
-#ifndef SWIG
-  /**
-   * Writes the given SBML document to an in-memory string and returns it.
-   *
-   * @param d the SBML document to be written
-   *
-   * @return the string on success or an empty string, 
-   *         if one of the underlying parser
-   *         components fail.
-   * 
-   * @see setProgramVersion(const std::string& version)
-   * @see setProgramName(const std::string& name)
-   */
-  std::string writeSBMLToStdString(const SBMLDocument* d);
-#endif
-  
 
   /**
    * Predicate returning @c true if this copy of libSBML has been linked
@@ -327,28 +316,12 @@ public:
 
  protected:
   /** @cond doxygenLibsbmlInternal */
+
   std::string mProgramName;
   std::string mProgramVersion;
 
   /** @endcond */
 };
-
-#ifndef SWIG
-
-/**
- * Writes the given SBML document to an in-memory string that is returned.
- *
- * @param d the SBML document to be written
- *
- * @return the string on success or an empty string, 
- *         if one of the underlying parser
- *         components fail.
- * 
- */
-LIBSBML_EXTERN
-std::string writeSBMLToStdString(const SBMLDocument* d);
-
-#endif
 
 LIBSBML_CPP_NAMESPACE_END
 
@@ -389,8 +362,11 @@ SBMLWriter_free (SBMLWriter_t *sw);
  *   <!-- Created by <program name> version <program version>
  *   on yyyy-MM-dd HH:mm with libSBML version <libsbml version>. -->
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
  *
  * @memberof SBMLWriter_t
  */
@@ -407,8 +383,11 @@ SBMLWriter_setProgramName (SBMLWriter_t *sw, const char *name);
  *   <!-- Created by <program name> version <program version>
  *   on yyyy-MM-dd HH:mm with libSBML version <libsbml version>. -->
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
  *
  * @memberof SBMLWriter_t
  */

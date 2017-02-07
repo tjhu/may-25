@@ -8,7 +8,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -32,7 +32,7 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class SpeciesReference
- * @sbmlbrief{core} A reference to an SBML species in a reaction.
+ * @sbmlbrief{core} Implementation of %SBML's %SpeciesReference construct.
  *
  * The Reaction structure provides a way to express which species act as
  * reactants and which species act as products in a reaction.  In a given
@@ -234,9 +234,35 @@
  * 
  * <!---------------------------------------------------------------------- -->
  * @class ListOfSpeciesReferences
- * @sbmlbrief{core} A list of SpeciesReference objects.
+ * @sbmlbrief{core} Implementation of SBML's %ListOfSpeciesReferences
+ * construct.
  *
  * @copydetails doc_what_is_listof 
+ */
+
+/**
+ * <!-- ~ ~ ~ ~ ~ Start of common documentation strings ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+ * The following text is used as common documentation blocks copied multiple
+ * times elsewhere in this file.  The use of @class is a hack needed because
+ * Doxygen's @copydetails command has limited functionality.  Symbols
+ * beginning with "doc_" are marked as ignored in our Doxygen configuration.
+ * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  -->
+ *
+ * @class doc_note_speciesreference_setting_lv
+ * 
+ * @note Upon the addition of a SpeciesReference object to a Model (e.g.,
+ * using Reaction::addReactant(const SpeciesReference* sr) or
+ * Reaction::addProduct(const SpeciesReference* sr)), the SBML Level,
+ * SBML Version and XML namespace of the document @em override the values
+ * used when creating the SpeciesReference object via this constructor.
+ * This is necessary to ensure that an SBML document is a consistent
+ * structure.  Nevertheless, the ability to supply the values at the time
+ * of creation of a SpeciesReference is an important aid to producing
+ * valid SBML.  Knowledge of the intented SBML Level and Version
+ * determine whether it is valid to assign a particular value to an
+ * attribute, or whether it is valid to add an object to an existing
+ * SBMLDocument.
+
  */
 
 #ifndef SpeciesReference_h
@@ -281,9 +307,7 @@ public:
    * @param version an unsigned int, the SBML Version to assign to this
    * SpeciesReference
    *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_speciesreference_setting_lv
    */
   SpeciesReference (unsigned int level, unsigned int version);
 
@@ -294,9 +318,7 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object.
    *
-   * @copydetails doc_throw_exception_namespace
-   *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_speciesreference_setting_lv
    */
   SpeciesReference (SBMLNamespaces* sbmlns);
 
@@ -311,6 +333,9 @@ public:
    * Copy constructor; creates a copy of this SpeciesReference.
    * 
    * @param orig the SpeciesReference instance to copy.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   SpeciesReference (const SpeciesReference& orig);
 
@@ -320,11 +345,13 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   SpeciesReference& operator=(const SpeciesReference& rhs);
 
 
-  /** @cond doxygenLibsbmlInternal */
   /**
    * Accepts the given SBMLVisitor.
    *
@@ -333,13 +360,12 @@ public:
    * @return the result of calling <code>v.visit()</code>.
    */
   virtual bool accept (SBMLVisitor& v) const;
-  /** @endcond */
 
 
   /**
-   * Creates and returns a deep copy of this SpeciesReference object.
+   * Creates and returns a deep copy of this SpeciesReference instance.
    *
-   * @return the (deep) copy of this SpeciesReference object.
+   * @return a (deep) copy of this SpeciesReference.
    */
   virtual SpeciesReference* clone () const;
 
@@ -549,8 +575,10 @@ public:
    * attribute and the stoichiometryMath" subelement are mutually
    * exclusive.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
    */
   int setStoichiometry (double value);
 
@@ -590,11 +618,13 @@ public:
    * given math is not null because the "stoichiometry" attribute and the
    * stoichiometryMath" subelement are mutually exclusive.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_LEVEL_MISMATCH LIBSBML_LEVEL_MISMATCH @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_VERSION_MISMATCH LIBSBML_VERSION_MISMATCH @endlink
    */
   int setStoichiometryMath (const StoichiometryMath* math);
 
@@ -617,8 +647,10 @@ public:
    *
    * @param value the scalar value 
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
    */
   int setDenominator (int value);
 
@@ -630,9 +662,11 @@ public:
    * @param flag a boolean, the value for the "constant" attribute of this
    * SpeciesReference instance
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
    */
   int setConstant (bool flag);
 
@@ -640,10 +674,12 @@ public:
   /**
    * Unsets the "stoichiometryMath" subelement of this SpeciesReference.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    *
    * In SBML Level 2, product and reactant stoichiometries can be specified
    * using <em>either</em> "stoichiometry" or "stoichiometryMath" in a
@@ -676,9 +712,11 @@ public:
   /**
    * Unsets the "stoichiometry" attribute of this SpeciesReference.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    *
    * @note In SBML Level&nbsp;1, the "stoichiometry" attribute of this
    * SpeciesReference object will be just reset to a default value (@c 1.0)
@@ -693,16 +731,6 @@ public:
    * to @c NaN and isSetStoichiometry() will return @c false.
    */
   int unsetStoichiometry ();
-
-
-  /**
-   * Unsets the "constant" attribute of this SpeciesReference.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
-   */
-  int unsetConstant ();
 
 
   /**
@@ -731,8 +759,10 @@ public:
    * @param annotation an XML structure that is to be used as the content
    * of the "annotation" subelement of this object
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
    *
    * @see appendAnnotation(const XMLNode* annotation)
    * @see appendAnnotation(const std::string& annotation)
@@ -754,9 +784,11 @@ public:
    * @param annotation an XML string that is to be used as the content
    * of the "annotation" subelement of this object
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    *
    * @see appendAnnotation(const XMLNode* annotation)
    * @see appendAnnotation(const std::string& annotation)
@@ -769,16 +801,18 @@ public:
    * subelement of this object.
    *
    * The content in @p annotation is copied.  Unlike
-   * SpeciesReference::setAnnotation(@if java String@endif),
+   * SpeciesReference::setAnnotation(@if java String annotation@endif),
    * this method allows other annotations to be preserved when an application
    * adds its own data.
    *
    * @param annotation an XML structure that is to be copied and appended
    * to the content of the "annotation" subelement of this object
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    *
    * @see setAnnotation(const std::string& annotation)
    * @see setAnnotation(const XMLNode* annotation)
@@ -791,16 +825,18 @@ public:
    * subelement of this object.
    *
    * The content in @p annotation is copied.  Unlike
-   * SpeciesReference::setAnnotation(@if java String@endif), this
+   * SpeciesReference::setAnnotation(@if java String annotation@endif), this
    * method allows other annotations to be preserved when an application
    * adds its own data.
    *
    * @param annotation an XML string that is to be copied and appended
    * to the content of the "annotation" subelement of this object
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    *
    * @see setAnnotation(const std::string& annotation)
    * @see setAnnotation(const XMLNode* annotation)
@@ -814,7 +850,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for this object:
-   * @sbmlconstant{SBML_SPECIES_REFERENCE, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_SPECIES_REFERENCE SBML_SPECIES_REFERENCE@endlink (default).
    *
    * @see getElementName()
    * @see getPackageName()
@@ -855,18 +891,19 @@ public:
    * all the required attributes for this SpeciesReference object
    * have been set.
    *
-   * The required attributes for a SpeciesReference object are:
+   * @note The required attributes for a SpeciesReference object are:
    * @li "species"
    * @li "constant" (only available SBML Level&nbsp;3)
    *
-   * @return @c true if the required attributes have been set, @c false
-   * otherwise.
+   * @return a boolean value indicating whether all the required
+   * attributes for this object have been defined.
    */
   virtual bool hasRequiredAttributes() const ;
 
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Create and return a speciesReference object, if present.
    *
@@ -979,10 +1016,6 @@ public:
    * @param level the SBML Level
    * 
    * @param version the Version within the SBML Level
-   *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfSpeciesReferences (unsigned int level, unsigned int version);
           
@@ -996,18 +1029,15 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object that is used to determine the
    * characteristics of the ListOfSpeciesReferences object to be created.
-   *
-   * @copydetails doc_throw_exception_namespace
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfSpeciesReferences (SBMLNamespaces* sbmlns);
 
 
   /**
-   * Creates and returns a deep copy of this ListOfSpeciesReferences object.
+   * Creates and returns a deep copy of this ListOfSpeciesReferences
+   * instance.
    *
-   * @return the (deep) copy of this ListOfSpeciesReferences object.
+   * @return a (deep) copy of this ListOfSpeciesReferences.
    */
   virtual ListOfSpeciesReferences* clone () const;
 
@@ -1019,7 +1049,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for objects contained in this list:
-   * @sbmlconstant{SBML_SPECIES_REFERENCE, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_SPECIES_REFERENCE SBML_SPECIES_REFERENCE@endlink (default).
    *
    * @see getElementName()
    * @see getPackageName()
@@ -1125,6 +1155,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Get the ordinal position of this element in the containing object
    * (which in this case is the Model object).
@@ -1139,6 +1170,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   enum SpeciesType { Unknown, Reactant, Product, Modifier };
 
 
@@ -1595,10 +1627,13 @@ SpeciesReference_isSetConstant (const SpeciesReference_t *sr);
  * @param sid The identifier string that will be copied and assigned as the
  * "id" attribute value.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
  *
  * @note Using this function with an id of NULL is equivalent to
  * unsetting the "id" attribute.
@@ -1621,10 +1656,13 @@ SpeciesReference_setId (SpeciesReference_t *sr, const char *sid);
  * @param name The identifier string that will be copied and assigned as the
  * "name" attribute value.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
  *
  * @note Using this function with the name set to NULL is equivalent to
  * unsetting the "name" attribute.
@@ -1647,9 +1685,12 @@ SpeciesReference_setName (SpeciesReference_t *sr, const char *name);
  * @param sid The identifier string that will be copied and assigned as the
  * "species" attribute value.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with an id of NULL is equivalent to
  * unsetting the "species" attribute.
@@ -1672,8 +1713,11 @@ SpeciesReference_setSpecies (SpeciesReference_t *sr, const char *sid);
  *
  * @param value The value to assign to the "stoichiometry" attribute.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
  *
  * @memberof SpeciesReference_t
  */
@@ -1709,11 +1753,14 @@ SpeciesReference_createStoichiometryMath (SpeciesReference_t *sr);
  *
  * @param math The StoichiometryMath_t structure to use in the given SpeciesReference_t.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_LEVEL_MISMATCH, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_VERSION_MISMATCH, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_LEVEL_MISMATCH LIBSBML_LEVEL_MISMATCH @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_VERSION_MISMATCH LIBSBML_VERSION_MISMATCH @endlink
  *
  * @memberof SpeciesReference_t
  */
@@ -1745,8 +1792,11 @@ SpeciesReference_setStoichiometryMath (  SpeciesReference_t *sr
  *
  * @param value The value to assign to the "denominator" attribute.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
  *
  * @memberof SpeciesReference_t
  */
@@ -1762,9 +1812,12 @@ SpeciesReference_setDenominator (SpeciesReference_t *sr, int value);
  * @param value the value to assign as the "constant" attribute
  * of the SpeciesReference_t, either zero for false or nonzero for true.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
  *
  * @memberof SpeciesReference_t
  */
@@ -1779,9 +1832,12 @@ SpeciesReference_setConstant (SpeciesReference_t *sr, int value);
  *
  * @param sr The SpeciesReference_t structure to use.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof SpeciesReference_t
  */
@@ -1796,49 +1852,18 @@ SpeciesReference_unsetId (SpeciesReference_t *sr);
  *
  * @param sr The SpeciesReference_t structure to use.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof SpeciesReference_t
  */
 LIBSBML_EXTERN
 int
 SpeciesReference_unsetName (SpeciesReference_t *sr);
-
-
-/**
- * Unsets the value of the "species" attribute of the given SpeciesReference_t
- * structure.
- *
- * @param sr The SpeciesReference_t structure to use.
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
- *
- * @memberof SpeciesReference_t
- */
-LIBSBML_EXTERN
-int
-SpeciesReference_unsetSpecies (SpeciesReference_t *sr);
-
-
-/**
- * Unsets the value of the "constant" attribute of the given SpeciesReference_t
- * structure.
- *
- * @param sr The SpeciesReference_t structure to use.
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
- *
- * @memberof SpeciesReference_t
- */
-LIBSBML_EXTERN
-int
-SpeciesReference_unsetConstant (SpeciesReference_t *sr);
 
 
 /**
@@ -1850,9 +1875,12 @@ SpeciesReference_unsetConstant (SpeciesReference_t *sr);
  *
  * @param sr The SpeciesReference_t structure to use.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof SpeciesReference_t
  */
@@ -1870,9 +1898,12 @@ SpeciesReference_unsetStoichiometryMath (SpeciesReference_t *sr);
  *
  * @param sr The SpeciesReference_t structure to use.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof SpeciesReference_t
  */
@@ -1886,11 +1917,11 @@ SpeciesReference_unsetStoichiometry (SpeciesReference_t *sr);
   * all the required attributes for this SpeciesReference_t structure
   * have been set.
   *
-  * The required attributes for a SpeciesReference_t structure are:
+ * @param sr the SpeciesReference_t structure to check.
+ *
+  * @note The required attributes for a SpeciesReference_t structure are:
   * @li species
   * @li constant (in L3 only)
-  *
-  * @param sr the SpeciesReference_t structure to check.
   *
   * @return a true if all the required
   * attributes for this object have been defined, false otherwise.

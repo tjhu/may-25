@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,7 @@
  * ---------------------------------------------------------------------- -->
  *
  * @class Unit
- * @sbmlbrief{core} A single unit referenced in an SBML <em>unit definition</em>.
+ * @sbmlbrief{core} Implementation of SBML's %Unit construct.
  *
  * The SBML unit definition facility uses two classes of objects,
  * UnitDefinition and Unit.  The approach to defining units in %SBML is
@@ -163,7 +163,7 @@
  * 
  * <!-- ------------------------------------------------------------------- -->
  * @class ListOfUnits
- * @sbmlbrief{core} A list of Unit objects.
+ * @sbmlbrief{core} Implementation of SBML's %ListOfUnits construct.
  * 
  * ListOfUnits is entirely contained within UnitDefinition.
  *
@@ -177,6 +177,19 @@
  * Doxygen's @copydetails command has limited functionality.  Symbols
  * beginning with "doc_" are marked as ignored in our Doxygen configuration.
  * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  -->
+ *
+ * @class doc_note_unit_setting_lv
+ * 
+ * @note Upon the addition of a Unit object to an SBMLDocument, the SBML
+ * Level, SBML Version and XML namespace of the document @em
+ * override the values used when creating the Unit object via this
+ * constructor.  This is necessary to ensure that an SBML document is a
+ * consistent structure.  Nevertheless, the ability to supply the values
+ * at the time of creation of a Unit is an important aid to producing
+ * valid SBML.  Knowledge of the intented SBML Level and Version
+ * determine whether it is valid to assign a particular value to an
+ * attribute, or whether it is valid to add an object to an existing
+ * SBMLDocument.
  *
  * @class doc_warning_unit_offset_only_l2v1
  * 
@@ -231,9 +244,12 @@ public:
    * @param version an unsigned int, the SBML Version to assign to this
    * Unit
    *
-   * @copydetails doc_throw_exception_lv
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_unit_setting_lv
    */
   Unit (unsigned int level, unsigned int version);
 
@@ -246,9 +262,12 @@ public:
    * 
    * @param sbmlns an SBMLNamespaces object.
    *
-   * @copydetails doc_throw_exception_namespace
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_unit_setting_lv
    */
   Unit (SBMLNamespaces* sbmlns);
 
@@ -263,6 +282,9 @@ public:
    * Copy constructor; creates a copy of this Unit.
    *
    * @param orig the object to copy.
+   * 
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   Unit(const Unit& orig);
 
@@ -272,11 +294,13 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   Unit& operator=(const Unit& rhs);
 
 
-  /** @cond doxygenLibsbmlInternal */
   /**
    * Accepts the given SBMLVisitor for this instance of Unit.
    *
@@ -288,13 +312,12 @@ public:
    * located in the enclosing UnitDefinition instance).
    */
   virtual bool accept (SBMLVisitor& v) const;
-  /** @endcond */
 
 
   /**
-   * Creates and returns a deep copy of this Unit object.
-   *
-   * @return the (deep) copy of this Unit object.
+   * Creates and returns a deep copy of this Unit.
+   * 
+   * @return a (deep) copy of this Unit.
    */
   virtual Unit* clone () const;
 
@@ -741,18 +764,6 @@ public:
 
 
   /**
-   * Predicate to test whether the "offset" attribute of this Unit 
-   * is set.
-   * 
-   * @return @c true if the "offset" attribute of this Unit is set, 
-   * @c false otherwise.
-   *
-   * @copydetails doc_warning_unit_offset_only_l2v1
-   */
-  bool isSetOffset () const;
-
-
-  /**
    * Sets the "kind" attribute value of this Unit.
    *
    * @if clike
@@ -767,9 +778,11 @@ public:
    * names begin with <code>UNIT_KIND_</code> in @link libsbml libsbml@endlink.
    * @endif@~
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   int setKind (UnitKind_t kind);
 
@@ -779,9 +792,11 @@ public:
    *
    * @param value the integer to which the attribute "exponent" should be set
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   int setExponent (int value);
 
@@ -791,8 +806,10 @@ public:
    *
    * @param value the double to which the attribute "exponent" should be set
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
    */
   int setExponent (double value);
 
@@ -802,8 +819,10 @@ public:
    *
    * @param value the integer to which the attribute "scale" should be set
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
    */
   int setScale (int value);
 
@@ -814,9 +833,11 @@ public:
    * @param value the floating-point value to which the attribute
    * "multiplier" should be set
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
    */
   int setMultiplier (double value);
 
@@ -827,64 +848,15 @@ public:
    * @param value the float-point value to which the attribute "offset"
    * should set
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
    *
    * @copydetails doc_warning_unit_offset_only_l2v1
    */
   int setOffset (double value);
-
-
-  /**
-   * Unsets the "kind" attribute value of this Unit.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
-   */
-  int unsetKind ();
-
-
-  /**
-   * Unsets the "exponent" attribute value of this Unit.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
-   */
-  int unsetExponent ();
-
-
-  /**
-   * Unsets the "scale" attribute value of this Unit.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   */
-  int unsetScale ();
-
-
-  /**
-   * Unsets the "multipler" attribute value of this Unit.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
-   */
-  int unsetMultiplier ();
-
-
-  /**
-   * Unsets the "offset" attribute value of this Unit.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
-   *
-   * @copydetails doc_warning_unit_offset_only_l2v1
-   */
-  int unsetOffset ();
 
 
   /**
@@ -893,7 +865,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for this object:
-   * @sbmlconstant{SBML_UNIT, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_UNIT SBML_UNIT@endlink (default).
    *
    * @copydetails doc_warning_typecodes_not_unique
    *
@@ -1007,7 +979,7 @@ public:
    * have a "kind" attribute value of @c dimensionless, or (2) their "kind",
    * "exponent" and (for SBML Level&nbsp;2 Version&nbsp;1) "offset"
    * attribute values are equal. (Contrast this to the method
-   * areIdentical(@if java Unit, %Unit@endif), which compares Unit objects with respect to all
+   * areIdentical(@if java Unit u1, %Unit u2@endif), which compares Unit objects with respect to all
    * attributes, not just the "kind" and "exponent".)
    *
    * @param unit1 the first Unit object to compare
@@ -1035,8 +1007,9 @@ public:
    *
    * @param unit the Unit object to manipulate.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the function.  The
+   * possible values returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
    *
    * @copydetails doc_note_static_methods
    *
@@ -1099,20 +1072,21 @@ public:
    * all the required attributes for this Unit object
    * have been set.
    *
-   * The required attributes for a Unit object are:
+   * @note The required attributes for a Unit object are:
    * @li "kind"
    * @li "exponent" (required in SBML Level&nbsp;3; optional in Level&nbsp;2)
    * @li "multiplier" (required in SBML Level&nbsp;3; optional in Level&nbsp;2)
    * @li "scale" (required in SBML Level&nbsp;3; optional in Level&nbsp;2)
    *
-   * @return @c true if the required attributes have been set, @c false
-   * otherwise.
+   * @return a boolean value indicating whether all the required
+   * elements for this object have been defined.
    */
   virtual bool hasRequiredAttributes() const ;
 
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   void setExponentUnitChecking (double value); 
                                            
   double getExponentUnitChecking();
@@ -1267,10 +1241,6 @@ public:
    * @param level the SBML Level
    * 
    * @param version the Version within the SBML Level
-   *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfUnits (unsigned int level, unsigned int version);
           
@@ -1284,18 +1254,14 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object that is used to determine the
    * characteristics of the ListOfUnits object to be created.
-   *
-   * @copydetails doc_throw_exception_namespace
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfUnits (SBMLNamespaces* sbmlns);
 
 
   /**
-   * Creates and returns a deep copy of this ListOfUnits object.
+   * Creates and returns a deep copy of this ListOfUnits.
    *
-   * @return the (deep) copy of this ListOfUnits object.
+   * @return a (deep) copy of this ListOfUnits.
    */
   virtual ListOfUnits* clone () const;
 
@@ -1307,7 +1273,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for objects contained in this list:
-   * @sbmlconstant{SBML_UNIT, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_UNIT SBML_UNIT@endlink (default).
    *
    * @see getElementName()
    * @see getPackageName()
@@ -1363,6 +1329,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Get the ordinal position of this element in the containing object
    * (which in this case is the Model object).
@@ -1377,6 +1344,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Create a ListOfUnits object corresponding to the next token
    * in the XML input stream.
@@ -2207,40 +2175,18 @@ Unit_isSetScale (const Unit_t *u);
 
 
 /**
- * Predicate to test whether the "scale" attribute of the given Unit_t
- * structure @p u is set.
- *
- * @param u the Unit_t structure to query
- * 
- * @return nonzero (for true) if the "scale" attribute of the given
- * Unit_t structure is set, zero (0) otherwise.
- *
- * @warning The "offset" attribute is only available in SBML Level 2
- * Version 1.  This attribute is not present in SBML Level 2 Version 2 or
- * above.  When producing SBML models using these later specifications,
- * Modelers and software need to account for units with offsets explicitly.
- * The SBML specification document offers a number of suggestions for how
- * to achieve this.  LibSBML functions such as this one related to "offset"
- * are retained for compatibility with earlier versions of SBML Level 2,
- * but their use is strongly discouraged.
- *
- * @memberof Unit_t
- */
-LIBSBML_EXTERN
-int
-Unit_isSetOffset (const Unit_t *u);
-
-
-/**
  * Sets the kind of the given Unit_t structure @p u to the given
  * UnitKind_t value.
  *
  * @param u the Unit_t structure whose value is to be set
  * @param kind a value from the UnitKind_t enumeration 
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @memberof Unit_t
  */
@@ -2255,8 +2201,11 @@ Unit_setKind (Unit_t *u, UnitKind_t kind);
  * @param u the Unit_t structure whose value is to be set
  * @param value the integer to which the attribute "exponent" should be set
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
  *
  * @memberof Unit_t
  */
@@ -2271,8 +2220,11 @@ Unit_setExponent (Unit_t *u, int value);
  * @param u the Unit_t structure whose value is to be set
  * @param value the double to which the attribute "exponent" should be set
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
  *
  * @memberof Unit_t
  */
@@ -2287,8 +2239,11 @@ Unit_setExponentAsDouble (Unit_t *u, double value);
  * @param u the Unit_t structure whose value is to be set
  * @param value the integer to which the attribute "scale" should be set
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
  *
  * @memberof Unit_t
  */
@@ -2303,9 +2258,12 @@ Unit_setScale (Unit_t *u, int value);
  * @param u the Unit_t structure whose value is to be set
  * @param value the integer to which the attribute "multiplier" should be set
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
  *
  * @memberof Unit_t
  */
@@ -2320,9 +2278,12 @@ Unit_setMultiplier (Unit_t *u, double value);
  * @param u the Unit_t structure whose value is to be set
  * @param value the integer to which the attribute "offset" should be set
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_UNEXPECTED_ATTRIBUTE LIBSBML_UNEXPECTED_ATTRIBUTE @endlink
  *
  * @warning The "offset" attribute is only available in SBML Level 2
  * Version 1.  This attribute is not present in SBML Level 2 Version 2 or
@@ -2341,98 +2302,11 @@ Unit_setOffset (Unit_t *u, double value);
 
 
 /**
- * Unsets the kind of the given Unit_t structure @p u.
- *
- * @param u the Unit_t structure whose value is to be set
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
- *
- * @memberof Unit_t
- */
-LIBSBML_EXTERN
-int
-Unit_unsetKind (Unit_t *u);
-
-
-/**
- * Unsets the "exponent" attribute value of the given Unit_t structure @p u.
- *
- * @param u the Unit_t structure whose value is to be set
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- *
- * @memberof Unit_t
- */
-LIBSBML_EXTERN
-int
-Unit_unsetExponent (Unit_t *u);
-
-
-/**
- * Unsets the "scale" attribute value of the given Unit_t structure @p u.
- *
- * @param u the Unit_t structure whose value is to be set
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- *
- * @memberof Unit_t
- */
-LIBSBML_EXTERN
-int
-Unit_unsetScale (Unit_t *u);
-
-
-/**
- * Unsets the "multiplier" attribute value of the given Unit_t structure @p u.
- *
- * @param u the Unit_t structure whose value is to be set
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
- *
- * @memberof Unit_t
- */
-LIBSBML_EXTERN
-int
-Unit_unsetMultiplier (Unit_t *u);
-
-
-/**
- * Unsets the "offset" attribute value of the given Unit_t structure @p u.
- * 
- * @param u the Unit_t structure whose value is to be set
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_UNEXPECTED_ATTRIBUTE, OperationReturnValues_t}
- *
- * @warning The "offset" attribute is only available in SBML Level 2
- * Version 1.  This attribute is not present in SBML Level 2 Version 2 or
- * above.  When producing SBML models using these later specifications,
- * Modelers and software need to account for units with offsets explicitly.
- * The SBML specification document offers a number of suggestions for how
- * to achieve this.  LibSBML functions such as this one related to "offset"
- * are retained for compatibility with earlier versions of SBML Level 2,
- * but their use is strongly discouraged.
- *
- * @memberof Unit_t
- */
-LIBSBML_EXTERN
-int
-Unit_unsetOffset (Unit_t *u);
-
-
-/**
  * Predicate returning @c true or @c false depending on whether
  * all the required attributes for this Unit_t structure
  * have been set.
  *
- * The required attributes for a Unit_t structure are:
+ * @note The required attributes for a Unit_t structure are:
  * @li kind
  * @li exponent (L3 on)
  * @li multiplier (L3 on)
@@ -2528,8 +2402,9 @@ Unit_areEquivalent(Unit_t * unit1, Unit_t * unit2);
  *
  * @param unit the Unit_t structure to manipulate.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the function.  The
+ * possible values returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
  *
  * @see Unit_convertToSI()
  * @see Unit_merge()

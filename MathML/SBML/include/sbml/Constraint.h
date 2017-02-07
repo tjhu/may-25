@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,7 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class Constraint
- * @sbmlbrief{core} An SBML <em>constraint</em>, for stating validity assumptions.
+ * @sbmlbrief{core} Implementation of SBML's %Constraint construct.
  *
  * The Constraint object class was introduced in SBML Level&nbsp;2
  * Version&nbsp;2 as a mechanism for stating the assumptions under which a
@@ -108,9 +108,33 @@
  * <!---------------------------------------------------------------------- -->
  *
  * @class ListOfConstraints
- * @sbmlbrief{core} A list of Constraint objects.
+ * @sbmlbrief{core} Implementation of SBML's %ListOfConstraints construct.
  * 
  * @copydetails doc_what_is_listof
+ */
+
+/**
+ * <!-- ~ ~ ~ ~ ~ Start of common documentation strings ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+ * The following text is used as common documentation blocks copied multiple
+ * times elsewhere in this file.  The use of @class is a hack needed because
+ * Doxygen's @copydetails command has limited functionality.  Symbols
+ * beginning with "doc_" are marked as ignored in our Doxygen configuration.
+ * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  -->
+ *
+ * @class doc_constraint_setting_lv
+ * 
+ * @note Upon the addition of a Constraint object to an SBMLDocument
+ * (e.g., using Model::addConstraint(@if java Constraint c@endif)), the
+ * SBML Level, SBML Version and XML namespace of the document @em
+ * override the values used when creating the Constraint object via this
+ * constructor.  This is necessary to ensure that an SBML document is a
+ * consistent structure.  Nevertheless, the ability to supply the values
+ * at the time of creation of a Constraint is an important aid to
+ * producing valid SBML.  Knowledge of the intented SBML Level and
+ * Version determine whether it is valid to assign a particular value to
+ * an attribute, or whether it is valid to add an object to an existing
+ * SBMLDocument.
+ *
  */
 
 #ifndef Constraint_h
@@ -149,9 +173,12 @@ public:
    * @param version an unsigned int, the SBML Version to assign to this
    * Constraint
    *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
+   * 
+   * @copydetails doc_constraint_setting_lv
    */
   Constraint (unsigned int level, unsigned int version);
 
@@ -164,9 +191,12 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object.
    *
-   * @copydetails doc_throw_exception_namespace
-   *
-   * @copydetails doc_note_setting_lv
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
+   * 
+   * @copydetails doc_constraint_setting_lv
    */
   Constraint (SBMLNamespaces* sbmlns);
 
@@ -181,6 +211,9 @@ public:
    * Copy constructor; creates a copy of this Constraint.
    *
    * @param orig the object to copy.
+   * 
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   Constraint (const Constraint& orig);
 
@@ -190,11 +223,13 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   Constraint& operator=(const Constraint& rhs);
 
 
-  /** @cond doxygenLibsbmlInternal */
   /**
    * Accepts the given SBMLVisitor for this instance of Constraint.
    *
@@ -206,13 +241,12 @@ public:
    * the ListOfConstraints located in the enclosing Model instance).
    */
   virtual bool accept (SBMLVisitor& v) const;
-  /** @endcond */
 
 
   /**
-   * Creates and returns a deep copy of this Constraint object.
-   *
-   * @return the (deep) copy of this Constraint object.
+   * Creates and returns a deep copy of this Constraint.
+   * 
+   * @return a (deep) copy of this Constraint.
    */
   virtual Constraint* clone () const;
 
@@ -268,29 +302,14 @@ public:
    *
    * @param xhtml an XML tree containing XHTML content.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
    */
   int setMessage (const XMLNode* xhtml);
-
-
-  /**
-   * Sets the message of this Constraint.
-   *
-   * @param message an XML string that is to be used as the content of the
-   * "message" subelement of this object
-   *
-   * @param addXHTMLMarkup a boolean indicating whether to wrap the contents
-   * of the @p message argument with XHTML paragraph (<code>&lt;p&gt;</code>)
-   * tags.  This is appropriate when the string in @p message does not already
-   * containg the appropriate XHTML markup.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
-   */
-  int setMessage (const std::string& message, bool addXHTMLMarkup = false);
 
 
   /**
@@ -300,9 +319,12 @@ public:
    * @param math an ASTNode expression to be assigned as the "math"
    * subelement of this Constraint
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
    */
   int setMath (const ASTNode* math);
 
@@ -310,21 +332,46 @@ public:
   /**
    * Unsets the "message" subelement of this Constraint.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
    */
   int unsetMessage ();
 
 
   /**
-   * @copydoc doc_renamesidref_common
+   * Renames all the @c SIdRef attributes on this element, including any
+   * found in MathML.
+   *
+   * @copydetails doc_what_is_sidref
+   * 
+   * This method works by looking at all attributes and (if appropriate)
+   * mathematical formulas, comparing the identifiers to the value of @p
+   * oldid.  If any matches are found, the matching identifiers are replaced
+   * with @p newid.  The method does @em not descend into child elements.
+   *
+   * @param oldid the old identifier
+   * @param newid the new identifier
    */
   virtual void renameSIdRefs(const std::string& oldid, const std::string& newid);
 
 
   /**
-   * @copydoc doc_renameunitsidref_common
+   * Renames all the @c UnitSIdRef attributes on this element.
+   *
+   * @copydetails doc_what_is_unitsidref
+   *
+   * This method works by looking at all unit identifier attribute values
+   * (including, if appropriate, inside mathematical formulas), comparing the
+   * unit identifiers to the value of @p oldid.  If any matches are found,
+   * the matching identifiers are replaced with @p newid.  The method does
+   * @em not descend into child elements.
+   * 
+   * @param oldid the old identifier
+   * @param newid the new identifier
    */
   virtual void renameUnitSIdRefs(const std::string& oldid, const std::string& newid);
 
@@ -344,7 +391,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for this object:
-   * @sbmlconstant{SBML_CONSTRAINT, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_CONSTRAINT SBML_CONSTRAINT@endlink (default).
    *
    * @copydetails doc_warning_typecodes_not_unique
    *
@@ -389,6 +436,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Subclasses should override this method to read (and store) XHTML,
    * MathML, etc. directly from the XMLInputStream.
@@ -467,10 +515,6 @@ public:
    * @param level the SBML Level
    * 
    * @param version the Version within the SBML Level
-   *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfConstraints (unsigned int level, unsigned int version);
           
@@ -484,18 +528,14 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object that is used to determine the
    * characteristics of the ListOfConstraints object to be created.
-   *
-   * @copydetails doc_throw_exception_namespace
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfConstraints (SBMLNamespaces* sbmlns);
 
 
   /**
-   * Creates and returns a deep copy of this ListOfConstraints object.
+   * Creates and returns a deep copy of this ListOfConstraints instance.
    *
-   * @return the (deep) copy of this ListOfConstraints object.
+   * @return a (deep) copy of this ListOfConstraints.
    */
   virtual ListOfConstraints* clone () const;
 
@@ -507,7 +547,7 @@ public:
    * @copydetails doc_what_are_typecodes
    * 
    * @return the SBML type code for the objects contained in this ListOf
-   * instance: @sbmlconstant{SBML_CONSTRAINT, SBMLTypeCode_t} (default).
+   * instance: @link SBMLTypeCode_t#SBML_CONSTRAINT SBML_CONSTRAINT@endlink (default).
    *
    * @see getElementName()
    * @see getPackageName()
@@ -520,7 +560,7 @@ public:
    *
    * For ListOfConstraints, the XML element name is @c "listOfConstraints".
    * 
-   * @return the name of this element.
+   * @return the name of this element, i.e., @c "listOfConstraints".
    */
   virtual const std::string& getElementName () const;
 
@@ -563,6 +603,7 @@ public:
 
 
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Get the ordinal position of this element in the containing object
    * (which in this case is the Model object).
@@ -582,6 +623,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Create and return an SBML object of this class, if present.
    *
@@ -778,9 +820,12 @@ Constraint_isSetMath (const Constraint_t *c);
  *
  * @param xhtml an XML tree containing XHTML content.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof Constraint_t
  */
@@ -797,9 +842,12 @@ Constraint_setMessage (Constraint_t *c, const XMLNode_t* xhtml);
  * @param math an ASTNode_t expression to be assigned as the "math"
  * subelement of this Constraint_t
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof Constraint_t
  */
@@ -813,9 +861,12 @@ Constraint_setMath (Constraint_t *c, const ASTNode_t *math);
  *
  * @param c the Constraint_t structure
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @memberof Constraint_t
  */

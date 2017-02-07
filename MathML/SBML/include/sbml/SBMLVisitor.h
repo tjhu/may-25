@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,7 @@
  * ---------------------------------------------------------------------- -->
  *
  * @class SBMLVisitor
- * @sbmlbrief{core} Support class for operations on SBML objects.
+ * @sbmlbrief{core} Support class for performing operations on SBML objects.
  * 
  * <em style='color: #555'>This class of objects is defined by libSBML only
  * and has no direct equivalent in terms of SBML components.</em>

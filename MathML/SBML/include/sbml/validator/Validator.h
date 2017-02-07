@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,8 @@
  * ---------------------------------------------------------------------- -->
  *
  * @class Validator
- * @sbmlbrief{core} Entry point for SBML validation rules in libSBML.
+ * @sbmlbrief{core} Entry point for libSBML's implementation of SBML
+ * validation rules.
  * 
  * @htmlinclude not-sbml-warning.html
  *
@@ -64,8 +65,10 @@
 
 
 /** @cond doxygenLibsbmlInternal */
+
 #include <list>
 #include <string>
+
 /** @endcond */
 
 
@@ -135,27 +138,24 @@ public:
   /**
    * Get the category of validation rules covered by this validator.
    *
-   * @return an integer code representing the category of validator rules
-   * covered by this validator class.  The category values are drawn from the
-   * enumeration #SBMLErrorCategory_t.  See the documentation for the class
-   * SBMLError for more information.
+   * The category values are drawn from the enumeration
+   * #SBMLErrorCategory_t.  See the documentation for the class SBMLError
+   * for more information.
    */
-  unsigned int getCategory () const;
+  const unsigned int getCategory () const;
 
 
   /**
-   * Get the list of SBMLError objects logged during validator execution.
-   *
-   * @return a list of failures logged during validation.  The list may
-   * be empty if no errors or other diagnostics were logged by the validator.
+   * Get the list of SBMLError objects (if any) logged as a result
+   * of running the validator.
+   * 
+   * @return a list of failures logged during validation.
    */
   const std::list<SBMLError>& getFailures () const;
 
 
   /**
-   * Adds the given failure to this list of validation failures.
-   *
-   * This method can be used in the implementation of custom validators.
+   * Adds the given failure to this list of Validators failures.
    *
    * @param err the SBMLError object to append.
    */
@@ -186,6 +186,8 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
+
   ValidatorConstraints* mConstraints;
   std::list<SBMLError>  mFailures;
   unsigned int          mCategory;

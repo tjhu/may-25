@@ -9,7 +9,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -33,7 +33,8 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class SBMLConverterRegister
- * @sbmlbrief{core} Template for SBML converter registry registrations.
+ * @sbmlbrief{core} Template class for SBML converters to register with the
+ * registry.
  *
  * @htmlinclude libsbml-facility-only-warning.html
  *
@@ -49,7 +50,7 @@
  * method on the SBMLConverter instance.  For example, if a new converter
  * class named @c SweetConverter were to be created, it should provide
  * an @c init() method along the following lines:
- * @code{.cpp}
+ * @verbatim
 #include <sbml/conversion/SBMLConverterRegistry.h>
 #include <sbml/conversion/SBMLConverterRegister.h>
 
@@ -58,22 +59,23 @@
 #include <algorithm>
 #include <string>
 
+using namespace std;
 LIBSBML_CPP_NAMESPACE_BEGIN
 
 void SweetConverter::init()
 {
   SBMLConverterRegistry::getInstance().addConverter(new SweetConverter());
 }
-@endcode
+@endverbatim
  * Then, to perform the registration, the caller code should perform a
  * final step of instantiatiating the template in a separate file used
  * for this purpose for all user-defined converters:
- * @code{.cpp}
+ * @verbatim
 #include <sbml/conversion/SBMLConverterRegister.h>
 
 static SBMLConverterRegister<SweetConverter> registerSweetConverter;
 ... other converter template instantiations here ... 
-@endcode
+@endverbatim
  * 
  * For more information about the registry, please consult the introduction
  * to the class SBMLRegistry.
@@ -110,4 +112,5 @@ LIBSBML_CPP_NAMESPACE_END
 
 #endif  /* __cplusplus */
 #endif  /* SBMLConverterRegister_h */
+
 /** @endcond */

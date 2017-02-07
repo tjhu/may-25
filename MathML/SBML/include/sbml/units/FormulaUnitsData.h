@@ -11,7 +11,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -102,6 +102,9 @@ public:
    * Copy constructor; creates a copy of this FormulaUnitsData.
    *
    * @param orig the object to copy.
+   * 
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   FormulaUnitsData(const FormulaUnitsData& orig);
 
@@ -111,6 +114,9 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   FormulaUnitsData& operator=(const FormulaUnitsData& rhs);
 
@@ -122,9 +128,9 @@ public:
  
 
   /**
-   * Creates and returns a deep copy of this FormulaUnitsData object.
-   *
-   * @return the (deep) copy of this FormulaUnitsData object.
+   * Creates and returns a deep copy of this FormulaUnitsData.
+   * 
+   * @return a (deep) copy of this FormulaUnitsData.
    */
   virtual FormulaUnitsData* clone () const;
   
@@ -377,6 +383,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
     std::string mUnitReferenceId;
 
     bool mContainsUndeclaredUnits;
@@ -476,6 +483,7 @@ LIBSBML_CPP_NAMESPACE_END
 
 
 #endif //FormulaUnitsData_h
+
 /** @endcond */
 
 

@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,8 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class EventAssignment
- * @sbmlbrief{core} An assignment to a variable by an SBML <em>event</em>.
+ * @sbmlbrief{core} Implementation of %SBML's %EventAssignment construct for
+ * %Event.
  *
  * Event contains an optional element called "listOfEventAssignments", of
  * class ListOfEventAssignments.  In every instance of an event definition
@@ -96,7 +97,7 @@
  * is <em>executed</em>, not when it is <em>triggered</em>.  The timing is
  * controlled by the optional Delay in an Event.  The time of
  * assignment is not affected by the "useValuesFromTriggerTime"
- * attribute on Event---that attribute affects the time at which the
+ * attribute on Event&mdash;that attribute affects the time at which the
  * EventAssignment's "math" expression is @em evaluated.  In other
  * words, SBML allows decoupling the time at which the
  * "variable" is assigned from the time at which its value
@@ -120,7 +121,7 @@
  * EventAssignment's "math" expression are the values they have at the
  * point when the event @em executed.
  *
- * @section eventassignment-version-diffs SBML Level/Version differences
+ * @section version-diffs SBML Level/Version differences
  * 
  * Between Version&nbsp;4 and previous versions of SBML Level&nbsp;2, the
  * requirements regarding the matching of units between an
@@ -172,7 +173,8 @@
  * 
  * <!-- ------------------------------------------------------------------- -->
  * @class ListOfEventAssignments
- * @sbmlbrief{core} A list of EventAssignment objects.
+ * @sbmlbrief{core} Implementation of SBML's %ListOfEventAssignments
+ * construct.
  * 
  * @copydetails doc_what_is_listof
  */
@@ -184,17 +186,31 @@
  * Doxygen's @copydetails command has limited functionality.  Symbols
  * beginning with "doc_" are marked as ignored in our Doxygen configuration.
  * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  -->
+ * 
+ * @class doc_note_eventassignment_setting_lv
+ * 
+ * @note Upon the addition of a EventAssignment object to an SBMLDocument
+ * (e.g., using Event::addEventAssignment(@if java EventAssignment ea@endif)), 
+ * the SBML Level, SBML Version and XML namespace of the document @em
+ * override the values used when creating the EventAssignment object via
+ * this constructor.  This is necessary to ensure that an SBML document
+ * is a consistent structure.  Nevertheless, the ability to supply the
+ * values at the time of creation of a EventAssignment is an important
+ * aid to producing valid SBML.  Knowledge of the intented SBML Level and
+ * Version determine whether it is valid to assign a particular value to
+ * an attribute, or whether it is valid to add an object to an existing
+ * SBMLDocument.
  *
  * @class doc_eventassignment_units
  *
  * @par
+
  * The units are calculated based on the mathematical expression in the
  * EventAssignment and the model quantities referenced by
  * <code>&lt;ci&gt;</code> elements used within that expression.  The method
  * EventAssignment::getDerivedUnitDefinition() returns the calculated units,
  * to the extent that libSBML can compute them.
  *
- * <!-- ------------------------------------------------------------------- -->
  * @class doc_warning_eventassignment_math_literals
  * 
  * @warning Note that it is possible the "math" expression in the
@@ -211,7 +227,6 @@
  * this situation holds</strong>.  Callers should take suitable action in
  * those situations.
  *
- * <!-- ------------------------------------------------------------------- -->
  * @class doc_eventassignment_units
  *
  * @par
@@ -221,7 +236,6 @@
  * EventAssignment::getDerivedUnitDefinition() returns the calculated units,
  * to the extent that libSBML can compute them.
  *
- * <!-- ------------------------------------------------------------------- -->
  * @class doc_warning_eventassignment_math_literals
  * 
  * @warning <span class="warning">Note that it is possible the "math"
@@ -275,9 +289,12 @@ public:
    * @param version an unsigned int, the SBML Version to assign to this
    * EventAssignment
    *
-   * @copydetails doc_throw_exception_lv
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_eventassignment_setting_lv
    */
   EventAssignment (unsigned int level, unsigned int version);
 
@@ -290,9 +307,12 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object.
    *
-   * @copydetails doc_throw_exception_namespace
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the given @p level and @p version combination, or this kind
+   * of SBML object, are either invalid or mismatched with respect to the
+   * parent SBMLDocument object.
    *
-   * @copydetails doc_note_setting_lv
+   * @copydetails doc_note_eventassignment_setting_lv
    */
   EventAssignment (SBMLNamespaces* sbmlns);
 
@@ -307,6 +327,9 @@ public:
    * Copy constructor; creates a copy of this EventAssignment.
    *
    * @param orig the object to copy.
+   * 
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   EventAssignment (const EventAssignment& orig);
 
@@ -316,11 +339,13 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   EventAssignment& operator=(const EventAssignment& rhs);
 
 
-  /** @cond doxygenLibsbmlInternal */
   /**
    * Accepts the given SBMLVisitor for this instance of EventAssignment.
    *
@@ -332,13 +357,12 @@ public:
    * ListOfEventAssignments located in the enclosing Event instance).
    */
   virtual bool accept (SBMLVisitor& v) const;
-  /** @endcond */
 
 
   /**
-   * Creates and returns a deep copy of this EventAssignment object.
-   *
-   * @return the (deep) copy of this EventAssignment object.
+   * Creates and returns a deep copy of this EventAssignment.
+   * 
+   * @return a (deep) copy of this EventAssignment.
    */
   virtual EventAssignment* clone () const;
 
@@ -389,21 +413,14 @@ public:
    * @param sid the identifier of a Compartment, Species or (global)
    * Parameter defined in this model.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
    */
   int setVariable (const std::string& sid);
-
-
-  /**
-   * Unsets the attribute "variable" of this EventAssignment.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
-   */
-  int unsetVariable ();
 
 
   /**
@@ -413,9 +430,12 @@ public:
    * @param math an ASTNode that will be copied and stored as the
    * mathematical formula for this EventAssignment.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function.  @if clike The value is drawn from the
+   * enumeration #OperationReturnValues_t. @endif@~ The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
    */
   int setMath (const ASTNode* math);
 
@@ -516,7 +536,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for this object:
-   * @sbmlconstant{SBML_EVENT_ASSIGNMENT, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_EVENT_ASSIGNMENT SBML_EVENT_ASSIGNMENT@endlink (default).
    *
    * @copydetails doc_warning_typecodes_not_unique
    *
@@ -549,11 +569,11 @@ public:
    * Predicate returning @c true if all the required attributes for this
    * EventAssignment object have been set.
    *
-   * The required attributes for a EventAssignment object are:
+   * @note The required attributes for a EventAssignment object are:
    * @li "variable"
    *
-   * @return @c true if the required attributes have been set, @c false
-   * otherwise.
+   * @return a boolean value indicating whether all the required
+   * attributes for this object have been defined.
    */
   virtual bool hasRequiredAttributes() const;
 
@@ -587,13 +607,35 @@ public:
 
 
   /**
-   * @copydoc doc_renamesidref_common
+   * Renames all the @c SIdRef attributes on this element, including any
+   * found in MathML.
+   *
+   * @copydetails doc_what_is_sidref
+   * 
+   * This method works by looking at all attributes and (if appropriate)
+   * mathematical formulas, comparing the identifiers to the value of @p
+   * oldid.  If any matches are found, the matching identifiers are replaced
+   * with @p newid.  The method does @em not descend into child elements.
+   *
+   * @param oldid the old identifier
+   * @param newid the new identifier
    */
   virtual void renameSIdRefs(const std::string& oldid, const std::string& newid);
 
 
   /**
-   * @copydoc doc_renameunitsidref_common
+   * Renames all the @c UnitSIdRef attributes on this element.
+   *
+   * @copydetails doc_what_is_unitsidref
+   *
+   * This method works by looking at all unit identifier attribute values
+   * (including, if appropriate, inside mathematical formulas), comparing the
+   * unit identifiers to the value of @p oldid.  If any matches are found,
+   * the matching identifiers are replaced with @p newid.  The method does
+   * @em not descend into child elements.
+   * 
+   * @param oldid the old identifier
+   * @param newid the new identifier
    */
   virtual void renameUnitSIdRefs(const std::string& oldid, const std::string& newid);
 
@@ -622,6 +664,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Subclasses should override this method to read (and store) XHTML,
    * MathML, etc. directly from the XMLInputStream.
@@ -700,10 +743,6 @@ public:
    * @param level the SBML Level
    * 
    * @param version the Version within the SBML Level
-   *
-   * @copydetails doc_throw_exception_lv
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfEventAssignments (unsigned int level, unsigned int version);
           
@@ -717,18 +756,14 @@ public:
    *
    * @param sbmlns an SBMLNamespaces object that is used to determine the
    * characteristics of the ListOfEventAssignments object to be created.
-   *
-   * @copydetails doc_throw_exception_namespace
-   *
-   * @copydetails doc_note_setting_lv
    */
   ListOfEventAssignments (SBMLNamespaces* sbmlns);
 
 
   /**
-   * Creates and returns a deep copy of this ListOfEventAssignments object.
+   * Creates and returns a deep copy of this ListOfEventAssignments.
    *
-   * @return the (deep) copy of this ListOfEventAssignments object.
+   * @return a (deep) copy of this ListOfEventAssignments.
    */
   virtual ListOfEventAssignments* clone () const;
 
@@ -740,7 +775,7 @@ public:
    * @copydetails doc_what_are_typecodes
    *
    * @return the SBML type code for the objects contained in this ListOf:
-   * @sbmlconstant{SBML_EVENT_ASSIGNMENT, SBMLTypeCode_t} (default).
+   * @link SBMLTypeCode_t#SBML_EVENT_ASSIGNMENT SBML_EVENT_ASSIGNMENT@endlink (default).
    *
    * @see getElementName()
    * @see getPackageName()
@@ -861,6 +896,7 @@ public:
   
   
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Get the ordinal position of this element in the containing object
    * (which in this case is the Model object).
@@ -875,6 +911,7 @@ public:
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   /**
    * Create and return an SBML object of this class, if present.
    *
@@ -1059,9 +1096,12 @@ EventAssignment_isSetMath (const EventAssignment_t *ea);
  * @param sid the identifier of a Compartment_t, Species_t or (global)
  * Parameter_t defined in this model.
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
  *
  * @note Using this function with an id of NULL is equivalent to
  * unsetting the "variable" attribute.
@@ -1074,22 +1114,6 @@ EventAssignment_setVariable (EventAssignment_t *ea, const char *sid);
 
 
 /**
- * Unsets the attribute "variable" of the given EventAssignment_t structure.
- *
- * @param ea the EventAssignment_t to set.
- *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
- *
- * @memberof EventAssignment_t
- */
-LIBSBML_EXTERN
-int
-EventAssignment_unsetVariable (EventAssignment_t *ea);
-
-
-/**
  * Sets the "math" subelement content of the given EventAssignment_t
  * structure to the given ASTNode_t.
  *
@@ -1098,9 +1122,12 @@ EventAssignment_unsetVariable (EventAssignment_t *ea);
  * @param ea the EventAssignment_t to set.
  * @param math the ASTNode_t to copy into @p ea
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof EventAssignment_t
  */

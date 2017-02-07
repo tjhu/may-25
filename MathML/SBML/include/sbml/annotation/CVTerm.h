@@ -7,7 +7,7 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2013-2016 jointly by the following organizations:
+ * Copyright (C) 2013-2014 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
  *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  *     3. University of Heidelberg, Heidelberg, Germany
@@ -31,7 +31,8 @@
  * ------------------------------------------------------------------------ -->
  *
  * @class CVTerm
- * @sbmlbrief{core} A MIRIAM-compliant controlled vocabulary term.
+ * @sbmlbrief{core} Representation of MIRIAM-compliant controlled vocabulary
+ * annotation.
  *
  * @htmlinclude not-sbml-warning.html
  *
@@ -53,21 +54,18 @@
  *
  * @section annotation-parts Components of an SBML annotation
  *
- * The SBML annotation format consists of RDF-based content placed inside an
- * <code>&lt;annotation&gt;</code> element attached to an SBML component such
- * as Species, Compartment, etc.  A small change was introduced in SBML
- * Level&nbsp;2 Version&nbsp;5 and SBML Level&nbsp;3 Version&nbsp;2 to permit
- * nested annotations: lower Versions of the SBML specifications did not
- * explicitly allow this.  We first describe the different parts of SBML
- * annotations in XML form for SBML Level&nbsp;2 below Version&nbsp;5 and
- * SBML Level&nbsp;3 below Version&nbsp;2:
- *
+ * The SBML annotation format consists of RDF-based content placed inside
+ * an <code>&lt;annotation&gt;</code> element attached to an SBML component
+ * such as Species, Compartment, etc.  The following template illustrates
+ * the different parts of SBML annotations in XML form:
+ * 
  <pre class="fragment">
  &lt;<span style="background-color: #bbb">SBML_ELEMENT</span> <span style="background-color: #d0eed0">+++</span> metaid=&quot;<span style="border-bottom: 1px solid black">meta id</span>&quot; <span style="background-color: #d0eed0">+++</span>&gt;
    <span style="background-color: #d0eed0">+++</span>
    &lt;annotation&gt;
      <span style="background-color: #d0eed0">+++</span>
      &lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+              xmlns:dc="http://purl.org/dc/elements/1.1/"
               xmlns:dcterm="http://purl.org/dc/terms/"
               xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#"
               xmlns:bqbiol="http://biomodels.net/biology-qualifiers/"
@@ -89,7 +87,7 @@
    <span style="background-color: #d0eed0">+++</span>
  &lt;/<span style="background-color: #bbb">SBML_ELEMENT</span>&gt;
  </pre>
- *
+ * 
  * In the template above, the placeholder
  * <span class="code" style="background-color: #bbb">SBML_ELEMENT</span> stands for
  * the XML tag name of an SBML model component (e.g., <code>model</code>,
@@ -117,7 +115,7 @@
  * biological qualifier).  Note that these namespace URIs are only labels,
  * and not actual Web locations, which means you cannot visit an address such
  * as <code>"http://biomodels.net/model-qualifiers"</code> in your browser or
- * try to have your application access it.  @if clike Refer instead to the enumerations
+ * try to have your application access it.  @if Refer instead to the enumerations
  * #ModelQualifierType_t and #BiolQualifierType_t for a list of the available
  * relationship elements that can be used for <span class="code"
  * style="background-color: #bbb">RELATION_ELEMENT</span>.@endif@~
@@ -136,66 +134,19 @@
  * resolve robust cross-references in Systems Biology"</a>, <i>BMC Systems
  * Biology</i>, 58(1), 2007.
  *
- * Finally, the following is the same template as above, but this time
- * showing the nested content permitted by the most recent SBML
- * specifications (SBML Level&nbsp;2 Version&nbsp;5 and Level&nbsp;3
- * Version&nbsp;2):
- <pre class="fragment">
- &lt;<span style="background-color: #bbb">SBML_ELEMENT</span> <span style="background-color: #d0eed0">+++</span> metaid=&quot;<span style="border-bottom: 1px solid black">meta id</span>&quot; <span style="background-color: #d0eed0">+++</span>&gt;
-   <span style="background-color: #d0eed0">+++</span>
-   &lt;annotation&gt;
-     <span style="background-color: #d0eed0">+++</span>
-     &lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-              xmlns:dcterm="http://purl.org/dc/terms/"
-              xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#"
-              xmlns:bqbiol="http://biomodels.net/biology-qualifiers/"
-              xmlns:bqmodel="http://biomodels.net/model-qualifiers/" &gt;
-       &lt;rdf:Description rdf:about=&quot;#<span style="border-bottom: 1px solid black">meta id</span>&quot;&gt;
-         <span style="background-color: #e0e0e0; border-bottom: 2px dotted #888">HISTORY</span>
-         &lt;<span style="background-color: #bbb">RELATION_ELEMENT</span>&gt;
-           &lt;rdf:Bag&gt;
-             &lt;rdf:li rdf:resource=&quot;<span style="background-color: #d0d0ee">URI</span>&quot; /&gt;
-             <span style="background-color: #fef">NESTED_CONTENT</span>
-             <span style="background-color: #edd">...</span>
-           &lt;/rdf:Bag&gt;
-         &lt;/<span style="background-color: #bbb">RELATION_ELEMENT</span>&gt;
-         <span style="background-color: #edd">...</span>
-       &lt;/rdf:Description&gt;
-       <span style="background-color: #d0eed0">+++</span>
-     &lt;/rdf:RDF&gt;
-     <span style="background-color: #d0eed0">+++</span>
-   &lt;/annotation&gt;
-   <span style="background-color: #d0eed0">+++</span>
- &lt;/<span style="background-color: #bbb">SBML_ELEMENT</span>&gt;
- </pre>
- *
- * The placeholder
- * <span class="code" style="background-color: #fef">NESTED_CONTENT</span>
- * refers to other optional RDF elements such as
- * <code>"bqbiol:isDescribedBy"</code> that describe a clarification or
- * another annotation about the
- * <span class="code" style="background-color: #bbb">RELATION_ELEMENT</span>
- * in which it appears.  Nested content allows one to, for example, describe
- * protein modifications on species, or to add evidence codes for an
- * annotation.  Nested content relates to its containing
- * <span class="code" style="background-color: #bbb">RELATION_ELEMENT</span>,
- * not the other way around.  It qualifies it, but does not change its
- * meaning.  As such, ignoring a
- * <span class="code" style="background-color: #fef">NESTED_CONTENT</span>
- * does not affect the information provided by the containing
- * <span class="code" style="background-color: #bbb">RELATION_ELEMENT</span>.
- *
- * For more information about SBML annotations in general, please refer to
- * Section&nbsp;6 in the SBML Level&nbsp;2 (Versions 2&ndash;4) or
- * Level&nbsp;3 specification documents.
+ * The relation-resource pairs above are the "controlled vocabulary" terms
+ * that which CVTerm is designed to store and manipulate.  The next section
+ * describes these parts in more detail.  For more information about
+ * SBML annotations in general, please refer to Section&nbsp;6 in the
+ * SBML Level&nbsp;2 (Versions 2&ndash;4) or Level&nbsp;3 specification
+ * documents.
+ * 
  *
  * @section cvterm-parts The parts of a CVTerm
- *
+ * 
  * Annotations that refer to controlled vocabularies are managed in libSBML
- * using CVTerm objects.  The relation-resource pairs discussed in the
- * previous section are the "controlled vocabulary" terms that CVTerm is
- * designed to store and manipulate.  A set of RDF-based annotations attached
- * to a given SBML <code>&lt;annotation&gt;</code> element are read by
+ * using CVTerm objects.  A set of RDF-based annotations attached to a
+ * given SBML <code>&lt;annotation&gt;</code> element are read by
  * RDFAnnotationParser and converted into a list of these CVTerm objects.
  * Each CVTerm object instance stores the following components of an
  * annotation:
@@ -208,13 +159,13 @@
  * MIRIAM to indicate the nature of the relationship between the object
  * being annotated and the resource.  In CVTerm, the qualifiers can be
  * manipulated using the methods CVTerm::getQualifierType(),
- * CVTerm::setQualifierType(@if java int@endif), and related methods.
+ * CVTerm::setQualifierType(@if java int type@endif), and related methods.
  * 
  * <li>The @em resource, represented by a URI (which, we must remind
  * developers, is not the same as a URL).  In the CVTerm class, the
  * resource component can be manipulated using the methods
- * CVTerm::addResource(@if java String@endif) and
- * CVTerm::removeResource(@if java String@endif).
+ * CVTerm::addResource(@if java String resource@endif) and
+ * CVTerm::removeResource(@if java String resource@endif).
  *
  * </ul>
  *
@@ -226,7 +177,7 @@
  *
  * Detailed explanations of the qualifiers defined by BioModels.net can be
  * found at <a target="_blank"
- * href="http://co.mbine.org/standards/qualifiers">http://co.mbine.org/standards/qualifiers</a>.
+ * href="http://biomodels.net/qualifiers">http://biomodels.net/qualifiers</a>.
  */
 
 /**
@@ -285,13 +236,12 @@ LIBSBML_CPP_NAMESPACE_BEGIN
  * @enum QualifierType_t
  *
  * Enumeration used to indicate the type of <a target="_blank"
- * href="http://co.mbine.org/standards/qualifiers/">BioModels.net</a> qualifier in a given
+ * href="http://biomodels.net/qualifiers/">BioModels.net</a> in a given
  * CVTerm object.  The qualification of an annotation is important to convey
  * the relationship between a given model component and the resource used to
  * annotate it. This relationship is rarely one-to-one, and the information
  * content of an annotation is greatly increased if one knows what it
- * represents (as opposed to knowing merely that the two "are related
- * somehow").
+ * represents (as opposed to knowing only that the two "are related").
  *
  * In the SBML/MIRIAM/BioModels.net scheme of things, there are currently two
  * kinds of qualifiers.  They are used for different purposes.  One purpose
@@ -300,11 +250,8 @@ LIBSBML_CPP_NAMESPACE_BEGIN
  * second purpose is in the refinement of the relationship between an
  * annotation resource and the <em>biological object</em> represented by a
  * model element.  In libSBML, each of these two categories of qualifiers
- * have their own @if clike enumerations: @else set of constants:@endif@~
- * @if clike #ModelQualifierType_t for the former type, and
- * #BiolQualifierType_t for the latter@else those whose names begin
- * with <code>BQM_</code> for the former type, and those whose names begin
- * with <code>BQB_</code> for the latter.@endif.
+ * have their own enumerations: #ModelQualifierType_t for the former type, and
+ * #BiolQualifierType_t for the latter.
  *
  * One can view the annotation of a model component as a statement in the
  * form of a @em triple. The resource used in the annotation is the @em
@@ -356,19 +303,6 @@ typedef enum
      * derived from or adapted from the referenced resource.  This relation
      * could be used, for instance, to express a refinement or adaptation in
      * usage of a model component located elsewere. */
-
-  , BQM_IS_INSTANCE_OF
-    /*!< The modeling entity represented by the object in the model is
-     * is an instance of the subject of the referenced resource. For 
-     * instance, this qualifier might be used to link a specific model 
-     * with its generic form. */
-
-  , BQM_HAS_INSTANCE
-    /*!< The modeling entity represented by the object in the model has 
-    * for instance (is a class of) the subject of the referenced resource. 
-    * For instance, this qualifier might be used to link a generic model 
-    * with its specific forms. */
-
   , BQM_UNKNOWN
     /*!< The relationship is unknown. */
 
@@ -446,12 +380,6 @@ typedef enum
     /*!< The biological entity represented by the object in the model is
      * a property of the referenced resource. */
 
-  , BQB_HAS_TAXON
-   /*!< The biological entity represented by the object in the model is
-    * taxonomically restricted, where the restriction is the subject 
-    * of the referenced resource.  This relation may be used to ascribe
-    * a species restriction to a biochemical reaction. */
-
   , BQB_UNKNOWN
     /*!< The relationship is unknown. */
 
@@ -482,23 +410,24 @@ public:
    * @copydetails doc_what_are_cvterms 
    *
    * This method creates an empty CVTerm object.  The possible qualifier
-   * types usable as values of @p type are @sbmlconstant{MODEL_QUALIFIER,
-   * QualifierType_t} and @sbmlconstant{BIOLOGICAL_QUALIFIER,
-   * QualifierType_t}.  If an explicit value for @p type is not given, this
-   * method defaults to using @sbmlconstant{UNKNOWN_QUALIFIER,
-   * QualifierType_t}.  The @if clike #QualifierType_t value@else qualifier
-   * type@endif@~ can be set later using the
-   * CVTerm::setQualifierType(@if java int@endif) method.
+   * types usable as values of @p type are @link
+   * QualifierType_t#MODEL_QUALIFIER MODEL_QUALIFIER@endlink and @link
+   * QualifierType_t#BIOLOGICAL_QUALIFIER BIOLOGICAL_QUALIFIER@endlink.  If
+   * an explicit value for @p type is not given, this method defaults to
+   * using @link QualifierType_t#UNKNOWN_QUALIFIER
+   * UNKNOWN_QUALIFIER@endlink.  The @if clike #QualifierType_t value@else qualifier type@endif@~ 
+   * can be set later using the
+   * CVTerm::setQualifierType(@if java int type@endif) method.
    *
    * Different BioModels.net qualifier elements encode different types of
    * relationships.  Please refer to the SBML specification or the <a
-   * target="_blank" href="http://co.mbine.org/standards/qualifiers/">BioModels.net
+   * target="_blank" href="http://biomodels.net/qualifiers/">BioModels.net
    * qualifiers web page</a> for an explanation of the meaning of these
    * different qualifiers.
    *
-   * @param type a @if clike #QualifierType_t value@else qualifier type@endif@~.
+   * @param type a @if clike #QualifierType_t value@else qualifier type@endif@~
    *
-   * @ifnot hasDefaultArgs @htmlinclude warn-default-args-in-docs.html @endif@~
+   * @if notcpp @htmlinclude warn-default-args-in-docs.html @endif@~
    */
   CVTerm(QualifierType_t type = UNKNOWN_QUALIFIER);
 
@@ -506,8 +435,8 @@ public:
   /**
    * Creates a new CVTerm from the given XMLNode.
    *
-   * @copydetails doc_what_are_cvterms
-   *
+   * @copydetails doc_what_are_cvterms 
+   * 
    * This method creates a CVTerm object from the given XMLNode object @p
    * node.  XMLNode is libSBML's representation of a node in an XML tree of
    * elements, and each such element can be placed in a namespace.  This
@@ -534,8 +463,11 @@ public:
 
   /**
    * Copy constructor; creates a copy of a CVTerm object.
-   *
+   * 
    * @param orig the CVTerm instance to copy.
+   * 
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p orig is @c NULL.
    */
   CVTerm(const CVTerm& orig);
 
@@ -545,16 +477,19 @@ public:
    *
    * @param rhs The object whose values are used as the basis of the
    * assignment.
+   *
+   * @throws @if python ValueError @else SBMLConstructorException @endif@~
+   * Thrown if the argument @p rhs is @c NULL.
    */
   CVTerm& operator=(const CVTerm& rhs);
 
 
   /**
    * Creates and returns a deep copy of this CVTerm object.
-   *
-   * @return the (deep) copy of this CVTerm object.
-   */
-  CVTerm* clone() const;
+   * 
+   * @return a (deep) copy of this CVTerm.
+   */  
+  CVTerm* clone() const; 
 
 
   /**
@@ -572,20 +507,20 @@ public:
    * used; any other qualifier in libSBML is considered unknown (as far as
    * the CVTerm class is concerned).  Consequently, this method will return
    * one of the following values:
-   *
-   * @li @sbmlconstant{MODEL_QUALIFIER, QualifierType_t}
-   * @li @sbmlconstant{BIOLOGICAL_QUALIFIER, QualifierType_t}
-   * @li @sbmlconstant{UNKNOWN_QUALIFIER, QualifierType_t}
+   * 
+   * @li @link QualifierType_t#MODEL_QUALIFIER MODEL_QUALIFIER@endlink
+   * @li @link QualifierType_t#BIOLOGICAL_QUALIFIER BIOLOGICAL_QUALIFIER@endlink
+   * @li @link QualifierType_t#UNKNOWN_QUALIFIER UNKNOWN_QUALIFIER@endlink
    *
    * The specific relationship of this CVTerm to the enclosing SBML object
    * can be determined using the CVTerm methods such as
-   * CVTerm::getModelQualifierType() and
-   * CVTerm::getBiologicalQualifierType().  Callers will typically want to
-   * use the present method to find out which one of the @em other two
-   * methods to call to find out the specific relationship.
+   * getModelQualifierType() and getBiologicalQualifierType().  Callers
+   * will typically want to use the present method to find out which one of
+   * the @em other two methods to call to find out the specific
+   * relationship.
    *
    * @return the @if clike #QualifierType_t value@else qualifier type@endif@~
-   * of this object or @sbmlconstant{UNKNOWN_QUALIFIER, QualifierType_t}
+   * of this object or @link QualifierType_t#UNKNOWN_QUALIFIER UNKNOWN_QUALIFIER@endlink
    * (the default).
    *
    * @see getResources()
@@ -596,46 +531,8 @@ public:
 
 
   /**
-   * Returns the qualifier type of this CVTerm object.
-   *
-   * @copydetails doc_cvterm_common_description
-   *
-   * The placeholder <span class="code" style="background-color: #bbb">
-   * RELATION_ELEMENT</span> refers to a BioModels.net qualifier
-   * element name.  This is an element in either the XML namespace
-   * <code>"http://biomodels.net/model-qualifiers"</code> (for model
-   * qualifiers) or <code>"http://biomodels.net/biology-qualifiers"</code>
-   * (for biological qualifier).  The present method returns a code
-   * identifying which one of these two relationship namespaces is being
-   * used; any other qualifier in libSBML is considered unknown (as far as
-   * the CVTerm class is concerned).  Consequently, this method will return
-   * one of the following values:
-   *
-   * @li @sbmlconstant{MODEL_QUALIFIER, QualifierType_t}
-   * @li @sbmlconstant{BIOLOGICAL_QUALIFIER, QualifierType_t}
-   * @li @sbmlconstant{UNKNOWN_QUALIFIER, QualifierType_t}
-   *
-   * The specific relationship of this CVTerm to the enclosing SBML object
-   * can be determined using the CVTerm methods such as
-   * CVTerm::getModelQualifierType() and
-   * CVTerm::getBiologicalQualifierType().  Callers will typically want to
-   * use the present method to find out which one of the @em other two
-   * methods to call to find out the specific relationship.
-   *
-   * @return the @if clike #QualifierType_t value@else qualifier type@endif@~
-   * of this object or @sbmlconstant{UNKNOWN_QUALIFIER, QualifierType_t}
-   * (the default).
-   *
-   * @see getResources()
-   * @see getModelQualifierType()
-   * @see getBiologicalQualifierType()
-   */
-  QualifierType_t getQualifierType() const;
-
-
-  /**
    * Returns the model qualifier type of this CVTerm object.
-   *
+   * 
    * @copydetails doc_cvterm_common_description
    *
    * The placeholder <span class="code" style="background-color: #bbb">
@@ -644,7 +541,7 @@ public:
    * <code>"http://biomodels.net/model-qualifiers"</code> (for model
    * qualifiers) or <code>"http://biomodels.net/biology-qualifiers"</code>
    * (for biological qualifier).  Callers will typically use
-   * CVTerm::getQualifierType() to find out the type of qualifier relevant to this
+   * getQualifierType() to find out the type of qualifier relevant to this
    * particular CVTerm object, then if it is a @em model qualifier, use the
    * present method to determine the specific qualifier.
    *
@@ -659,26 +556,24 @@ public:
    * <br> The set of known model qualifiers is, at the time of this libSBML
    * release, the following:
    *
-   * @li @sbmlconstant{BQM_IS, ModelQualifierType_t}
-   * @li @sbmlconstant{BQM_IS_DESCRIBED_BY, ModelQualifierType_t}
-   * @li @sbmlconstant{BQM_IS_DERIVED_FROM, ModelQualifierType_t}
-   * @li @sbmlconstant{BQM_IS_INSTANCE_OF, ModelQualifierType_t}
-   * @li @sbmlconstant{BQM_HAS_INSTANCE, ModelQualifierType_t}
+   * @li @link ModelQualifierType_t#BQM_IS BQM_IS@endlink
+   * @li @link ModelQualifierType_t#BQM_IS_DESCRIBED_BY BQM_IS_DESCRIBED_BY@endlink
+   * @li @link ModelQualifierType_t#BQM_IS_DERIVED_FROM BQM_IS_DERIVED_FROM@endlink
    *
    * Any other BioModels.net qualifier found in the model is considered
    * unknown by libSBML and reported as
-   * @sbmlconstant{BQM_UNKNOWN, ModelQualifierType_t}.
+   * @link ModelQualifierType_t#BQM_UNKNOWN BQM_UNKNOWN@endlink.
    *
    * @return the @if clike #ModelQualifierType_t value@else model qualifier type@endif@~
-   * of this object or @sbmlconstant{BQM_UNKNOWN, ModelQualifierType_t}
+   * of this object or @link ModelQualifierType_t#BQM_UNKNOWN BQM_UNKNOWN@endlink
    * (the default).
    */
   ModelQualifierType_t getModelQualifierType();
 
 
   /**
-   * Returns the model qualifier type of this CVTerm object.
-   *
+   * Returns the biological qualifier type of this CVTerm object.
+   * 
    * @copydetails doc_cvterm_common_description
    *
    * The placeholder <span class="code" style="background-color: #bbb">
@@ -687,51 +582,8 @@ public:
    * <code>"http://biomodels.net/model-qualifiers"</code> (for model
    * qualifiers) or <code>"http://biomodels.net/biology-qualifiers"</code>
    * (for biological qualifier).  Callers will typically use
-   * CVTerm::getQualifierType() to find out the type of qualifier relevant to this
-   * particular CVTerm object, then if it is a @em model qualifier, use the
-   * present method to determine the specific qualifier.
-   *
-   * Annotations with model qualifiers express a relationship between an
-   * annotation resource and the <em>modeling concept</em> represented by a
-   * given object in the model.  The diagram below illustrates the
-   * relationship in this case:
-   *
-   * @image html model-qualifiers.png "Relationship expressed by model qualifiers"
-   * @image latex model-qualifiers.png "Relationship expressed by model qualifiers"
-   *
-   * <br> The set of known model qualifiers is, at the time of this libSBML
-   * release, the following:
-   *
-   * @li @sbmlconstant{BQM_IS, ModelQualifierType_t}
-   * @li @sbmlconstant{BQM_IS_DESCRIBED_BY, ModelQualifierType_t}
-   * @li @sbmlconstant{BQM_IS_DERIVED_FROM, ModelQualifierType_t}
-   * @li @sbmlconstant{BQM_IS_INSTANCE_OF, ModelQualifierType_t}
-   * @li @sbmlconstant{BQM_HAS_INSTANCE, ModelQualifierType_t}
-   *
-   * Any other BioModels.net qualifier found in the model is considered
-   * unknown by libSBML and reported as
-   * @sbmlconstant{BQM_UNKNOWN, ModelQualifierType_t}.
-   *
-   * @return the @if clike #ModelQualifierType_t value@else model qualifier type@endif@~
-   * of this object or @sbmlconstant{BQM_UNKNOWN, ModelQualifierType_t}
-   * (the default).
-   */
-  ModelQualifierType_t getModelQualifierType() const;
-
-
-  /**
-   * Returns the biological qualifier type of this CVTerm object.
-   *
-   * @copydetails doc_cvterm_common_description
-   *
-   * The placeholder <span class="code" style="background-color: #bbb">
-   * RELATION_ELEMENT</span> refers to a BioModels.net qualifier element
-   * name.  This is an element in either the XML namespace
-   * <code>"http://biomodels.net/model-qualifiers"</code> (for model
-   * qualifiers) or <code>"http://biomodels.net/biology-qualifiers"</code>
-   * (for biological qualifier).  Callers will typically use
-   * CVTerm::getQualifierType() to find out the type of qualifier relevant to
-   * this particular CVTerm object, then if it is a @em biological qualifier,
+   * getQualifierType() to find out the type of qualifier relevant to this
+   * particular CVTerm object, then if it is a @em biological qualifier,
    * use the present method to determine the specific qualifier.
    *
    * Annotations with biological qualifiers express a relationship between an
@@ -745,80 +597,28 @@ public:
    * <br> The set of known biological qualifiers is, at the time of this
    * libSBML release, the following:
    *
-   * @li @sbmlconstant{BQB_IS, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_HAS_PART, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_IS_PART_OF, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_IS_VERSION_OF, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_HAS_VERSION, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_IS_HOMOLOG_TO, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_IS_DESCRIBED_BY, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_IS_ENCODED_BY, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_ENCODES, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_OCCURS_IN, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_HAS_PROPERTY, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_IS_PROPERTY_OF, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_HAS_TAXON, BiolQualifierType_t}
+   * @li @link BiolQualifierType_t#BQB_IS BQB_IS@endlink
+   * @li @link BiolQualifierType_t#BQB_HAS_PART BQB_HAS_PART@endlink
+   * @li @link BiolQualifierType_t#BQB_IS_PART_OF BQB_IS_PART_OF@endlink
+   * @li @link BiolQualifierType_t#BQB_IS_VERSION_OF BQB_IS_VERSION_OF@endlink
+   * @li @link BiolQualifierType_t#BQB_HAS_VERSION BQB_HAS_VERSION@endlink
+   * @li @link BiolQualifierType_t#BQB_IS_HOMOLOG_TO BQB_IS_HOMOLOG_TO@endlink
+   * @li @link BiolQualifierType_t#BQB_IS_DESCRIBED_BY BQB_IS_DESCRIBED_BY@endlink
+   * @li @link BiolQualifierType_t#BQB_IS_ENCODED_BY BQB_IS_ENCODED_BY@endlink
+   * @li @link BiolQualifierType_t#BQB_ENCODES BQB_ENCODES@endlink
+   * @li @link BiolQualifierType_t#BQB_OCCURS_IN BQB_OCCURS_IN@endlink
+   * @li @link BiolQualifierType_t#BQB_HAS_PROPERTY BQB_HAS_PROPERTY@endlink
+   * @li @link BiolQualifierType_t#BQB_IS_PROPERTY_OF BQB_IS_PROPERTY_OF@endlink
    *
    * Any other BioModels.net qualifier found in the model is considered
    * unknown by libSBML and reported as
-   * @sbmlconstant{BQB_UNKNOWN, BiolQualifierType_t}.
+   * @link BiolQualifierType_t#BQB_UNKNOWN BQB_UNKNOWN@endlink.
    *
    * @return the @if clike #BiolQualifierType_t value@else biology qualifier type@endif@~
-   * of this object or @sbmlconstant{BQB_UNKNOWN, BiolQualifierType_t}
+   * of this object or @link BiolQualifierType_t#BQB_UNKNOWN BQB_UNKNOWN@endlink
    * (the default).
    */
   BiolQualifierType_t getBiologicalQualifierType();
-
-
-  /**
-   * Returns the biological qualifier type of this CVTerm object.
-   *
-   * @copydetails doc_cvterm_common_description
-   *
-   * The placeholder <span class="code" style="background-color: #bbb">
-   * RELATION_ELEMENT</span> refers to a BioModels.net qualifier element
-   * name.  This is an element in either the XML namespace
-   * <code>"http://biomodels.net/model-qualifiers"</code> (for model
-   * qualifiers) or <code>"http://biomodels.net/biology-qualifiers"</code>
-   * (for biological qualifier).  Callers will typically use
-   * CVTerm::getQualifierType() to find out the type of qualifier relevant to
-   * this particular CVTerm object, then if it is a @em biological qualifier,
-   * use the present method to determine the specific qualifier.
-   *
-   * Annotations with biological qualifiers express a relationship between an
-   * annotation resource and the <em>biological concept</em> represented by a
-   * given object in the model.    The diagram
-   * below illustrates the relationship in this case:
-   *
-   * @image html biology-qualifiers.png "Relationship expressed by biological qualifiers"
-   * @image latex biology-qualifiers.png "Relationship expressed by biological qualifiers"
-   *
-   * <br> The set of known biological qualifiers is, at the time of this
-   * libSBML release, the following:
-   *
-   * @li @sbmlconstant{BQB_IS, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_HAS_PART, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_IS_PART_OF, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_IS_VERSION_OF, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_HAS_VERSION, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_IS_HOMOLOG_TO, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_IS_DESCRIBED_BY, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_IS_ENCODED_BY, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_ENCODES, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_OCCURS_IN, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_HAS_PROPERTY, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_IS_PROPERTY_OF, BiolQualifierType_t}
-   * @li @sbmlconstant{BQB_HAS_TAXON, BiolQualifierType_t}
-   *
-   * Any other BioModels.net qualifier found in the model is considered
-   * unknown by libSBML and reported as
-   * @sbmlconstant{BQB_UNKNOWN, BiolQualifierType_t}.
-   *
-   * @return the @if clike #BiolQualifierType_t value@else biology qualifier type@endif@~
-   * of this object or @sbmlconstant{BQB_UNKNOWN, BiolQualifierType_t}
-   * (the default).
-   */
-  BiolQualifierType_t getBiologicalQualifierType() const;
 
 
   /**
@@ -836,19 +636,19 @@ public:
    *
    * A valid CVTerm entity must always have at least one resource and
    * a value for the relationship qualifier.
-   *
+   * 
    * @return the XMLAttributes that store the resources of this CVTerm.
    *
    * @see getQualifierType()
    * @see addResource(const std::string& resource)
    * @see getResourceURI(unsigned int n)
    */
-  XMLAttributes * getResources();
+  XMLAttributes * getResources(); 
 
-
+  
   /**
    * Returns the resources for this CVTerm object.
-   *
+   * 
    * @copydetails doc_cvterm_common_description
    *
    * The <span class="code" style="background-color: #d0d0ee">resource
@@ -861,19 +661,19 @@ public:
    *
    * A valid CVTerm entity must always have at least one resource and
    * a value for the relationship qualifier.
-   *
+   * 
    * @return the XMLAttributes that store the resources of this CVTerm.
    *
    * @see getQualifierType()
    * @see addResource(const std::string& resource)
    * @see getResourceURI(unsigned int n)
    */
-  const XMLAttributes * getResources() const;
+  const XMLAttributes * getResources() const; 
 
-
+  
   /**
    * Returns the number of resources for this CVTerm object.
-   *
+   * 
    * @copydetails doc_cvterm_common_description
    *
    * The fragment above illustrates that there can be more than one
@@ -889,11 +689,11 @@ public:
    * @see getResources()
    * @see getResourceURI(unsigned int n)
    */
-  unsigned int getNumResources();
+  unsigned int getNumResources(); 
 
-
+  
   /**
-   * Returns the number of resources for this CVTerm object.
+   * Returns the value of the <em>n</em>th resource for this CVTerm object.
    *
    * @copydetails doc_cvterm_common_description
    *
@@ -901,34 +701,13 @@ public:
    * resource referenced by a given relationship annotation (i.e., the
    * <span class="code" style="background-color: #d0d0ee">resource
    * URI</span> values associated with a particular <span class="code"
-   * style="background-color: #bbb">RELATION_ELEMENT</span>).  The present
-   * method returns a count of the resources stored in this CVTerm object.
-   *
-   * @return the number of resources in the set of XMLAttributes
-   * of this CVTerm.
-   *
-   * @see getResources()
-   * @see getResourceURI(unsigned int n)
-   */
-  unsigned int getNumResources() const;
-
-
-  /**
-   * Returns the value of the <em>n</em>th resource for this CVTerm object.
-   *
-   * @copydetails doc_cvterm_common_description
-   *
-   * The fragment above illustrates that there can be more than one resource
-   * referenced by a given relationship annotation (i.e., the <span
-   * class="code" style="background-color: #d0d0ee">resource URI</span>
-   * values associated with a particular <span class="code"
-   * style="background-color: #bbb">RELATION_ELEMENT</span>).  LibSBML stores
-   * all resource URIs in a single CVTerm object for a given relationship.
-   * Callers can use CVTerm::getNumResources() to find out how many resources
-   * are stored in this CVTerm object, then call this method to retrieve the
-   * <em>n</em>th resource URI.
-   *
-   * @param n the index of the resource to query.
+   * style="background-color: #bbb">RELATION_ELEMENT</span>).  LibSBML
+   * stores all resource URIs in a single CVTerm object for a given
+   * relationship.  Callers can use getNumResources() to find out how many
+   * resources are stored in this CVTerm object, then call this method to
+   * retrieve the <em>n</em>th resource URI.
+   * 
+   * @param n the index of the resource to query
    *
    * @return string representing the value of the nth resource
    * in the set of XMLAttributes of this CVTerm.
@@ -936,43 +715,16 @@ public:
    * @see getNumResources()
    * @see getQualifierType()
    */
-  std::string getResourceURI(unsigned int n);
+  std::string getResourceURI(unsigned int n); 
 
-
-  /**
-   * Returns the value of the <em>n</em>th resource for this CVTerm object.
-   *
-   * @copydetails doc_cvterm_common_description
-   *
-   * The fragment above illustrates that there can be more than one resource
-   * referenced by a given relationship annotation (i.e., the <span
-   * class="code" style="background-color: #d0d0ee">resource URI</span>
-   * values associated with a particular <span class="code"
-   * style="background-color: #bbb">RELATION_ELEMENT</span>).  LibSBML stores
-   * all resource URIs in a single CVTerm object for a given relationship.
-   * Callers can use CVTerm::getNumResources() to find out how many resources
-   * are stored in this CVTerm object, then call this method to retrieve the
-   * <em>n</em>th resource URI.
-   *
-   * @param n the index of the resource to query.
-   *
-   * @return string representing the value of the nth resource
-   * in the set of XMLAttributes of this CVTerm.
-   *
-   * @see getNumResources()
-   * @see getQualifierType()
-   */
-  std::string getResourceURI(unsigned int n) const;
-
-
+  
   /**
    * Sets the @if clike #QualifierType_t@else qualifier code@endif@~ of this
    * CVTerm object.
    *
    * @param type the @if clike #QualifierType_t value@else qualifier type@endif.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
+   * The possible values returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS@endlink
    *
    * @see getQualifierType()
    */
@@ -983,83 +735,87 @@ public:
    * Sets the @if clike #ModelQualifierType_t value@else model qualifier type@endif@~
    * of this CVTerm object.
    *
-   * @param type the @if clike #ModelQualifierType_t value@else model qualifier type@endif@~.
+   * @param type the @if clike #ModelQualifierType_t value@else model qualifier type@endif@~
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS@endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE@endlink
    *
    * @note If the Qualifier Type of this object is not
-   * @sbmlconstant{MODEL_QUALIFIER, QualifierType_t}, then the
-   * then the @if clike #ModelQualifierType_t value@else model qualifier type@endif@~
-   * will default to @sbmlconstant{BQM_UNKNOWN, QualifierType_t}.
+   * @link QualifierType_t#MODEL_QUALIFIER MODEL_QUALIFIER@endlink, 
+   * then the ModelQualifierType_t value will default to
+   * @link QualifierType_t#BQM_UNKNOWN BQM_UNKNOWN@endlink.
    *
    * @see getQualifierType()
-   * @see setQualifierType(@if java int@endif)
+   * @see setQualifierType(@if java int type@endif)
    */
   int setModelQualifierType(ModelQualifierType_t type);
 
 
   /**
-   * Sets the @if clike #BiolQualifierType_t value@else biology qualifier
-   * type@endif@~ of this CVTerm object.
+   * Sets the @if clike #BiolQualifierType_t value@else biology qualifier type@endif@~
+   * of this CVTerm object.
    *
-   * @param type the @if clike #BiolQualifierType_t value@else biology
-   * qualifier type@endif.
+   * @param type the @if clike #BiolQualifierType_t value@else biology qualifier type@endif.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS@endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE@endlink
    *
    * @note If the Qualifier Type of this object is not
-   * @sbmlconstant{BIOLOGICAL_QUALIFIER, QualifierType_t},
-   * then the @if clike #BiolQualifierType_t value@else biology qualifier type@endif@~
-   * will default to @sbmlconstant{BQB_UNKNOWN, BiolQualifierType_t}.
+   * @link QualifierType_t#BIOLOGICAL_QUALIFIER BIOLOGICAL_QUALIFIER@endlink,
+   * then the @if clike #BiolQualifierType_t value@else biology qualifier type@endif@~ will default
+   * to @link BiolQualifierType_t#BQB_UNKNOWN BQB_UNKNOWN@endlink.
    *
    * @see getQualifierType()
-   * @see setQualifierType(@if java int@endif)
+   * @see setQualifierType(@if java int type@endif)
    */
   int setBiologicalQualifierType(BiolQualifierType_t type);
 
 
   /**
-   * Sets the @if clike #ModelQualifierType_t@else model qualifier
-   * type@endif@~ value of this CVTerm object.
+   * Sets the @if clike #ModelQualifierType_t@endif@if java model qualifier type code@endif@~ value of this CVTerm object.
    *
-   * @param qualifier the string representing a model qualifier.
+   * @param qualifier the string representing a model qualifier
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS@endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE@endlink
    *
    * @note If the Qualifier Type of this object is not
-   * @sbmlconstant{MODEL_QUALIFIER, QualifierType_t}, 
-   * then the @if clike #ModelQualifierType_t value@else model qualifier type@endif@~
-   * will default to @sbmlconstant{BQM_UNKNOWN, QualifierType_t}.
+   * @link QualifierType_t#MODEL_QUALIFIER MODEL_QUALIFIER@endlink, 
+   * then the ModelQualifierType_t value will default to
+   * @link QualifierType_t#BQM_UNKNOWN BQM_UNKNOWN@endlink.
    *
    * @see getQualifierType()
-   * @see setQualifierType(@if java int@endif)
+   * @see setQualifierType(@if java int type@endif)
    */
   int setModelQualifierType(const std::string& qualifier);
 
 
   /**
-   * Sets the @if clike #BiolQualifierType_t@else biology qualifier
+   * Sets the @if clike #BiolQualifierType_t@endif@if java biology qualifier
    * type code@endif@~ of this CVTerm object.
    *
-   * @param qualifier the string representing a biology qualifier.
+   * @param qualifier the string representing a biology qualifier
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS@endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE@endlink
    *
    * @note If the Qualifier Type of this object is not
-   * @sbmlconstant{BIOLOGICAL_QUALIFIER, QualifierType_t},
-   * then the @if clike #BiolQualifierType_t@else biology qualifier type code@endif@~
-   * will default to @sbmlconstant{BQB_UNKNOWN, BiolQualifierType_t}.
+   * @link QualifierType_t#BIOLOGICAL_QUALIFIER BIOLOGICAL_QUALIFIER@endlink,
+   * then the @if clike #BiolQualifierType_t@endif@if java biology qualifier type code@endif@~ value will default
+   * to @link BiolQualifierType_t#BQB_UNKNOWN BQB_UNKNOWN@endlink.
    *
    * @see getQualifierType()
-   * @see setQualifierType(@if java int@endif)
+   * @see setQualifierType(@if java int type@endif)
    */
   int setBiologicalQualifierType(const std::string& qualifier);
 
@@ -1114,18 +870,19 @@ public:
    * style="background-color: #d0d0ee">resource URI</span> as shown in the
    * XML fragment above.)  Resources are stored in this CVTerm object
    * within an XMLAttributes object.
-   *
+   * 
    * The relationship of this CVTerm to the enclosing SBML object can be
-   * determined using the CVTerm methods such as
-   * CVTerm::getModelQualifierType() and CVTerm::getBiologicalQualifierType().
+   * determined using the CVTerm methods such as getModelQualifierType()
+   * and getBiologicalQualifierType().
    *
    * @param resource a string representing the URI of the resource and data
    * item being referenced; e.g.,
    * <code>"http://www.geneontology.org/#GO:0005892"</code>.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the call. The
+   * possible values returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS@endlink
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED@endlink
    *
    * @see getResources()
    * @see removeResource(std::string resource)
@@ -1143,15 +900,16 @@ public:
    * @param resource a string representing the resource URI to remove;
    * e.g., <code>"http://www.geneontology.org/#GO:0005892"</code>.
    *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INDEX_EXCEEDS_SIZE, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
+   * @return integer value indicating success/failure of the
+   * function. The possible values
+   * returned by this function are:
+   * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS@endlink
+   * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE@endlink
    *
    * @see addResource(const std::string& resource)
    */
   int removeResource(std::string resource);
-
+  
 
   /**
    * Predicate returning @c true if all the required elements for this
@@ -1160,102 +918,22 @@ public:
    * @note The required attributes for a CVTerm are:
    * @li a <em>qualifier type</em>, which can be either a model qualifier or a biological qualifier
    * @li at least one resource
-   */
+   */ 
   bool hasRequiredAttributes();
 
-
   /** @cond doxygenLibsbmlInternal */
-
+  
   bool hasBeenModified();
 
   void resetModifiedFlags();
-
-  bool hasRequiredAttributes() const;
-
+   
+  
   /** @endcond */
-
-
-  /**
-   * Returns the number of CVTerm objects nested within this CVTerm
-   * object.
-   *
-   * @return the number of CVTerms nested within this CVTerm object.
-   *
-   * @note this does not recurse through potentially nested CVTerm objects
-   * within a given nested CVTerm. It returns the number of terms immediately
-   * nested within this CVTerm.
-   */
-  unsigned int getNumNestedCVTerms() const;
-
-
-  /**
-   * Returns the nth CVTerm in the list of CVTerms of this CVTerm
-   * object.
-   *
-   * @param n unsigned int the index of the CVTerm to retrieve.
-   *
-   * @return the nth CVTerm in the list of CVTerms for this CVTerm object.
-   */
-  CVTerm * getNestedCVTerm(unsigned int n);
-
-
-  /**
-   * Returns the nth CVTerm in the list of CVTerms of this CVTerm
-   * object.
-   *
-   * @param n unsigned int the index of the CVTerm to retrieve.
-   *
-   * @return the nth CVTerm in the list of CVTerms for this CVTerm object.
-   */
-  const CVTerm * getNestedCVTerm(unsigned int n) const;
-
-
-  /**
-   * Returns a list of CVTerm objects contained within this CVTerm
-   * object.
-   *
-   * @return the list of CVTerms for this CVTerm object.
-   */
-  List* getListNestedCVTerms();
-
-
-  /**
-   * Returns a list of CVTerm objects contained within this CVTerm
-   * object.
-   *
-   * @return the list of CVTerms for this CVTerm object.
-   */
-  const List* getListNestedCVTerms() const;
-
-
-  /**
-   * Adds a copy of the given CVTerm object to the list of nested CVTerm
-   * objects within this CVTerm object.
-   *
-   * @param term the CVTerm to assign.
-   *
-   * @copydetails doc_returns_success_code
-   * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
-   * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
-   */
-  int addNestedCVTerm(const CVTerm* term);
-
-
-  /**
-   * Removes the nth CVTerm in the list of CVTerms of this CVTerm
-   * object and returns a pointer to it.
-   *
-   * @param n unsigned int the index of the CVTerm to retrieve.
-   *
-   * @return a pointer to the nth CVTerm in the list of CVTerms for this 
-   * CVTerm object.
-   */
-  CVTerm* removeNestedCVTerm(unsigned int n);
 
 
 protected:
   /** @cond doxygenLibsbmlInternal */
+
   XMLAttributes * mResources;
 
   QualifierType_t       mQualifier;
@@ -1264,123 +942,12 @@ protected:
 
   bool mHasBeenModified;
 
-  List* mNestedCVTerms;
-
-  void setHasBeenModifiedFlag();
-
-  friend class SBase;
   /** @endcond */
 };
 
 LIBSBML_CPP_NAMESPACE_END
 
 #endif  /* __cplusplus */
-
-LIBSBML_CPP_NAMESPACE_BEGIN
-BEGIN_C_DECLS
-
-/**
- * This method takes a model qualifier type code and returns a string
- * representing the code.
- *
- * This method takes a model qualifier type as argument
- * and returns a string name corresponding to that code.  For example,
- * passing it the qualifier <code>BQM_IS_DESCRIBED_BY</code> will return
- * the string <code>"isDescribedBy"</code>.
- *
- * @param type The @if clike ModelQualifierType_t@endif@~ value to
- * translate. @ifnot clike The value should be a libSBML constant whose
- * name begins with @c BQM_, such as (for example)
- * @sbmlconstant{BQM_IS, BiolQualifierType_t}.@endif@~
- *
- * @return a human readable qualifier name for the given qualifier type.
- *
- * @note The caller does not own the returned string and is therefore not
- * allowed to modify it.
- *
- * @if conly
- * @memberof CVTerm_t
- * @endif
- */
-LIBSBML_EXTERN
-const char*
-ModelQualifierType_toString(ModelQualifierType_t type);
-
-/**
- * This method takes a biol qualifier type code and returns a string
- * representing the code.
- *
- * This method takes a biol qualifier type as argument
- * and returns a string name corresponding to that code.  For example,
- * passing it the qualifier <code>BQB_HAS_VERSION</code> will return
- * the string <code>"hasVersion"</code>.
- *
- * @param type The @if clike BiolQualifierType_t@endif@~ value to
- * translate. @ifnot clike The value should be a constant whose name
- * begins with @c BQB_, such as (for example)
- * @sbmlconstant{BQB_IS, BiolQualifierType_t}.@endif@~
- *
- * @return a human readable qualifier name for the given type.
- *
- * @note The caller does not own the returned string and is therefore not
- * allowed to modify it.
- *
- * @if conly
- * @memberof CVTerm_t
- * @endif
- */
-LIBSBML_EXTERN
-const char*
-BiolQualifierType_toString(BiolQualifierType_t type);
-
-/**
- * This method takes a a string and returns a model qualifier
- * representing the string.
- *
- * This method takes a string as argument and returns a model qualifier type
- * corresponding to that string.  For example, passing it the string
- * <code>"isDescribedBy"</code> will return the qualifier
- * <code>BQM_IS_DESCRIBED_BY</code>.
- *
- * @param s The string to translate to a @if clike ModelQualifierType_t
- * value@else libSBML constant value representing a model qualifier@endif.
- *
- * @return a libSBML qualifier enumeration value for the given human readable
- * qualifier name.
- *
- * @if conly
- * @memberof CVTerm_t
- * @endif
- */
-LIBSBML_EXTERN
-ModelQualifierType_t
-ModelQualifierType_fromString(const char* s);
-
-/**
- * This method takes a a string and returns a biol qualifier
- * representing the string.
- *
- * This method takes a string as argument and returns a biol qualifier type
- * corresponding to that string.  For example, passing it the string
- * <code>"hasVersion"</code> will return the qualifier
- * <code>BQB_HAS_VERSION</code>.
- *
- * @param s The string to translate to a @if clike BiolQualifierType_t
- * value@else libSBML constant value representing a biological qualifier@endif.
- *
- * @return a libSBML qualifier enumeration value for the given human readable
- * qualifier name.
- *
- * @if conly
- * @memberof CVTerm_t
- * @endif
- */
-LIBSBML_EXTERN
-BiolQualifierType_t
-BiolQualifierType_fromString(const char* s);
-
-END_C_DECLS
-LIBSBML_CPP_NAMESPACE_END
 
 #ifndef SWIG
 
@@ -1391,9 +958,9 @@ BEGIN_C_DECLS
  * Creates a new CVTerm_t with the given #QualifierType_t value @p type and
  * returns a pointer to it.
  *
- * The possible QualifierTypes are MODEL_QUALIFIER and BIOLOGICAL_QUALIFIER.
+ * The possible QualifierTypes are MODEL_QUALIFIER and BIOLOGICAL_QUALIFIER.  
  *
- * @param type a QualifierType_t.
+ * @param type a #QualifierType_t
  *
  * @return a pointer to the newly created CVTerm_t structure.
  *
@@ -1405,11 +972,11 @@ CVTerm_createWithQualifierType(QualifierType_t type);
 
 
 /**
- * Create a new CVTerm_t from the given XMLNode_t and returns a
+ * Create a new CVTerm_t from the given XMLNode_t and returns a 
  * pointer to it.
  *
  * RDFAnnotations within a model are stored as a List_t of CVTerm_t's.  This allows
- * the user to interact with the CVTerm_t's directly.  When LibSBML reads in a
+ * the user to interact with the CVTerm_t's directly.  When LibSBML reads in a 
  * model containing RDFAnnotations it parses them into a %List of CVTerm_t's and
  * when writing a model it parses the CVTerm_t's into the appropriate annotation
  * structure.  This function creates a CVTerm_t from the XMLNode_t supplied.
@@ -1441,9 +1008,9 @@ CVTerm_free(CVTerm_t * c);
 
 /**
  * Creates a deep copy of the given CVTerm_t structure
- *
- * @param term the CVTerm_t structure to be copied.
- *
+ * 
+ * @param term the CVTerm_t structure to be copied
+ * 
  * @return a (deep) copy of the given CVTerm_t structure.
  *
  * @memberof CVTerm_t
@@ -1456,7 +1023,7 @@ CVTerm_clone (const CVTerm_t* term);
 /**
  * Takes a CVTerm_t structure and returns its #QualifierType_t type.
  *
- * @param term the CVTerm_t structure whose #QualifierType_t value is sought.
+ * @param term the CVTerm_t structure whose #QualifierType_t value is sought
  *
  * @return the #QualifierType_t value of this CVTerm_t or UNKNOWN_QUALIFIER
  * (default).
@@ -1464,7 +1031,7 @@ CVTerm_clone (const CVTerm_t* term);
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-QualifierType_t
+QualifierType_t 
 CVTerm_getQualifierType(CVTerm_t* term);
 
 
@@ -1479,7 +1046,7 @@ CVTerm_getQualifierType(CVTerm_t* term);
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-ModelQualifierType_t
+ModelQualifierType_t 
 CVTerm_getModelQualifierType(CVTerm_t* term);
 
 
@@ -1495,13 +1062,13 @@ CVTerm_getModelQualifierType(CVTerm_t* term);
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-BiolQualifierType_t
+BiolQualifierType_t 
 CVTerm_getBiologicalQualifierType(CVTerm_t* term);
 
 
 /**
  * Takes a CVTerm_t structure and returns the resources.
- *
+ * 
  * @param term the CVTerm_t structure whose resources are sought.
  *
  * @return the XMLAttributes_t that store the resources of this CVTerm_t.
@@ -1509,15 +1076,15 @@ CVTerm_getBiologicalQualifierType(CVTerm_t* term);
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-XMLAttributes_t *
-CVTerm_getResources(CVTerm_t* term);
+XMLAttributes_t * 
+CVTerm_getResources(CVTerm_t* term); 
 
 
 /**
  * Returns the number of resources for this %CVTerm_t.
  *
  * @param term the CVTerm_t structure whose resources are sought.
- *
+ * 
  * @return the number of resources in the set of XMLAttributes
  * of this %CVTerm_t.
  *
@@ -1531,8 +1098,8 @@ CVTerm_getNumResources(CVTerm_t* term);
 /**
  * Returns the value of the nth resource for this %CVTerm_t.
  *
- * @param term the CVTerm_t structure.
- * @param n the index of the resource to query.
+ * @param term the CVTerm_t structure
+ * @param n the index of the resource to query
  *
  * @return string representing the value of the nth resource
  * in the set of XMLAttributes of this %CVTerm_t.
@@ -1552,16 +1119,19 @@ CVTerm_getResourceURI(CVTerm_t * term, unsigned int n);
  * Sets the "QualifierType_t" of this %CVTerm_t.
  *
  * @param term the CVTerm_t structure to set.
- * @param type the QualifierType_t.
+ * @param type the QualifierType_t 
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-int
+int 
 CVTerm_setQualifierType(CVTerm_t * term, QualifierType_t type);
 
 
@@ -1569,12 +1139,15 @@ CVTerm_setQualifierType(CVTerm_t * term, QualifierType_t type);
  * Sets the "ModelQualifierType_t" of this %CVTerm_t.
  *
  * @param term the CVTerm_t structure to set.
- * @param type the ModelQualifierType_t.
+ * @param type the ModelQualifierType_t
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @note if the QualifierType_t for this structure is not MODEL_QUALIFIER
  * then the ModelQualifierType_t will default to BQM_UNKNOWN.
@@ -1582,7 +1155,7 @@ CVTerm_setQualifierType(CVTerm_t * term, QualifierType_t type);
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-int
+int 
 CVTerm_setModelQualifierType(CVTerm_t * term, ModelQualifierType_t type);
 
 
@@ -1590,12 +1163,15 @@ CVTerm_setModelQualifierType(CVTerm_t * term, ModelQualifierType_t type);
  * Sets the "BiolQualifierType_t" of this %CVTerm_t.
  *
  * @param term the CVTerm_t structure to set.
- * @param type the BiolQualifierType_t.
+ * @param type the BiolQualifierType_t
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @note if the QualifierType_t for this structure is not BIOLOGICAL_QUALIFIER
  * then the BiolQualifierType_t will default to BQB_UNKNOWN.
@@ -1603,7 +1179,7 @@ CVTerm_setModelQualifierType(CVTerm_t * term, ModelQualifierType_t type);
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-int
+int 
 CVTerm_setBiologicalQualifierType(CVTerm_t * term, BiolQualifierType_t type);
 
 
@@ -1611,12 +1187,15 @@ CVTerm_setBiologicalQualifierType(CVTerm_t * term, BiolQualifierType_t type);
  * Sets the "ModelQualifierType_t" of this %CVTerm_t.
  *
  * @param term the CVTerm_t structure to set.
- * @param qualifier the string representing a model qualifier.
+ * @param qualifier the string representing a model qualifier
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @note if the QualifierType_t for this structure is not MODEL_QUALIFIER
  * then the ModelQualifierType_t will default to BQM_UNKNOWN.
@@ -1624,7 +1203,7 @@ CVTerm_setBiologicalQualifierType(CVTerm_t * term, BiolQualifierType_t type);
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-int
+int 
 CVTerm_setModelQualifierTypeByString(CVTerm_t * term, const char* qualifier);
 
 
@@ -1632,12 +1211,15 @@ CVTerm_setModelQualifierTypeByString(CVTerm_t * term, const char* qualifier);
  * Sets the "BiolQualifierType_t" of this %CVTerm_t.
  *
  * @param term the CVTerm_t structure to set.
- * @param qualifier the string representing a biol qualifier.
+ * @param qualifier the string representing a biol qualifier
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @note if the QualifierType_t for this structure is not BIOLOGICAL_QUALIFIER
  * then the BiolQualifierType_t will default to BQB_UNKNOWN.
@@ -1645,19 +1227,22 @@ CVTerm_setModelQualifierTypeByString(CVTerm_t * term, const char* qualifier);
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-int
+int 
 CVTerm_setBiologicalQualifierTypeByString(CVTerm_t * term, const char* qualifier);
 
 /**
  * Adds a resource to the CVTerm_t.
  *
  * @param term the CVTerm_t structure to set.
- * @param resource string representing the resource
+ * @param resource string representing the resource 
  * e.g. http://www.geneontology.org/#GO:0005892
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_FAILED LIBSBML_OPERATION_FAILED @endlink
  *
  * @note this method adds the name "rdf:resource" to the attribute prior
  * to adding it to the resources in this CVTerm_t.
@@ -1665,7 +1250,7 @@ CVTerm_setBiologicalQualifierTypeByString(CVTerm_t * term, const char* qualifier
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-int
+int 
 CVTerm_addResource(CVTerm_t * term, const char * resource);
 
 
@@ -1673,29 +1258,31 @@ CVTerm_addResource(CVTerm_t * term, const char * resource);
  * Removes a resource from the CVTerm_t.
  *
  * @param term the CVTerm_t structure.
- * @param resource string representing the resource
+ * @param resource string representing the resource 
  * e.g. http://www.geneontology.org/#GO:0005892
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INDEX_EXCEEDS_SIZE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_ATTRIBUTE_VALUE, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return integer value indicating success/failure of the
+ * function.  @if clike The value is drawn from the
+ * enumeration #OperationReturnValues_t. @endif@~ The possible values
+ * returned by this function are:
+ * @li @link OperationReturnValues_t#LIBSBML_OPERATION_SUCCESS LIBSBML_OPERATION_SUCCESS @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_ATTRIBUTE_VALUE LIBSBML_INVALID_ATTRIBUTE_VALUE @endlink
+ * @li @link OperationReturnValues_t#LIBSBML_INVALID_OBJECT LIBSBML_INVALID_OBJECT @endlink
  *
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-int
+int 
 CVTerm_removeResource(CVTerm_t * term, const char * resource);
 
 
-/**
+/** 
  * Checks if the CVTerm_t has all the required attributes.
  *
- * @param term the CVTerm_t structure.
- *
+ * @param term the CVTerm_t structure
+ * 
  * @return true (1) if this CVTerm_t has all the required elements,
- * otherwise false (0) will be returned. If an invalid CVTerm_t
+ * otherwise false (0) will be returned. If an invalid CVTerm_t 
  * was provided LIBSBML_INVALID_OBJECT is returned.
  *
  * @memberof CVTerm_t
@@ -1705,92 +1292,87 @@ int
 CVTerm_hasRequiredAttributes(CVTerm_t *term);
 
 
-
 /**
- * Returns the number of CVTerm_t structures nested within this CVTerm_t
- * structure.
+ * This method takes a model qualifier type code and returns a string 
+ * representing the code.
  *
- * @param cvt the structure to getNumNestedCVTerms from.
+ * This method takes a model qualifier type as argument 
+ * and returns a string name corresponding to that code.  For example, 
+ * passing it the qualifier <code>BQM_IS_DESCRIBED_BY</code> will return 
+ * the string "<code>isDescribedBy</code>". 
  *
- * @return the number of CVTerm_t structures nested within this CVTerm_t structure.
+ * @return a human readable qualifier name for the given type.
  *
- * @note this does not recurse through potentially nested CVTerm objects within
- * a given nested CVTerm. It returns the number of terms immediately nested
- * within this CVTerm_t.
+ * @note The caller does not own the returned string and is therefore not
+ * allowed to modify it.
+ * 
+ * @param type The ModelQualifierType_t to translate
  *
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-unsigned int
-CVTerm_getNumNestedCVTerms(const CVTerm_t* cvt);
-
-
+const char* 
+ModelQualifierType_toString(ModelQualifierType_t type);
 
 /**
- * Returns the nth CVTerm_t in the list of CVTerm_t's of this CVTerm_t
- * structure.
+ * This method takes a biol qualifier type code and returns a string 
+ * representing the code.
  *
- * @param cvt the structure to get CVTerm_t's from.
- * @param n unsigned int the index of the CVTerm_t to retrieve.
+ * This method takes a biol qualifier type as argument 
+ * and returns a string name corresponding to that code.  For example, 
+ * passing it the qualifier <code>BQB_HAS_VERSION</code> will return 
+ * the string "<code>hasVersion</code>". 
  *
- * @return the nth CVTerm_t in the list of CVTerm_t's for this CVTerm_t structure.
+ * @return a human readable qualifier name for the given type.
+ *
+ * @note The caller does not own the returned string and is therefore not
+ * allowed to modify it.
+ * 
+ * @param type The BiolQualifierType_t to translate
  *
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-const CVTerm_t *
-CVTerm_getNestedCVTerm(const CVTerm_t* cvt, unsigned int n);
-
+const char* 
+BiolQualifierType_toString(BiolQualifierType_t type);
 
 /**
- * Adds a copy of the given CVTerm_t to the list of nested CVTerm_t's
- * within this CVTerm_t structure.
+ * This method takes a a string and returns a model qualifier
+ * representing the string.
  *
- * @param cvt the structure to add the CVTerm_t to.
- * @param term the CVTerm_t to assign.
+ * This method takes a string as argument and returns a model qualifier type 
+ * corresponding to that string.  For example, passing it the string 
+ * "<code>isDescribedBy</code>" will return the qualifier 
+ * <code>BQM_IS_DESCRIBED_BY</code>. 
  *
- * @copydetails doc_returns_success_code
- * @li @sbmlconstant{LIBSBML_OPERATION_SUCCESS, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_OPERATION_FAILED, OperationReturnValues_t}
- * @li @sbmlconstant{LIBSBML_INVALID_OBJECT, OperationReturnValues_t}
+ * @return a qualifier for the given human readable qualifier name.
+ *
+ * @param s The string to translate to a ModelQualifierType_t
  *
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-int
-CVTerm_addNestedCVTerm(CVTerm_t* cvt, const CVTerm_t* term);
-
+ModelQualifierType_t 
+ModelQualifierType_fromString(const char* s);
 
 /**
- * Removes the nth CVTerm_t in the list of CVTerm_t's of this CVTerm_t
- * structure and returns a pointer to it.
+ * This method takes a a string and returns a biol qualifier
+ * representing the string.
  *
- * @param cvt the structure to get CVTerm_t's from.
- * @param n unsigned int the index of the CVTerm_t to retrieve.
+ * This method takes a string as argument and returns a biol qualifier type 
+ * corresponding to that string.  For example, passing it the string 
+ * "<code>hasVersion</code>" will return the qualifier 
+ * <code>BQB_HAS_VERSION</code>. 
  *
- * @return a pointer to the nth CVTerm_t in the list of CVTerm_t's for this
- * CVTerm_t structure.
+ * @return a qualifier for the given human readable qualifier name.
+ *
+ * @param s The string to translate to a BiolQualifierType_t
  *
  * @memberof CVTerm_t
  */
 LIBSBML_EXTERN
-CVTerm_t *
-CVTerm_removeNestedCVTerm(CVTerm_t* cvt, unsigned int n);
-
-
-/**
- * Returns a list of CVTerm_t structures contained within this CVTerm_t
- * structure.
- *
- * @param cvt the structure to getListNestedCVTerms from.
- *
- * @return the list of CVTerm_t's for this CVTerm_t structure.
- *
- * @memberof CVTerm_t
- */
-LIBSBML_EXTERN
-const List_t *
-CVTerm_getListNestedCVTerms(const CVTerm_t* cvt);
+BiolQualifierType_t 
+BiolQualifierType_fromString(const char* s);
 
 
 END_C_DECLS

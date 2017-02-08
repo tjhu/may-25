@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathML", "MathML\MathML.vcx
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpSBML", "CSharpSBML\CSharpSBML.csproj", "{C1F7C195-93F7-4BCC-AC9F-73F4C1C6D17E}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MFC Setup", "MFC Setup\MFC Setup.vdproj", "{1B10BFB6-8034-4D53-A5EB-8C77FF5F13B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,14 @@ Global
 		{C1F7C195-93F7-4BCC-AC9F-73F4C1C6D17E}.Release|x64.Build.0 = Release|Any CPU
 		{C1F7C195-93F7-4BCC-AC9F-73F4C1C6D17E}.Release|x86.ActiveCfg = Release|Any CPU
 		{C1F7C195-93F7-4BCC-AC9F-73F4C1C6D17E}.Release|x86.Build.0 = Release|Any CPU
+		{1B10BFB6-8034-4D53-A5EB-8C77FF5F13B2}.Debug|Any CPU.ActiveCfg = Debug
+		{1B10BFB6-8034-4D53-A5EB-8C77FF5F13B2}.Debug|Win32.ActiveCfg = Debug
+		{1B10BFB6-8034-4D53-A5EB-8C77FF5F13B2}.Debug|x64.ActiveCfg = Debug
+		{1B10BFB6-8034-4D53-A5EB-8C77FF5F13B2}.Debug|x86.ActiveCfg = Debug
+		{1B10BFB6-8034-4D53-A5EB-8C77FF5F13B2}.Release|Any CPU.ActiveCfg = Release
+		{1B10BFB6-8034-4D53-A5EB-8C77FF5F13B2}.Release|Win32.ActiveCfg = Release
+		{1B10BFB6-8034-4D53-A5EB-8C77FF5F13B2}.Release|x64.ActiveCfg = Release
+		{1B10BFB6-8034-4D53-A5EB-8C77FF5F13B2}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

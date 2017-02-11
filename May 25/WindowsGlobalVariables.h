@@ -77,4 +77,5 @@ extern XMMATRIX							g_World;
 extern XMFLOAT3							g_LightDir;
 extern XMMATRIX							g_LightView;
 extern XMFLOAT3							mEyePosW;
+
 #endif // !1

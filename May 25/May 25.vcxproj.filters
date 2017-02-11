@@ -34,6 +34,9 @@
     <Filter Include="Source Files\Windows">
       <UniqueIdentifier>{8645ca12-3a3b-4b54-84b1-711314ce97ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Windows\MathInput">
+      <UniqueIdentifier>{e5ceb679-48da-4966-ad8e-8d96e6107fdc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -86,7 +89,13 @@
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="MathInput.h">
-      <Filter>Header Files\Windows</Filter>
+      <Filter>Header Files\Windows\MathInput</Filter>
+    </ClInclude>
+    <ClInclude Include="Imathinput.h">
+      <Filter>Header Files\Windows\MathInput</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="MathInput.cpp">
       <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

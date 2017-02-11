@@ -12,7 +12,7 @@ BOOL CMyApp::InitInstance()
 	m_pMainWnd = new CMainWindow;
 	m_pMainWnd->ShowWindow(m_nCmdShow);
 	m_pMainWnd->UpdateWindow();
-	mydialog = new dialog;
+	mydialog = new dialog(m_pMainWnd);
 
 	HWND hWnd = m_pMainWnd->GetSafeHwnd();
 	InitDevice(hWnd);

@@ -1,8 +1,10 @@
 // dialog.cpp : implementation file
 //
 
+
 #include "stdafx.h"
 #include "dialog.h"
+
 
 // includes for implementation
 #include "micaut.h"

@@ -89,6 +89,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,10 +165,12 @@
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="DirectXGlobalVariables.h" />
+    <ClInclude Include="Imathinput.h" />
     <ClInclude Include="MathInput.h" />
     <ClInclude Include="MyDirectXStuff.h" />
     <ClInclude Include="MyWindowsProcs.h" />
     <ClInclude Include="MyWindowsStuff.h" />
+    <ClInclude Include="Utility.h" />
     <ClInclude Include="WindowsGlobalVariables.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -199,6 +203,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="May 25.rc" />

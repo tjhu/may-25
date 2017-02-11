@@ -163,12 +163,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		return 0;
 	}
 
-	MathInput g_mMathInput;
+	g_pMathInput = new MathInput;
 	if (bMathInput)
 	{
-		g_mMathInput.CreateMathInput();
-		g_mMathInput.SetParent(g_hWnd);
-		g_mMathInput.Show();
+		g_pMathInput->CreateMathInput();
+		g_pMathInput->SetParent(g_hWnd);
+		g_pMathInput->Show();
 	}
 
 
@@ -208,6 +208,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	LogFileObject << "Device cleaned up" << std::endl;
 	CleanupDevice();
 	LogFileObject.close();
+	delete g_pMathInput;
 	return (int)msg.wParam;
 }
 

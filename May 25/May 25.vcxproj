@@ -214,8 +214,7 @@
     <ResourceCompile Include="May 25.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="May 25.ico" />
-    <Image Include="small.ico" />
+    <Image Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="LightingUtil.hlsl">

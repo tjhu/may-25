@@ -473,12 +473,12 @@ ATOM RegisterMyClass(HINSTANCE hInstance)
 	wcex.cbClsExtra = 0;
 	wcex.cbWndExtra = 0;
 	wcex.hInstance = hInstance;
-	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MAY25));
+	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON));
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	wcex.lpszMenuName = nullptr;
 	wcex.lpszClassName = UIClass;
-	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_ICON));
 	RegisterClassEx(&wcex);
 
 	WNDCLASSEXW nWcex;
@@ -488,12 +488,12 @@ ATOM RegisterMyClass(HINSTANCE hInstance)
 	nWcex.cbClsExtra = 0;
 	nWcex.cbWndExtra = 0;
 	nWcex.hInstance = hInstance;
-	nWcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MAY25));
+	nWcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON));
 	nWcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	nWcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	nWcex.lpszMenuName = nullptr;
 	nWcex.lpszClassName = DXClass;
-	nWcex.hIconSm = LoadIcon(nWcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+	nWcex.hIconSm = LoadIcon(nWcex.hInstance, MAKEINTRESOURCE(IDI_ICON));
 	return	RegisterClassEx(&nWcex);
 }
 
@@ -519,12 +519,12 @@ bool InitWindow(HINSTANCE hInstance, int nCmdShow)
 	wcex.cbClsExtra = 0;
 	wcex.cbWndExtra = 0;
 	wcex.hInstance = hInstance;
-	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MAY25));
+	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON));
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	wcex.lpszMenuName = nullptr;
 	wcex.lpszClassName = szWindowClass;
-	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_ICON));
 	if (!RegisterClassExW(&wcex))
 	{
 		return FALSE;

@@ -11,7 +11,6 @@ extern ID3D11DeviceContext*			g_pImmediateContext;
 extern ID3D11DeviceContext1*		g_pImmediateContext1;
 extern IDXGISwapChain*				g_pSwapChain;
 extern IDXGISwapChain1*				g_pSwapChain1;
-extern IDXGISwapChainMedia*			g_pSwapChainMedia;
 extern ID3D11RenderTargetView*		g_pRenderTargetView;
 extern ID3D11Texture2D*				g_pDepthStencil;
 extern ID3D11DepthStencilView*		g_pDepthStencilView;

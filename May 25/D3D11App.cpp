@@ -126,7 +126,6 @@ void CleanupDevice()
 	ReleaseCom(g_pRenderTargetView);
 	ReleaseCom(g_pSwapChain1);
 	ReleaseCom(g_pSwapChain);
-	ReleaseCom(g_pSwapChainMedia);
 	ReleaseCom(g_pImmediateContext);
 	ReleaseCom(g_pImmediateContext1);
 	ReleaseCom(g_pd3dDevice);

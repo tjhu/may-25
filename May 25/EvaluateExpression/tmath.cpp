@@ -136,7 +136,7 @@ std::string parse(std::string exp)
 		else						//take care of trigs and logs												
 		{
 			buffer.push(getOperator(exp, i));
-			i += buffer.top().size() - 1;
+			i += (int)buffer.top().size() - 1;
 		}
 				
 
@@ -219,7 +219,7 @@ float evaluate(std::string exp, float x)
 			result = operate(operR, buffer);
 		}
 		
-		i = index;
+		i = (int)index;
 		container.push(result);
 		buffer.erase();
 	}

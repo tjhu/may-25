@@ -210,7 +210,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			char cRightBound[NumOfChar] = "";
 
 			int Method = 0;
-			Method = SendMessage(g_hWndMethod, CB_GETCURSEL, NULL, NULL);
+			Method = (int)SendMessage(g_hWndMethod, CB_GETCURSEL, NULL, NULL);
 			if ((SolidMethod)Method != g_SolidMethod)
 			{
 				MethodChanged = TRUE;
@@ -226,7 +226,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			TcharToChar(cRightBound);
 
 			// Get selection from g_NCount
-			UINT NCount = SendMessage(g_hWndNCount, CB_GETCURSEL, NULL, NULL) + 1;
+			UINT NCount = (UINT)SendMessage(g_hWndNCount, CB_GETCURSEL, NULL, NULL) + 1;
 
 			// Get check state from radio buttons
 			g_BoundToWhat =
@@ -385,7 +385,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		char Result[50] = "Result = ";
 		sprintf_s(Result, 50, "Result = %.3f", IntegrationResult);
 		std::string Buffer = std::to_string(IntegrationResult);
-		int a = Buffer.find('.');
+		int a = (int)Buffer.find('.');
 		TextOutA(hdc, 40, 40 + EditIndent - FontHeight + EditSpacing * k++, Result, 9 + a + 4);
 		
 

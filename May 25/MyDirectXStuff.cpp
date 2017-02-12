@@ -157,10 +157,10 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 		hr = dxgiFactory->CreateSwapChain(g_pd3dDevice, &sd, &g_pSwapChain);
 	}
 
-	ThrowIfFailed(g_pSwapChain->QueryInterface(__uuidof(IDXGISwapChainMedia), reinterpret_cast<void**>(&g_pSwapChainMedia)));
-	UINT FrameRate = 167777;
+	// ThrowIfFailed(g_pSwapChain->QueryInterface(__uuidof(IDXGISwapChainMedia), reinterpret_cast<void**>(&g_pSwapChainMedia)));
+	// UINT FrameRate = 167777;
 	//	GetFrameRate(g_pSwapChainMedia, &FrameRate);
-	ThrowIfFailed(g_pSwapChainMedia->SetPresentDuration(FrameRate));
+	// ThrowIfFailed(g_pSwapChainMedia->SetPresentDuration(FrameRate));
 
 	// Note this tutorial doesn't handle full-screen swapchains so we block the ALT+ENTER shortcut
 	dxgiFactory->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER);
@@ -426,7 +426,7 @@ bool GetFrameRate(IDXGISwapChainMedia * pSwapChainMedia, UINT * pFrameRate)
 	UINT Duration = 16777;
 	for (WORD i = 1; i < 100; i++)
 	{
-		ThrowIfFailed(g_pSwapChainMedia->CheckPresentDurationSupport(Duration * i, &SDuration, &LDuration));
+		ThrowIfFailed(pSwapChainMedia->CheckPresentDurationSupport(Duration * i, &SDuration, &LDuration));
 		if (SDuration != 0)
 		{
 			*pFrameRate = SDuration;

@@ -75,7 +75,7 @@ enum SolidMethod
 {
 	Disk,
 	Washer,
-	Shell,
+	ShellMethod,
 	CrossSection_Semicircle,
 	CrossSection_EquilateralTriangle,
 	CrossSection_Square

@@ -2,8 +2,8 @@
 #include "MyWindowsStuff.h"
 #include <DirectXMath.h>
 
-char InputFile[50] = "input.txt";
-char SettingFile[50] = "setting.txt";
+std::wstring InputFile = L"input.txt";
+std::wstring SettingFile = L"setting.txt";
 
 float IntegrationResult = 0.0f;
 
@@ -161,7 +161,7 @@ void UpdateVariables()
 	Inputs >> buffer >> x;
 	Inputs.close();
 
-	if (g_SolidMethod == Shell)
+	if (g_SolidMethod == ShellMethod)
 	{
 		std::string buffer = g_UnparsedExpression_1;
 		for (UINT i = 0; i < buffer.size(); i++)
@@ -237,7 +237,7 @@ void Integration()
 		IntegrationResult = XM_PI * (result_1 - result_2);
 		break;
 
-	case Shell:
+	case ShellMethod:
 	{
 		std::string ShellFunction = Expression_1;
 		ShellFunction.append("x * ");
@@ -277,7 +277,7 @@ void GuessZero(HWND hWnd)
 	{
 		MessageBoxA(NULL, "Unable to parse Function 1", NULL, NULL);
 	}
-	if ((g_SolidMethod == Shell) || (g_SolidMethod == Washer))
+	if ((g_SolidMethod == ShellMethod) || (g_SolidMethod == Washer))
 	{
 		Edit_GetLine(g_hWndEquation_2, NULL, (LPTSTR)&Function, NumOfChar);
 		TcharToChar(Function);
@@ -429,10 +429,10 @@ void AdjustControlCoords(HWND hWnd)
 	ShowWindow(g_hWndRightCheck, SW_HIDE);
 	switch (CurrentMethod)
 	{
-	case Shell:
+	case ShellMethod:
 	case Washer:
 	{
-		if (CurrentMethod == Shell)
+		if (CurrentMethod == ShellMethod)
 		{
 			ShowWindow(g_hWndLeftCheck, SW_SHOW);
 			ShowWindow(g_hWndRightCheck, SW_SHOW);

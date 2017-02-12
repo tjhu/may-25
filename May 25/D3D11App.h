@@ -19,7 +19,8 @@
 using namespace DirectX;
 
 //Variables
-char LogFile[50] = "log.txt";
+std::wstring DataPath;
+
 
 
 //---------------------------------------------------

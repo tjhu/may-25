@@ -236,7 +236,7 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 		mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfertices, &NumOfIndices_Solid,
 			g_NCount, g_LeftBound, g_RightBound, Expression_1, Expression_2);
 		break;
-	case Shell:
+	case ShellMethod:
 		mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfertices, &NumOfIndices_Solid,
 			g_NCount, g_LeftBound, g_RightBound, Expression_1, g_BoundToWhat);
 		break;
@@ -568,7 +568,7 @@ void DrawSolids(RenderObject mRenderObject)
 	}
 	break;
 	case Washer:
-	case Shell:
+	case ShellMethod:
 	{
 		// Get world matrix
 		XMMATRIX mTranslate = XMMatrixTranslation(0.0f, 0.0f, 0.0f);

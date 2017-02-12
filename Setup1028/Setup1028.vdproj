@@ -33,6 +33,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_29D1199971B14EBBA7CA933F5FAA230A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_2C26C04183584F7B91202BE3717B70DB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -339,18 +345,13 @@
         "InstallerBootstrapper" = "3:2"
             "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
             {
-            "Enabled" = "11:TRUE"
+            "Enabled" = "11:FALSE"
             "PromptEnabled" = "11:TRUE"
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
-                    {
-                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.5"
-                    }
                 }
             }
         }
@@ -450,6 +451,26 @@
             {
             "SourcePath" = "8:C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x64\\api-ms-win-crt-string-l1-1-0.dll"
             "TargetName" = "8:api-ms-win-crt-string-l1-1-0.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_29D1199971B14EBBA7CA933F5FAA230A"
+            {
+            "SourcePath" = "8:..\\..\\..\\..\\OneDrive\\Pictures\\favicon.ico"
+            "TargetName" = "8:favicon.ico"
             "Tag" = "8:"
             "Folder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"
             "Condition" = "8:"
@@ -1585,16 +1606,30 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_407E213A70E6475F83BC25DF6B8C29EC"
             {
-            "Name" = "8:May 25"
+            "Name" = "8:Solid of Revolution"
             "Arguments" = "8:"
-            "Description" = "8:"
+            "Description" = "8:Solid of Revolution 3D Demo"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_C5C6BED92353457FB087FCC573536CC0"
             "Folder" = "8:_F0BA349452E64717A51E078323659015"
             "WorkingFolder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"
-            "Icon" = "8:"
+            "Icon" = "8:_29D1199971B14EBBA7CA933F5FAA230A"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_7C53DA82B9464D0487F4E5758AB40A0A"
+            {
+            "Name" = "8:Solid of Revolution"
+            "Arguments" = "8:"
+            "Description" = "8:Solid of Revolution 3D Demo"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_C5C6BED92353457FB087FCC573536CC0"
+            "Folder" = "8:_0033A660CC9347ED898F15AF806C88E6"
+            "WorkingFolder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"
+            "Icon" = "8:_29D1199971B14EBBA7CA933F5FAA230A"
             "Feature" = "8:"
             }
         }
@@ -1998,7 +2033,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C5C6BED92353457FB087FCC573536CC0"
             {
-            "SourcePath" = "8:..\\x64\\Release\\May 25.exe"
+            "SourcePath" = "8:..\\x64\\Debug\\May 25.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"

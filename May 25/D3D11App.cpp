@@ -12,6 +12,7 @@
 #include "MyDirectXStuff.h"
 #include "GameTimer.h"
 #include "MathInput.h"
+#include <shlobj.h>
 
 using namespace DirectX;
 
@@ -147,8 +148,37 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
+	
 
-	LogFileObject.open(LogFile);
+	std::wstring LogFileName = L"log.txt";
+
+	TCHAR buffer[MAX_PATH];
+	BOOL result = SHGetSpecialFolderPath(NULL
+		, buffer
+		, CSIDL_LOCAL_APPDATA
+		, false);
+	if (!result) MessageBoxA(NULL, "Unable to retrive appdata folder direcotry", NULL, NULL);
+
+
+	PathAppend(buffer, L"Tianjiao Huang");
+	PathAppend(buffer, L"May 25");
+	DataPath = buffer;
+	std::wstring PathWithQuote = L'"' + DataPath + L'"';
+
+	if (!PathFileExists(buffer)) _wsystem((L"mkdir " + PathWithQuote).c_str());
+
+	LogFileName = DataPath + L"\\" + LogFileName;
+	InputFile = DataPath + L"\\" + InputFile;
+	SettingFile = DataPath + L"\\" + SettingFile;
+	
+	LogFileObject.open(LogFileName);
+
+	
+	//TCHAR buffer[MAX_PATH];
+	//StrCpy(buffer, DataPath);
+	
+	std::wstring LogFile(DataPath);
+
 	LogFileObject << "Go main" << std::endl;
 
 	UpdateSetting();

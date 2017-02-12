@@ -78,4 +78,8 @@ extern XMFLOAT3							g_LightDir;
 extern XMMATRIX							g_LightView;
 extern XMFLOAT3							mEyePosW;
 
+extern std::wstring						LogFileName;
+extern std::wstring						InputFile;
+extern std::wstring						SettingFile;
+
 #endif // !1

@@ -237,7 +237,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			std::string sLeftBound(cLeftBound);
 			std::string sRightBound(cRightBound);
 
-			if (Method == Shell)
+			if (Method == ShellMethod)
 			{
 				for (UINT i = 0; i < sFunction_1.size(); i++)
 				{
@@ -288,7 +288,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 					mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid,
 						g_NCount, g_LeftBound, g_RightBound, Expression_1, Expression_2);
 					break;
-				case Shell:
+				case ShellMethod:
 					mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid,
 						g_NCount, g_LeftBound, g_RightBound, Expression_1, g_BoundToWhat);
 					break;
@@ -364,7 +364,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		UINT k = 0;
 		TextOutA(hdc, 40, EditIndent - FontHeight + EditSpacing * k++, "Method", 6);
 		TextOutA(hdc, 40, EditIndent - FontHeight + EditSpacing * k++, "Function 1", 10);
-		if ((CurrentMethod == Shell) || (CurrentMethod == Washer))
+		if ((CurrentMethod == ShellMethod) || (CurrentMethod == Washer))
 		{
 			TextOutA(hdc, 40, EditIndent - FontHeight + EditSpacing * k++, "Function 2", 10);
 		}

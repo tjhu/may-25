@@ -26,7 +26,7 @@ std::string MathMLToInfix(std::wstring str)
 {
 	str = ReplaceAll(str, L"m:", L"");
 	str = ValueOfTag(str, L"math");
-	str = ReplaceAll(str, L"×", L"x");
+	str = ReplaceAll(str, L"×", L"*");
 	DealingWithFraction(str);
 	while (str.find(L"mo") != std::wstring::npos)
 	{
@@ -43,7 +43,7 @@ std::string MathMLToInfix(std::wstring str)
 		str = L"(" + ReplaceTagWithItsValue(str, L"mfenced") + L")";
 	}
 
-
+	str = DealingWithFraction(str);
 
 	std::string result = WstringToString(str);
 	return result;
@@ -64,76 +64,63 @@ std::string WstringToString(std::wstring str)
 
 std::wstring ValueOfTag(std::wstring str, std::wstring tag)
 {
-
-	// Find the start of the tag
-	auto openstart = str.find(L"<" + tag);
-	// If the tag does not exist, return
-	if (openstart == std::wstring::npos)
+	TagPos tagpos;
+	if (!GetTagPos(str, tag, &tagpos, NULL))
 		return str;
-	// Find where the start of the tag ends
-	auto openend = str.find(L">", openstart);
-
-	// Skipping same tag(s) inside of this tag
-	auto pos = str.find(L"<" + tag, openend);
-	if (pos != std::wstring::npos)
-	{
-		WORD n = 0;
-		decltype(pos) pos_old;
-		while (pos != std::wstring::npos)
-		{
-			pos_old = pos;
-			pos = str.find(L"<" + tag, pos);
-			n++;
-		}
-		pos = pos_old;
-		while (n)
-		{
-			pos = str.find(L"</" + tag, pos);
-			n--;
-		}
-	}
-
-
-	// Find the end of the tag
-	auto closestart = str.find(L"</" + tag, openend);
-	// Find where the end of the tag ends
-	auto closeend = str.find(L">", closestart);
 
 	// return value inside of the tag
-	return str.substr(openend + 1, closestart - openend - 1);
+	return str.substr(tagpos.openend + 1, tagpos.closestart - tagpos.openend - 1);
 }
 
 std::wstring ReplaceTagWithItsValue(std::wstring str, std::wstring tag)
 {
-	// Find the start of the tag
-	auto openstart = str.find(L"<" + tag);
-	// Find where the start of the tag ends
-	auto openend = str.find(L">", openstart);
-	// Find the end of the tag
-	auto closestart = str.find(L"</" + tag, openend);
-	// Find where the end of the tag ends
-	auto closeend = str.find(L">", closestart);
+	TagPos tagpos;
+	if (!GetTagPos(str, tag, &tagpos, NULL))
+		return str;
 
-	auto value = str.substr(openend + 1, closestart - openend - 1);
+	auto value = str.substr(tagpos.openend + 1, tagpos.closestart - tagpos.openend - 1);
 
 	// return result
-	return str.replace(openstart, closeend - openstart + 1, value);
+	return str.replace(tagpos.openstart, tagpos.closeend - tagpos.openstart + 1, value);
 }
 
 std::wstring DealingWithFraction(std::wstring str)
 {
-	std::wstring tag = L"mfrac";
-	// Find the start of the tag
-	auto openstart = str.find(L"<" + tag);
-	// If the tag does not exist, return
-	if (openstart == std::wstring::npos)
+	std::wstring fractag = L"mfrac";
+	TagPos fragtagpos;
+	if (!GetTagPos(str, fractag, &fragtagpos, NULL))
 		return str;
+
+	// Find pos of numerator
+	std::wstring rowtag = L"mrow";
+	TagPos numerpos;
+	GetTagPos(str, rowtag, &numerpos, fragtagpos.openend);
+
+	// Insert divide sign between denominator and numerator
+	str.insert(numerpos.closeend + 1, L"/");
+
+
+	return str;
+}
+
+bool GetTagPos(std::wstring str, std::wstring tag, TagPos* tagpos, size_t index = 0)
+{
+
+	tagpos->openstart = str.find(L"<" + tag, index);
+	// If the tag does not exist, return
+	if (tagpos->openstart == std::wstring::npos)
+		return false;
 	// Find where the start of the tag ends
-	auto openend = str.find(L">", openstart);
-	// Skipping same tag(s) inside of this tag
-	auto pos = str.find(L"<" + tag, openend + 1);
-	if (pos != std::wstring::npos)
+	tagpos->openend = str.find(L">", tagpos->openstart);
+	// Find the first close tag
+	tagpos->closestart = str.find(L"</" + tag, tagpos->openstart);
+	tagpos->closeend = str.find(L">", tagpos->closestart);
+	// Check that is any open tag before this close tag
+	auto pos = str.find(L"<" + tag, tagpos->openend + 1);
+
+	if (!(pos == std::wstring::npos || pos > tagpos->closeend))
 	{
+		// If yes, skip those tags in between
 		WORD n = 0;
 		decltype(pos) pos_old;
 		while (pos != std::wstring::npos)
@@ -149,11 +136,15 @@ std::wstring DealingWithFraction(std::wstring str)
 			n--;
 		}
 	}
+	else
+	{
+		// if not, return;
+		return true;
+	}
 	// Find the end of the tag
-	auto closestart = str.find(L"</" + tag, pos + 1);
+	tagpos->closestart = str.find(L"</" + tag, pos);
 	// Find where the end of the tag ends
-	auto closeend = str.find(L">", closestart);
+	tagpos->closeend = str.find(L">", tagpos->closestart);
 
-
-	return std::wstring();
+	return true;
 }

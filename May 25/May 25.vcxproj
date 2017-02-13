@@ -152,11 +152,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="input.txt" />
-    <Text Include="log.txt" />
     <Text Include="plan.txt" />
     <Text Include="ReadMe.txt" />
-    <Text Include="setting.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonStruct.h" />
@@ -253,6 +250,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".tfignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="mathml.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

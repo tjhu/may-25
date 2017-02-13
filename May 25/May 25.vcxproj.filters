@@ -41,9 +41,6 @@
   <ItemGroup>
     <Text Include="ReadMe.txt" />
     <Text Include="plan.txt" />
-    <Text Include="log.txt" />
-    <Text Include="setting.txt" />
-    <Text Include="input.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -159,5 +156,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".tfignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="mathml.xml" />
   </ItemGroup>
 </Project>

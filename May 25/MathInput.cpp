@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MathInput.h"
 #include "micaut_i.c"
+#include "Utility.h"
 
 #import "C:\Users\maiti\Source\Repos\May 25\CSharpSBML\bin\Debug\CCR.tlb" no_namespace
 

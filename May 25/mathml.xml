@@ -1,0 +1,12 @@
+<m:math xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:MicrosoftMathRecognizer="http://schemas.microsoft.com/mathrecognizer" >
+  <m:mfrac>
+    <m:mrow>
+      <m:mn>1</m:mn>
+      <m:mo>+</m:mo>
+      <m:mn>2</m:mn>
+    </m:mrow>
+    <m:mrow>
+      <m:mn>3</m:mn>
+    </m:mrow>
+  </m:mfrac>
+</m:math>

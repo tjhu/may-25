@@ -11,7 +11,7 @@ RECT								ClientRect;				//Client rectangle
 RECT								DXClientRect;				//DX client rectangle
 RECT								UIClientRect;				//UI client rectangle
 
-static TCHAR						szTitle[] = TEXT("The Program");
+static TCHAR						szTitle[] = TEXT("Solid of Revolution");
 static TCHAR						szWindowClass[] = TEXT("MainClass");
 static TCHAR						UIClass[] = TEXT("UIClass");
 static TCHAR						DXClass[] = TEXT("DXClass");

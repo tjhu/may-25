@@ -1,5 +1,0 @@
-Method= 0
-Radius= 10
-Theta= 137.57
-Phi= 0.864721
-MathInput= 1

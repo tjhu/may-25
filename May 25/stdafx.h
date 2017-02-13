@@ -45,7 +45,6 @@
 #include "DXUtility.h"
 #include "DirectXGlobalVariables.h"
 #include "WindowsGlobalVariables.h"
-#include "Utility.h"
 
 //-----------------------------------
 //My Definition

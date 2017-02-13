@@ -3,9 +3,25 @@
     <m:mrow>
       <m:mn>1</m:mn>
       <m:mo>+</m:mo>
-      <m:mn>2</m:mn>
+      <m:mfrac>
+        <m:mrow>
+          <m:mn>2</m:mn>
+        </m:mrow>
+        <m:mrow>
+          <m:mn>3</m:mn>
+        </m:mrow>
+      </m:mfrac>
     </m:mrow>
     <m:mrow>
+      <m:mfrac>
+        <m:mrow>
+          <m:mn>1</m:mn>
+        </m:mrow>
+        <m:mrow>
+          <m:mn>2</m:mn>
+        </m:mrow>
+      </m:mfrac>
+      <m:mo>+</m:mo>
       <m:mn>3</m:mn>
     </m:mrow>
   </m:mfrac>

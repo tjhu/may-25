@@ -27,21 +27,23 @@ std::string MathMLToInfix(std::wstring str)
 	str = ReplaceAll(str, L"m:", L"");
 	str = ValueOfTag(str, L"math");
 	str = ReplaceAll(str, L"×", L"*");
-	DealingWithFraction(str);
+	while (str.find(L"mfrac") != std::wstring::npos)
+	{
+		str = DealingWithFraction(str);
+	}
 	while (str.find(L"mo") != std::wstring::npos)
 	{
 		str = ReplaceTagWithItsValue(str, L"mo");
 	}
-
 	while (str.find(L"mn") != std::wstring::npos)
 	{
 		str = ReplaceTagWithItsValue(str, L"mn");
 	}
-
 	while (str.find(L"mfenced") != std::wstring::npos)
 	{
 		str = L"(" + ReplaceTagWithItsValue(str, L"mfenced") + L")";
 	}
+
 
 	str = DealingWithFraction(str);
 
@@ -96,15 +98,22 @@ std::wstring DealingWithFraction(std::wstring str)
 	TagPos numerpos;
 	GetTagPos(str, rowtag, &numerpos, fragtagpos.openend);
 
-	// Insert divide sign between denominator and numerator
-	str.insert(numerpos.closeend + 1, L"/");
+	// Expose numerator and denominator
+	std::wstring numerator, denominator;
+	numerator = str.substr(numerpos.openstart, numerpos.closeend - numerpos.openstart + 1);
+	denominator = str.substr(numerpos.closeend + 1, fragtagpos.closestart - numerpos.closeend - 1);
+	numerator = ValueOfTag(numerator, rowtag);
+	denominator = ValueOfTag(denominator, rowtag);
 
-
+	// Compose the fraction
+	numerator = L"(" + numerator + L")";
+	denominator = L"(" + denominator + L")";
+	str.replace(fragtagpos.openstart, fragtagpos.closeend - fragtagpos.openstart + 1,L"(" + numerator + L"/" + denominator + L")");
 	return str;
 }
 
 bool GetTagPos(std::wstring str, std::wstring tag, TagPos* tagpos, size_t index = 0)
-{
+ {
 
 	tagpos->openstart = str.find(L"<" + tag, index);
 	// If the tag does not exist, return
@@ -128,8 +137,11 @@ bool GetTagPos(std::wstring str, std::wstring tag, TagPos* tagpos, size_t index 
 			pos_old = pos;
 			pos = str.find(L"<" + tag, pos + 1);
 			n++;
+			if (str.find(L"</" + tag, pos_old + 1) < pos)
+				n--;
 		}
-		pos = pos_old;
+		// reset the pos to where it starts
+		pos = tagpos->openend + 1;
 		while (n)
 		{
 			pos = str.find(L"</" + tag, pos + 1);
@@ -142,7 +154,7 @@ bool GetTagPos(std::wstring str, std::wstring tag, TagPos* tagpos, size_t index 
 		return true;
 	}
 	// Find the end of the tag
-	tagpos->closestart = str.find(L"</" + tag, pos);
+	tagpos->closestart = str.find(L"</" + tag, pos + 1);
 	// Find where the end of the tag ends
 	tagpos->closeend = str.find(L">", tagpos->closestart);
 

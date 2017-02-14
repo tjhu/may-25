@@ -137,7 +137,7 @@ bool GetTagPos(std::wstring str, std::wstring tag, TagPos* tagpos, size_t index 
 			pos_old = pos;
 			pos = str.find(L"<" + tag, pos + 1);
 			n++;
-			if (str.find(L"</" + tag, pos_old + 1) < pos)
+			if (str.find(L"</" + tag, pos_old + 1) < pos && pos != std::wstring::npos)
 				n--;
 		}
 		// reset the pos to where it starts

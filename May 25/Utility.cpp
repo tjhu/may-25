@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Utility.h"
 #include <codecvt>
 
@@ -26,7 +26,7 @@ std::string MathMLToInfix(std::wstring str)
 {
 	str = ReplaceAll(str, L"m:", L"");
 	str = ValueOfTag(str, L"math");
-	str = ReplaceAll(str, L"�", L"*");
+	str = ReplaceAll(str, L"×", L"*");
 	while (str.find(L"mfrac") != std::wstring::npos)
 	{
 		str = DealingWithFraction(str);
@@ -39,13 +39,20 @@ std::string MathMLToInfix(std::wstring str)
 	{
 		str = ReplaceTagWithItsValue(str, L"mn");
 	}
+	while (str.find(L"mi") != std::wstring::npos)
+	{
+		str = ReplaceTagWithItsValue(str, L"mi");
+	}
 	while (str.find(L"mfenced") != std::wstring::npos)
 	{
-		str = L"(" + ReplaceTagWithItsValue(str, L"mfenced") + L")";
+		str = DealingWithParanthesis(str);
 	}
-
-
-	str = DealingWithFraction(str);
+	// The last part is get rid of all the mrow
+	while (str.find(L"mrow") != std::wstring::npos)
+	{
+		str = ReplaceTagWithItsValue(str, L"mrow");
+	}
+	
 
 	std::string result = WstringToString(str);
 	return result;
@@ -80,8 +87,13 @@ std::wstring ReplaceTagWithItsValue(std::wstring str, std::wstring tag)
 	if (!GetTagPos(str, tag, &tagpos, NULL))
 		return str;
 
-	auto value = str.substr(tagpos.openend + 1, tagpos.closestart - tagpos.openend - 1);
+	auto length = tagpos.closestart - tagpos.openend - 1;
+	// If what's inside is empty
 
+
+	auto value = str.substr(tagpos.openend + 1, length);
+	if (!value.compare(L"⁡"))
+		return str.erase(tagpos.openstart, tagpos.closeend - tagpos.openstart + 1);
 	// return result
 	return str.replace(tagpos.openstart, tagpos.closeend - tagpos.openstart + 1, value);
 }
@@ -112,12 +124,30 @@ std::wstring DealingWithFraction(std::wstring str)
 	return str;
 }
 
+std::wstring DealingWithParanthesis(std::wstring str)
+{
+	std::wstring tag = L"mfenced";
+	TagPos tagpos, rowpos;
+	if (!GetTagPos(str, tag, &tagpos, NULL))
+		return str;
+	if (!GetTagPos(str, L"mrow", &rowpos, tagpos.openend))
+		throw L"An unexpected error occours when dealing paranthesis; string: " + str;
+
+	auto value = str.substr(rowpos.openend + 1, rowpos.closestart - rowpos.openend - 1);
+
+	// return result
+	return str.replace(tagpos.openstart, tagpos.closeend - tagpos.openstart + 1, L"(" + value + L")");
+}
+
 bool GetTagPos(std::wstring str, std::wstring tag, TagPos* tagpos, size_t index = 0)
  {
 
 	tagpos->openstart = str.find(L"<" + tag, index);
 	// If the tag does not exist, return
-	if (tagpos->openstart == std::wstring::npos)
+	if (tagpos->openstart == std::wstring::npos ||
+		tagpos->openend == std::wstring::npos || 
+		tagpos->closestart == std::wstring::npos || 
+		tagpos->closeend == std::wstring::npos)
 		return false;
 	// Find where the start of the tag ends
 	tagpos->openend = str.find(L">", tagpos->openstart);

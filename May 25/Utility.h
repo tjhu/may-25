@@ -14,6 +14,7 @@ std::string WstringToString(std::wstring str);
 std::wstring ValueOfTag(std::wstring str, std::wstring tag);
 std::wstring ReplaceTagWithItsValue(std::wstring str, std::wstring tag);
 std::wstring DealingWithFraction(std::wstring str);
+std::wstring DealingWithParanthesis(std::wstring str);
 bool GetTagPos(std::wstring str, std::wstring tag, TagPos* tagpos, size_t index);
 #endif // UTILITY_H
 

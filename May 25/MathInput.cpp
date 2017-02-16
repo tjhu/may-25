@@ -66,6 +66,6 @@ void MathInput::OnInsert(std::wstring result)
 		MessageBox(NULL, e.c_str(), L"Exception thrown when parsing MathML", NULL);
 	}
 
-
+	SetWindowTextA(this->TargetHWND, a.c_str());
 	MessageBoxA(NULL, a.c_str(), NULL, NULL);
 }

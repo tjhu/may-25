@@ -40,6 +40,7 @@ std::string parse(std::string exp)
 	exp.insert(0, 1, '(');				//put parentheses around the expression
 	exp.push_back(')');
 
+	PutTimesSimbolInFrontOfXAndOtherStuff(exp);
 
 
 	//valid input? Try, throw, and catch
@@ -351,11 +352,19 @@ float intergal(std::string exp, float a, float b, unsigned long n, intMethod met
 	return 0.0f;
 }
 
-std::string PutTimesSimbolInFrontOfX(std::string exp)
+std::string PutTimesSimbolInFrontOfXAndOtherStuff(std::string& exp)
 {
 	for (unsigned int i = 0; i < exp.length(); i++)
 	{
 		if (exp[i + 1] == 'x' && isNumber(exp[i]))
+		{
+			exp.insert(i + 1, "*");
+		}
+		if (exp[i + 1] == '(' && isNumber(exp[i]))
+		{
+			exp.insert(i + 1, "*");
+		}
+		if (exp[i + 1] == 'e' && isNumber(exp[i]))
 		{
 			exp.insert(i + 1, "*");
 		}

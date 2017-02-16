@@ -25,8 +25,8 @@ HWND								g_hWndEquation_1 = nullptr;
 HWND								g_hWndEquation_2 = nullptr;
 HWND								g_hWndLeftBound = nullptr;
 HWND								g_hWndRightBound = nullptr;
-HWND								g_hWndLeftBoundGuess = nullptr;
-HWND								g_hWndRightBoundGuess = nullptr;
+HWND								g_hWndLeftBoundAdv = nullptr;
+HWND								g_hWndRightBoundAdv = nullptr;
 HWND								g_hWndNCount = nullptr;
 HWND								g_hWndGoInfinite = nullptr;
 HWND								g_hWndButton = nullptr;
@@ -106,43 +106,44 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 	{
 		UIClientRect;
 		GetWindowRect(hWnd, &UIClientRect);
-		UIClientRect.right = UIClientRect.right - UIClientRect.left;
-		UIClientRect.bottom = UIClientRect.bottom - UIClientRect.top;
+		LONG UIWidth = UIClientRect.right - UIClientRect.left;
+		LONG UIHeight = UIClientRect.bottom - UIClientRect.top;
 		static UINT cxChar = LOWORD(GetDialogBaseUnits());
 		static UINT cyChar = (UINT)(HIWORD(GetDialogBaseUnits()) * 1.4f);
 		// Create grandchild windows
 		EditSpacing = (UINT)(UIClientRect.bottom / 8.5f);
 		EditIndent = 100;
-		UINT EditLength = (UINT)(cyChar * 1.4f);
+		UINT EditHeight = (UINT)(cyChar * 1.4f);
+		UINT EditWidth = UIWidth * 4 / 5;
 		UINT k = 0;
 		g_hWndMethod = CreateWindowExA(NULL, "combobox", "g_NCount", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP,
-			40, EditIndent + k++ * EditSpacing, UIClientRect.right - 120, UIClientRect.right - 80, hWnd, (HMENU)ID_METHOD, g_hInstance, NULL);
+			40, EditIndent + k++ * EditSpacing, EditWidth, 200, hWnd, (HMENU)ID_METHOD, g_hInstance, NULL);
 		g_hWndEquation_1 = CreateWindowExA(NULL, "edit", "Equation", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
-			40, EditIndent + k++ * EditSpacing, UIClientRect.right - 120, EditLength, hWnd, (HMENU)ID_EQUATION_1, g_hInstance, NULL);
+			40, EditIndent + k++ * EditSpacing, EditWidth, EditHeight, hWnd, (HMENU)ID_EQUATION_1, g_hInstance, NULL);
 		g_hWndEquation_2 = CreateWindowExA(NULL, "edit", "Equation", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
-			40, EditIndent + k++ * EditSpacing, UIClientRect.right - 120, EditLength, hWnd, (HMENU)ID_EQUATION_2, g_hInstance, NULL);
+			40, EditIndent + k++ * EditSpacing, EditWidth, EditHeight, hWnd, (HMENU)ID_EQUATION_2, g_hInstance, NULL);
 
 		g_hWndLeftBound = CreateWindowExA(NULL, "edit", "g_LeftBound", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
-			40, EditIndent + k++ * EditSpacing, UIClientRect.right - 120, EditLength, hWnd, (HMENU)ID_LEFTBOUND, g_hInstance, NULL);
+			40, EditIndent + k++ * EditSpacing, EditWidth, EditHeight, hWnd, (HMENU)ID_LEFTBOUND, g_hInstance, NULL);
 		g_hWndRightBound = CreateWindowExA(NULL, "edit", "g_RightBound", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
-			40, EditIndent + k++ * EditSpacing, UIClientRect.right - 120, EditLength, hWnd, (HMENU)ID_RIGHTBOUND, g_hInstance, NULL);
+			40, EditIndent + k++ * EditSpacing, EditWidth, EditHeight, hWnd, (HMENU)ID_RIGHTBOUND, g_hInstance, NULL);
 		g_hWndNCount = CreateWindowExA(NULL, "combobox", "g_NCount", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL,
-			40, EditIndent + k++ * EditSpacing, UIClientRect.right - 120, 200, hWnd, (HMENU)ID_NCOUNT, g_hInstance, NULL);
+			40, EditIndent + k++ * EditSpacing, EditWidth, 200, hWnd, (HMENU)ID_NCOUNT, g_hInstance, NULL);
 		g_hWndGoInfinite = CreateWindowExA(NULL, "button", "Toggle Axes", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX | BS_CENTER | WS_TABSTOP,
 			40, EditIndent + 30 + (k - 1) * EditSpacing, 20 * cxChar, cyChar * 7 / 4, hWnd, (HMENU)ID_GOINFINITE, g_hInstance, NULL);
 		g_hWndButton = CreateWindow(TEXT("button"), TEXT("Compute"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
-			UIClientRect.right / 2 - 100 / 2, UIClientRect.bottom - 60 - 20, 100, cyChar * 7 / 4, hWnd, (HMENU)ID_BUTTON, g_hInstance, NULL);
+			UIWidth / 2 - 100 / 2, UIHeight - 60 - 20, 100, cyChar * 7 / 4, hWnd, (HMENU)ID_BUTTON, g_hInstance, NULL);
 
 		// Creat raido buttons
 		g_hWndLeftCheck = CreateWindowExA(NULL, "button", "", WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON | BS_CENTER | WS_TABSTOP | WS_GROUP,
 			10, EditIndent + (k - 3) * EditSpacing + (int)(0.4f * cyChar), cyChar, cyChar, hWnd, (HMENU)ID_LEFTCHECK, g_hInstance, NULL);
 		g_hWndRightCheck = CreateWindowExA(NULL, "button", "", WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON | BS_CENTER | WS_TABSTOP,
 			10, EditIndent + (k - 2) * EditSpacing + (int)(0.4f * cyChar), cyChar, cyChar, hWnd, (HMENU)ID_RIGHTCHECK, g_hInstance, NULL);
-		g_hWndLeftBoundGuess = CreateWindow(TEXT("button"), TEXT("Guess"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
-			UIClientRect.right - 75, EditIndent + 3 * EditSpacing, 70, EditLength, hWnd,
+		g_hWndLeftBoundAdv = CreateWindow(TEXT("button"), L"", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
+			UIWidth - 75, EditIndent + 3 * EditSpacing, EditHeight, EditHeight, hWnd,
 			(HMENU)ID_LEFTBOUNDGUESS, g_hInstance, NULL);
-		g_hWndRightBoundGuess = CreateWindow(TEXT("button"), TEXT("Guess"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
-			UIClientRect.right - 75, EditIndent + 4 * EditSpacing, 70, EditLength, hWnd,
+		g_hWndRightBoundAdv = CreateWindow(TEXT("button"), L"", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
+			UIWidth - 75, EditIndent + 4 * EditSpacing, EditHeight, EditHeight, hWnd,
 			(HMENU)ID_RIGHTBOUNDGUESS, g_hInstance, NULL);
 
 
@@ -171,8 +172,8 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		SetWindowFont(g_hWndEquation_2, hFont, FALSE);
 		SetWindowFont(g_hWndLeftBound, hFont, FALSE);
 		SetWindowFont(g_hWndRightBound, hFont, FALSE);
-		SetWindowFont(g_hWndLeftBoundGuess, hFont, FALSE);
-		SetWindowFont(g_hWndRightBoundGuess, hFont, FALSE);
+		SetWindowFont(g_hWndLeftBoundAdv, hFont, FALSE);
+		SetWindowFont(g_hWndRightBoundAdv, hFont, FALSE);
 		SetWindowFont(g_hWndNCount, hFont, FALSE);
 		SetWindowFont(g_hWndGoInfinite, hFont, FALSE);
 		SetWindowFont(g_hWndButton, hFont, FALSE);
@@ -393,9 +394,9 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		EndPaint(hWnd, &ps);
 
 		ShowWindow(g_hWndLeftBound, SW_SHOW);
-		ShowWindow(g_hWndLeftBoundGuess, SW_SHOW);
+		ShowWindow(g_hWndLeftBoundAdv, SW_SHOW);
 		ShowWindow(g_hWndRightBound, SW_SHOW);
-		ShowWindow(g_hWndRightBoundGuess, SW_SHOW);
+		ShowWindow(g_hWndRightBoundAdv, SW_SHOW);
 		RECT LeftBoundRect;
 		GetWindowRect(g_hWndRightBound, &LeftBoundRect);
 		return 0;

@@ -42,7 +42,7 @@ bool isNumber(char x);
 bool isOperator(std::string x);
 std::string getOperator(std::string exp, unsigned int i);
 float intergal(std::string exp, float a, float b, unsigned long n, intMethod method);
-std::string PutTimesSimbolInFrontOfX(std::string exp);
+std::string PutTimesSimbolInFrontOfXAndOtherStuff(std::string& exp);
 float Clamp(float x, float low, float high);
 float IfOverflowThenReset(float x, float low, float high);
 

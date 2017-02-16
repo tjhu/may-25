@@ -417,12 +417,12 @@ void AdjustControlCoords(HWND hWnd)
 {
 	RECT UIClientRect;
 	GetWindowRect(hWnd, &UIClientRect);
-	UIClientRect.right = UIClientRect.right - UIClientRect.left;
-	UIClientRect.bottom = UIClientRect.bottom - UIClientRect.top;
-	UINT EditWidth = UIClientRect.right - 120;
+	LONG UIWidth = UIClientRect.right - UIClientRect.left;
+	LONG UIHeight = UIClientRect.bottom - UIClientRect.top;
+	UINT EditWidth = UIWidth * 4 / 5;
 	static UINT cxChar = LOWORD(GetDialogBaseUnits());
 	static UINT cyChar = (UINT)(HIWORD(GetDialogBaseUnits()) * 1.4f);
-	UINT EditLength = (UINT)(cyChar * 1.4f);
+	UINT EditHeight = (UINT)(cyChar * 1.4f);
 
 	CurrentMethod = (SolidMethod)SendMessage(g_hWndMethod, CB_GETCURSEL, NULL, NULL);
 	ShowWindow(g_hWndLeftCheck, SW_HIDE);
@@ -438,12 +438,12 @@ void AdjustControlCoords(HWND hWnd)
 			ShowWindow(g_hWndRightCheck, SW_SHOW);
 		}
 		ShowWindow(g_hWndEquation_2, SW_SHOW);
-		MoveWindow(g_hWndLeftBound, 40, EditIndent + 3 * EditSpacing, EditWidth, EditLength, TRUE);
-		MoveWindow(g_hWndLeftBoundGuess, UIClientRect.right - 75, EditIndent + 3 * EditSpacing, 70, EditLength, TRUE);
-		MoveWindow(g_hWndRightBound, 40, EditIndent + 4 * EditSpacing, EditWidth, EditLength, TRUE);
-		MoveWindow(g_hWndRightBoundGuess, UIClientRect.right - 75, EditIndent + 4 * EditSpacing, 70, EditLength, TRUE);
+		MoveWindow(g_hWndLeftBound, 40, EditIndent + 3 * EditSpacing, EditWidth, EditHeight, TRUE);
+		MoveWindow(g_hWndLeftBoundAdv, UIWidth - EditHeight - 3, EditIndent + 3 * EditSpacing, EditHeight, EditHeight, TRUE);
+		MoveWindow(g_hWndRightBound, 40, EditIndent + 4 * EditSpacing, EditWidth, EditHeight, TRUE);
+		MoveWindow(g_hWndRightBoundAdv, UIWidth - EditHeight - 3, EditIndent + 4 * EditSpacing, EditHeight, EditHeight, TRUE);
 		MoveWindow(g_hWndGoInfinite, 40, EditIndent + 30 + 5 * EditSpacing, 20 * cxChar, cyChar * 7 / 4, TRUE);
-		MoveWindow(g_hWndNCount, 40, EditIndent + 5 * EditSpacing, EditWidth, EditLength, TRUE);
+		MoveWindow(g_hWndNCount, 40, EditIndent + 5 * EditSpacing, EditWidth, EditHeight, TRUE);
 
 		break;
 	}
@@ -455,12 +455,12 @@ void AdjustControlCoords(HWND hWnd)
 	case CrossSection_Square:
 	{
 		ShowWindow(g_hWndEquation_2, SW_HIDE);
-		MoveWindow(g_hWndLeftBound, 40, EditIndent + 2 * EditSpacing, EditWidth, EditLength, TRUE);
-		MoveWindow(g_hWndLeftBoundGuess, UIClientRect.right - 75, EditIndent + 2 * EditSpacing, 70, EditLength, TRUE);
-		MoveWindow(g_hWndRightBound, 40, EditIndent + 3 * EditSpacing, EditWidth, EditLength, TRUE);
-		MoveWindow(g_hWndRightBoundGuess, UIClientRect.right - 75, EditIndent + 3 * EditSpacing, 70, EditLength, TRUE);
+		MoveWindow(g_hWndLeftBound, 40, EditIndent + 2 * EditSpacing, EditWidth, EditHeight, TRUE);
+		MoveWindow(g_hWndLeftBoundAdv, UIClientRect.right - 75, EditIndent + 2 * EditSpacing, EditHeight, EditHeight, TRUE);
+		MoveWindow(g_hWndRightBound, 40, EditIndent + 3 * EditSpacing, EditWidth, EditHeight, TRUE);
+		MoveWindow(g_hWndRightBoundAdv, UIClientRect.right - 75, EditIndent + 3 * EditSpacing, EditHeight, EditHeight, TRUE);
 		MoveWindow(g_hWndGoInfinite, 40, EditIndent + 30 + 4 * EditSpacing, 20 * cxChar, cyChar * 7 / 4, TRUE);
-		MoveWindow(g_hWndNCount, 40, EditIndent + 4 * EditSpacing, EditWidth, EditLength, TRUE);
+		MoveWindow(g_hWndNCount, 40, EditIndent + 4 * EditSpacing, EditWidth, EditHeight, TRUE);
 
 		break;
 	}
@@ -468,5 +468,6 @@ void AdjustControlCoords(HWND hWnd)
 	default:
 		break;
 	}
+	InvalidateRect(g_hWndNCount, NULL, TRUE);
 	InvalidateRect(hWnd, NULL, TRUE);
 }

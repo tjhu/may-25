@@ -31,6 +31,10 @@ std::string MathMLToInfix(std::wstring str)
 	{
 		str = DealingWithFraction(str);
 	}
+	while (str.find(L"msup") != std::wstring::npos)
+	{
+		str = DealingWithPow(str);
+	}
 	while (str.find(L"mo") != std::wstring::npos)
 	{
 		str = ReplaceTagWithItsValue(str, L"mo");
@@ -124,6 +128,33 @@ std::wstring DealingWithFraction(std::wstring str)
 	return str;
 }
 
+std::wstring DealingWithPow(std::wstring str)
+{
+	// This function is derived from DealingWithFrac(), so if that function changes, this should be changed
+	std::wstring fractag = L"msup";
+	TagPos fragtagpos;
+	if (!GetTagPos(str, fractag, &fragtagpos, NULL))
+		return str;
+
+	// Find pos of numerator
+	std::wstring rowtag = L"mrow";
+	TagPos numerpos;
+	GetTagPos(str, rowtag, &numerpos, fragtagpos.openend);
+
+	// Expose numerator and denominator
+	std::wstring numerator, denominator;
+	numerator = str.substr(numerpos.openstart, numerpos.closeend - numerpos.openstart + 1);
+	denominator = str.substr(numerpos.closeend + 1, fragtagpos.closestart - numerpos.closeend - 1);
+	numerator = ValueOfTag(numerator, rowtag);
+	denominator = ValueOfTag(denominator, rowtag);
+
+	// Compose the fraction
+	numerator = L"(" + numerator + L")";
+	denominator = L"(" + denominator + L")";
+	str.replace(fragtagpos.openstart, fragtagpos.closeend - fragtagpos.openstart + 1, L"(" + numerator + L"^" + denominator + L")");
+	return str;
+}
+
 std::wstring DealingWithParanthesis(std::wstring str)
 {
 	std::wstring tag = L"mfenced";
@@ -143,48 +174,73 @@ bool GetTagPos(std::wstring str, std::wstring tag, TagPos* tagpos, size_t index 
  {
 
 	tagpos->openstart = str.find(L"<" + tag, index);
-	// If the tag does not exist, return
-	if (tagpos->openstart == std::wstring::npos ||
-		tagpos->openend == std::wstring::npos || 
-		tagpos->closestart == std::wstring::npos || 
-		tagpos->closeend == std::wstring::npos)
-		return false;
 	// Find where the start of the tag ends
 	tagpos->openend = str.find(L">", tagpos->openstart);
 	// Find the first close tag
 	tagpos->closestart = str.find(L"</" + tag, tagpos->openstart);
 	tagpos->closeend = str.find(L">", tagpos->closestart);
-	// Check that is any open tag before this close tag
-	auto pos = str.find(L"<" + tag, tagpos->openend + 1);
 
-	if (!(pos == std::wstring::npos || pos > tagpos->closeend))
+	// If the tag does not exist, return
+	if (tagpos->openstart == std::wstring::npos ||
+		tagpos->openend == std::wstring::npos ||
+		tagpos->closestart == std::wstring::npos ||
+		tagpos->closeend == std::wstring::npos)
+		throw L"An unexpected error occours when getting tagpos; string: " + str + L"; tag: " + tag;
+
+	// Check that is any open tag before this close tag
+	//auto pos = str.find(L"<" + tag, tagpos->openend + 1);
+
+	//if (!(pos == std::wstring::npos || pos > tagpos->closeend))
+	//{
+	//	// If yes, skip those tags in between
+	//	WORD n = 0;
+	//	decltype(pos) pos_old;
+	//	while (pos != std::wstring::npos)
+	//	{
+	//		pos_old = pos;
+	//		pos = str.find(L"<" + tag, pos + 1);
+	//		n++;
+	//		//if (str.find(L"</" + tag, pos_old + 1) < pos && pos != std::wstring::npos)
+	//		//	n--;
+	//	}
+	//	// reset the pos to where it starts
+	//	pos = tagpos->openend + 1;
+	//	while (n)
+	//	{
+	//		pos = str.find(L"</" + tag, pos + 1);
+	//		n--;
+	//	}
+	//}
+	//else
+	//{
+	//	// if not, return;
+	//	return true;
+	//}
+	//// Find the end of the tag
+	//tagpos->closestart = str.find(L"</" + tag, pos + 1);
+	//// Find where the end of the tag ends
+	//tagpos->closeend = str.find(L">", tagpos->closestart);
+
+
+	// The sum of all other tag within this tag is zero
+	short n = 0;
+	size_t pos_open, pos_close, pos_old, pos = tagpos->openend;
+	do
 	{
-		// If yes, skip those tags in between
-		WORD n = 0;
-		decltype(pos) pos_old;
-		while (pos != std::wstring::npos)
+		pos_old = pos;
+		pos_open = str.find(L"<" + tag, pos_old + 1);
+		pos_close = str.find(L"</" + tag, pos_old + 1);
+		pos = (pos_open < pos_close) ? pos_open : pos_close;
+		if (pos != std::wstring::npos)
 		{
-			pos_old = pos;
-			pos = str.find(L"<" + tag, pos + 1);
-			n++;
-			if (str.find(L"</" + tag, pos_old + 1) < pos && pos != std::wstring::npos)
-				n--;
+			// if the closest pos is open, n++; else, n--
+			n = (pos == pos_open) ? n + 1 : n - 1;
 		}
-		// reset the pos to where it starts
-		pos = tagpos->openend + 1;
-		while (n)
-		{
-			pos = str.find(L"</" + tag, pos + 1);
-			n--;
-		}
-	}
-	else
-	{
-		// if not, return;
-		return true;
-	}
+		
+	} while (n >= 0);
+
 	// Find the end of the tag
-	tagpos->closestart = str.find(L"</" + tag, pos + 1);
+	tagpos->closestart = str.find(L"</" + tag, pos_old + 1);
 	// Find where the end of the tag ends
 	tagpos->closeend = str.find(L">", tagpos->closestart);
 

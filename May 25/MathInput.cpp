@@ -56,7 +56,16 @@ void MathInput::OnInsert(std::wstring result)
 	EmptyClipboard();
 	SetClipboardData(CF_UNICODETEXT, hMem);
 	CloseClipboard();
-	std::string a = MathMLToInfix(output);
+	std::string a;
+	try
+	{
+		a = MathMLToInfix(output);
+	}
+	catch (std::wstring e)
+	{
+		MessageBox(NULL, e.c_str(), L"Exception thrown when parsing MathML", NULL);
+	}
+
 
 	MessageBoxA(NULL, a.c_str(), NULL, NULL);
 }

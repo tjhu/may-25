@@ -438,6 +438,7 @@ void AdjustControlCoords(HWND hWnd)
 			ShowWindow(g_hWndRightCheck, SW_SHOW);
 		}
 		ShowWindow(g_hWndEquation_2, SW_SHOW);
+		ShowWindow(g_hWndEquation_2_Adv, SW_SHOW);
 		MoveWindow(g_hWndLeftBound, 40, EditIndent + 3 * EditSpacing, EditWidth, EditHeight, TRUE);
 		MoveWindow(g_hWndLeftBoundAdv, UIWidth - EditHeight - 3, EditIndent + 3 * EditSpacing, EditHeight, EditHeight, TRUE);
 		MoveWindow(g_hWndRightBound, 40, EditIndent + 4 * EditSpacing, EditWidth, EditHeight, TRUE);
@@ -455,10 +456,11 @@ void AdjustControlCoords(HWND hWnd)
 	case CrossSection_Square:
 	{
 		ShowWindow(g_hWndEquation_2, SW_HIDE);
+		ShowWindow(g_hWndEquation_2_Adv, SW_HIDE);
 		MoveWindow(g_hWndLeftBound, 40, EditIndent + 2 * EditSpacing, EditWidth, EditHeight, TRUE);
-		MoveWindow(g_hWndLeftBoundAdv, UIClientRect.right - 75, EditIndent + 2 * EditSpacing, EditHeight, EditHeight, TRUE);
+		MoveWindow(g_hWndLeftBoundAdv, UIWidth - EditHeight - 3, EditIndent + 2 * EditSpacing, EditHeight, EditHeight, TRUE);
 		MoveWindow(g_hWndRightBound, 40, EditIndent + 3 * EditSpacing, EditWidth, EditHeight, TRUE);
-		MoveWindow(g_hWndRightBoundAdv, UIClientRect.right - 75, EditIndent + 3 * EditSpacing, EditHeight, EditHeight, TRUE);
+		MoveWindow(g_hWndRightBoundAdv, UIWidth - EditHeight - 3, EditIndent + 3 * EditSpacing, EditHeight, EditHeight, TRUE);
 		MoveWindow(g_hWndGoInfinite, 40, EditIndent + 30 + 4 * EditSpacing, 20 * cxChar, cyChar * 7 / 4, TRUE);
 		MoveWindow(g_hWndNCount, 40, EditIndent + 4 * EditSpacing, EditWidth, EditHeight, TRUE);
 

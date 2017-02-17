@@ -17,8 +17,10 @@
 #define ID_LEFTCHECK					201
 #define ID_RIGHTCHECK					202
 
-#define ID_LEFTBOUNDGUESS				203
-#define ID_RIGHTBOUNDGUESS				204
+#define ID_FUNCTION1ADV					203
+#define ID_FUNCTION2ADV					204
+#define ID_LEFTBOUNDADV					205
+#define ID_RIGHTBOUNDADV				206
 
 // Global Variables
 extern std::ofstream					LogFileObject;
@@ -39,7 +41,9 @@ extern HWND								g_hWndDX;
 extern HWND								g_hWndUI;
 extern HWND								g_hWndMethod;
 extern HWND								g_hWndEquation_1;
+extern HWND								g_hWndEquation_1_Adv;
 extern HWND								g_hWndEquation_2;
+extern HWND								g_hWndEquation_2_Adv;
 extern HWND								g_hWndLeftBound;
 extern HWND								g_hWndRightBound;
 extern HWND								g_hWndLeftBoundAdv;

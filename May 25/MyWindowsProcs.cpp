@@ -22,7 +22,9 @@ HWND								g_hWndDX = nullptr;
 HWND								g_hWndUI = nullptr;
 HWND								g_hWndMethod = nullptr;
 HWND								g_hWndEquation_1 = nullptr;
+HWND								g_hWndEquation_1_Adv = nullptr;
 HWND								g_hWndEquation_2 = nullptr;
+HWND								g_hWndEquation_2_Adv = nullptr;
 HWND								g_hWndLeftBound = nullptr;
 HWND								g_hWndRightBound = nullptr;
 HWND								g_hWndLeftBoundAdv = nullptr;
@@ -139,12 +141,18 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			10, EditIndent + (k - 3) * EditSpacing + (int)(0.4f * cyChar), cyChar, cyChar, hWnd, (HMENU)ID_LEFTCHECK, g_hInstance, NULL);
 		g_hWndRightCheck = CreateWindowExA(NULL, "button", "", WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON | BS_CENTER | WS_TABSTOP,
 			10, EditIndent + (k - 2) * EditSpacing + (int)(0.4f * cyChar), cyChar, cyChar, hWnd, (HMENU)ID_RIGHTCHECK, g_hInstance, NULL);
-		g_hWndLeftBoundAdv = CreateWindow(TEXT("button"), L"", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
-			UIWidth - 75, EditIndent + 3 * EditSpacing, EditHeight, EditHeight, hWnd,
-			(HMENU)ID_LEFTBOUNDGUESS, g_hInstance, NULL);
-		g_hWndRightBoundAdv = CreateWindow(TEXT("button"), L"", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
-			UIWidth - 75, EditIndent + 4 * EditSpacing, EditHeight, EditHeight, hWnd,
-			(HMENU)ID_RIGHTBOUNDGUESS, g_hInstance, NULL);
+		g_hWndEquation_1_Adv = CreateWindow(TEXT("button"), L"1", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
+			UIWidth - EditHeight - 3, EditIndent + 1 * EditSpacing, EditHeight, EditHeight, hWnd,
+			(HMENU)ID_LEFTBOUNDADV, g_hInstance, NULL);
+		g_hWndEquation_2_Adv = CreateWindow(TEXT("button"), L"2", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
+			UIWidth - EditHeight - 3, EditIndent + 2 * EditSpacing, EditHeight, EditHeight, hWnd,
+			(HMENU)ID_LEFTBOUNDADV, g_hInstance, NULL);
+		g_hWndLeftBoundAdv = CreateWindow(TEXT("button"), L"3", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
+			UIWidth - EditHeight - 3, EditIndent + 3 * EditSpacing, EditHeight, EditHeight, hWnd,
+			(HMENU)ID_LEFTBOUNDADV, g_hInstance, NULL);
+		g_hWndRightBoundAdv = CreateWindow(TEXT("button"), L"4", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
+			UIWidth - EditHeight - 3, EditIndent + 4 * EditSpacing, EditHeight, EditHeight, hWnd,
+			(HMENU)ID_RIGHTBOUNDADV, g_hInstance, NULL);
 
 
 		// Set combo box text
@@ -160,7 +168,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			if (i < 10)
 				a.append(L"0");
 			a.append(std::to_wstring(i));
-			SendMessage(g_hWndNCount, (UINT)CB_ADDSTRING, (WPARAM)0, (LPARAM)a.c_str());
+			SendMessage(g_hWndNCount, CB_ADDSTRING, (WPARAM)0, (LPARAM)a.c_str());
 		}
 
 
@@ -320,13 +328,13 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			AxisOn = (AxisOn == FALSE) ? TRUE : FALSE;
 			break;
 
-		case ID_LEFTBOUNDGUESS:
+		case ID_LEFTBOUNDADV:
 		{
 			GuessZero(g_hWndLeftBound);
 			break;
 		}
 
-		case ID_RIGHTBOUNDGUESS:
+		case ID_RIGHTBOUNDADV:
 		{
 			GuessZero(g_hWndRightBound);
 			break;

@@ -162,6 +162,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		}
 		SendMessage(g_hWndMethod, CB_SETCURSEL, (WPARAM)(g_SolidMethod), NULL);
 
+		SendMessage(g_hWndNCount, CB_ADDSTRING, (WPARAM)0, (LPARAM)L"infinite");
 		for (UINT i = 1; i <= g_WorldCount; i++)
 		{
 			std::wstring a;
@@ -235,7 +236,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			TcharToChar(cRightBound);
 
 			// Get selection from g_NCount
-			UINT NCount = (UINT)SendMessage(g_hWndNCount, CB_GETCURSEL, NULL, NULL) + 1;
+			UINT NCount = (UINT)SendMessage(g_hWndNCount, CB_GETCURSEL, NULL, NULL);
 
 			// Get check state from radio buttons
 			g_BoundToWhat =

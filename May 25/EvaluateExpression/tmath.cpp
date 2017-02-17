@@ -17,6 +17,13 @@
 //早回的猫
 #include <iostream>
 #include "tmath.h"
+#include <stdlib.h>
+#include "alglib/integration.h"
+
+
+using namespace alglib;
+
+std::string CurrentExpression;
 
 const std::string M_PI = "3.1415926535897932";
 const std::string M_E = "2.7182818284590452";
@@ -180,10 +187,10 @@ unsigned int getOperLvl(std::string buffer)
 		tThrow("invalid operator");
 }
 
-float evaluate(std::string exp, float x)
+double evaluate(std::string exp, double x)
 {
-	float result;
-	std::stack <float> container;
+	double result;
+	std::stack <double> container;
 	std::string buffer;
 
 	for (unsigned int i = 0; i <= exp.length() - 1; i++)
@@ -206,7 +213,7 @@ float evaluate(std::string exp, float x)
 		}
 		else if(buffer.size() == 1)
 		{
-			float operL, operR;
+			double operL, operR;
 			operR = container.top();
 			container.pop();
 			operL = container.top();
@@ -215,7 +222,7 @@ float evaluate(std::string exp, float x)
 		}
 		else if (isOperator(buffer))
 		{
-			float operR = container.top();
+			double operR = container.top();
 			container.pop();
 			result = operate(operR, buffer);
 		}
@@ -227,7 +234,7 @@ float evaluate(std::string exp, float x)
 	return container.top();
 }
 
-float operate(float operL, float operR, char opert)
+double operate(double operL, double operR, char opert)
 {
 	switch (opert)
 	{
@@ -247,7 +254,7 @@ float operate(float operL, float operR, char opert)
 	}
 }
 
-float operate(float operL, std::string opert) 
+double operate(double operL, std::string opert) 
 {
 	if (opert == "sin")						return sin(operL);
 	else if (opert == "cos")				return cos(operL);
@@ -292,15 +299,21 @@ std::string getOperator(std::string exp, unsigned int i)
 	tThrow("invalid operator");
 }
 
-float intergal(std::string exp, float a, float b, unsigned long n, intMethod method)
+void int_function_1_func(double x, double xminusa, double bminusx, double &y, void *ptr)
+{
+	// this callback calculates f(x)=exp(x)
+	y = evaluate(CurrentExpression, x);
+}
+
+double intergal(std::string exp, double a, double b, unsigned long n, intMethod method)
 {
 	switch (method)
 	{
 	case LeftRiemann:
 	{
-		float x = a;
-		float dx = (b - a) / n;
-		float result = 0;
+		double x = a;
+		double dx = (b - a) / n;
+		double result = 0;
 		for (unsigned long long i = 0; i < n; i++)
 		{
 			result += evaluate(exp, x);
@@ -317,9 +330,9 @@ float intergal(std::string exp, float a, float b, unsigned long n, intMethod met
 		if (n % 2)
 			n++;
 
-		float x = a;
-		float dx = (b - a) / n;
-		float result = 0.0f;
+		double x = a;
+		double dx = (b - a) / n;
+		double result = 0.0f;
 
 		result += evaluate(exp, x);
 		x += dx;
@@ -343,6 +356,21 @@ float intergal(std::string exp, float a, float b, unsigned long n, intMethod met
 
 		result *= dx / 3;
 		return result;
+	}
+	break;
+
+	case ALGLIB:
+	{
+		CurrentExpression = exp;
+		alglib::autogkstate s;
+		double v;
+		alglib::autogkreport rep;
+
+		alglib::autogksmooth(a, b, s);
+		alglib::autogkintegrate(s, int_function_1_func);
+		alglib::autogkresults(s, v, rep);
+
+		return double(v);
 	}
 	break;
 
@@ -372,34 +400,34 @@ std::string PutTimesSimbolInFrontOfXAndOtherStuff(std::string& exp)
 	return exp;
 }
 
-float Clamp(float x, float low, float high)
+double Clamp(double x, double low, double high)
 {
 	return x < low ? low : (x > high ? high : x);
 }
 
-float IfOverflowThenReset(float x, float low, float high)
+double IfOverflowThenReset(double x, double low, double high)
 {
 	return (x < high) ? x : low;
 }
 
-float derivative(std::string exp, float x)
+double derivative(std::string exp, double x)
 {
-	float dx = 0.00001f;
-	float f1 = evaluate(exp, x + dx);
-	float f2 = evaluate(exp, x + 2 * dx);
-	float f_1 = evaluate(exp, x - dx);
-	float f_2 = evaluate(exp, x - 2 * dx);
+	double dx = 0.00001f;
+	double f1 = evaluate(exp, x + dx);
+	double f2 = evaluate(exp, x + 2 * dx);
+	double f_1 = evaluate(exp, x - dx);
+	double f_2 = evaluate(exp, x - 2 * dx);
 	return 4 / 3 * (f1 - f_1) / (2 * dx) - 1 / 3 * (f2 - f_2) / (4 * dx);
 }
 
-bool FindZero(std::string exp, float* x)
+bool FindZero(std::string exp, double* x)
 {
-	float g = *x;
+	double g = *x;
 	for(unsigned short i = 0; i < 100; i++)
 	{
-		float esp = 0.0001f;
-		float f = evaluate(exp, g);
-		float fp = derivative(exp, g);
+		double esp = 0.0001f;
+		double f = evaluate(exp, g);
+		double fp = derivative(exp, g);
 		if ((fp <= 0.0001f) && (fp >= -0.0001f))
 		{
 			g += 0.0001f;

@@ -37,6 +37,12 @@
     <Filter Include="Header Files\Windows\MathInput">
       <UniqueIdentifier>{e5ceb679-48da-4966-ad8e-8d96e6107fdc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ALGLIB">
+      <UniqueIdentifier>{c82996a3-0ea7-4750-8d69-f97d1b8e1868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\ALGLIB">
+      <UniqueIdentifier>{e0e64f46-3325-48ae-a717-ac2a59732573}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -129,6 +135,45 @@
     <ClCompile Include="Utility.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\alglibinternal.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\alglibmisc.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\ap.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\dataanalysis.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\diffequations.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\fasttransforms.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\integration.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\interpolation.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\linalg.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\optimization.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\solvers.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\specialfunctions.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\statistics.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="May 25.rc">
@@ -137,6 +182,15 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="adv_ico.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="adv_ico_acti.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bitmap1.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -178,7 +178,7 @@ void UpdateVariables()
 	SetWindowTextA(g_hWndEquation_2, g_UnparsedExpression_2.c_str());
 	SetWindowTextA(g_hWndLeftBound, std::to_string(g_LeftBound).c_str());
 	SetWindowTextA(g_hWndRightBound, std::to_string(g_RightBound).c_str());
-	SendMessage(g_hWndNCount, CB_SETCURSEL, (WPARAM)(g_NCount - 1), NULL);
+	SendMessage(g_hWndNCount, CB_SETCURSEL, (WPARAM)(g_NCount), NULL);
 
 	g_BoundToWhat = (BoundToWhat)x;
 	if (g_BoundToWhat == BoundToLeft)
@@ -213,7 +213,7 @@ void UpdateSetting()
 
 void Integration()
 {
-	intMethod Method = Simpson;
+	intMethod Method = ALGLIB;
 
 	std::string UnParsedFunctionSquare_1 = "(";
 	UnParsedFunctionSquare_1.append(g_UnparsedExpression_1);
@@ -297,7 +297,7 @@ void GuessZero(HWND hWnd)
 	char cGuess[NumOfChar] = "";
 	Edit_GetLine(hWnd, NULL, (LPTSTR)&cGuess, NumOfChar);
 	TcharToChar(cGuess);
-	float Guess = std::stof(cGuess);
+	double Guess = std::stof(cGuess);
 	if (!FindZero(ZeroFunction, &Guess))
 	{
 		MessageBoxA(NULL, "Unable to guess the zero", NULL, NULL);

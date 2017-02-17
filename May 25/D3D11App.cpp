@@ -193,12 +193,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	}
 
 	g_pMathInput = new MathInput;
-	if (bMathInput)
-	{
-		g_pMathInput->CreateMathInput();
-		g_pMathInput->SetParent(g_hWnd);
-		g_pMathInput->Show();
-	}
+	g_pMathInput->CreateMathInput();
+	g_pMathInput->SetParent(g_hWnd);
+	g_pMathInput->spMIC->Hide();
 
 
 	LogFileObject << "Initialization was succeed" << std::endl;

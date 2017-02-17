@@ -29,23 +29,23 @@ public:
 #define tThrow(err) {Exception exception = { err, __FILE__ ,__FUNCTION__, __LINE__ }; throw (exception); }
 
 
-enum intMethod { LeftRiemann, Simpson };
+enum intMethod { LeftRiemann, Simpson, ALGLIB };
 
 
 std::string parse(std::string exp);
 bool hasHigherPrecedence(std::string stack, std::string token);
 unsigned int getOperLvl(std::string buffer);
-float evaluate(std::string exp, float x);
-float operate(float operL, float operR, char opert);
-float operate(float operL, std::string opert);
+double evaluate(std::string exp, double x);
+double operate(double operL, double operR, char opert);
+double operate(double operL, std::string opert);
 bool isNumber(char x);
 bool isOperator(std::string x);
 std::string getOperator(std::string exp, unsigned int i);
-float intergal(std::string exp, float a, float b, unsigned long n, intMethod method);
+double intergal(std::string exp, double a, double b, unsigned long n, intMethod method);
 std::string PutTimesSimbolInFrontOfXAndOtherStuff(std::string& exp);
-float Clamp(float x, float low, float high);
-float IfOverflowThenReset(float x, float low, float high);
+double Clamp(double x, double low, double high);
+double IfOverflowThenReset(double x, double low, double high);
 
 // Newton's method stuff
-float derivative(std::string exp, float x);
-bool FindZero(std::string exp, float* x);
+double derivative(std::string exp, double x);
+bool FindZero(std::string exp, double* x);

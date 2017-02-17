@@ -86,4 +86,5 @@ extern std::wstring						LogFileName;
 extern std::wstring						InputFile;
 extern std::wstring						SettingFile;
 
+extern class MathInput*					g_pMathInput;
 #endif // !1

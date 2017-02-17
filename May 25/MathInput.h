@@ -16,6 +16,7 @@ const _ATL_FUNC_INFO CMathInputControlEventHandler<MathInput>::OnMICCloseInfo = 
 
 class MathInput : public CMathInputControlEventHandler<MathInput>
 {
+public:
 	HWND TargetHWND;
 	CComPtr<IMathInputControl> spMIC; // Math Input Control
 	std::string RecognitionResult;

@@ -2,7 +2,7 @@
 #include "Resource.h"
 #include "MyWindowsProcs.h"
 #include "MyDirectXStuff.h"
-
+#include "MathInput.h"
 
 UINT								EditIndent;
 UINT								EditSpacing;
@@ -35,6 +35,42 @@ HWND								g_hWndButton = nullptr;
 HWND								g_hWndLeftCheck = nullptr;
 HWND								g_hWndRightCheck = nullptr;
 
+HBITMAP								g_hbmAdv = NULL;
+HBITMAP								g_hbmAdvActi = NULL;
+WNDPROC								wpOrigEditProc;
+
+
+LRESULT CALLBACK EditSubclassProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch (message)
+	{
+	case WM_MOUSEMOVE:
+	{
+		BITMAP bm;
+		PAINTSTRUCT ps;
+
+		HDC hdc = BeginPaint(hWnd, &ps);
+
+		HDC hdcMem = CreateCompatibleDC(hdc);
+		HBITMAP hbmOld = (HBITMAP)SelectObject(hdcMem, g_hbmAdvActi);
+
+		GetObject(g_hbmAdvActi, sizeof(bm), &bm);
+
+		BitBlt(hdc, 0, 0, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0, SRCCOPY);
+
+		SelectObject(hdcMem, hbmOld);
+		DeleteDC(hdcMem);
+
+		EndPaint(hWnd, &ps);
+	}
+	break;
+
+	default:
+		break;
+	}
+	return CallWindowProc(wpOrigEditProc, hWnd, message, wParam, lParam); 
+}
+
 // Functions
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -52,6 +88,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				DXClientRect.right, 0, UIClientRect.right, UIClientRect.bottom, hWnd, (HMENU)ID_UI, g_hInstance, NULL);
 			g_hWndDX = CreateWindow(DXClass, TEXT("DX window"), WS_CHILD | WS_VISIBLE,
 				0, 0, DXClientRect.right, DXClientRect.bottom, hWnd, (HMENU)ID_DX, g_hInstance, NULL);
+
+			// Load bitmap into application
+			g_hbmAdvActi = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_ADVICONACTI));
+			if (g_hbmAdvActi == NULL)
+				MessageBox(NULL, L"Could not load IDB_ADVACTI", NULL, NULL);
+			g_hbmAdv = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_ADVICON));
+			if (g_hbmAdv == NULL)
+				MessageBox(NULL, L"Could not load IDB_ADV", NULL, NULL);
 		}
 		return 0;
 
@@ -141,16 +185,16 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			10, EditIndent + (k - 3) * EditSpacing + (int)(0.4f * cyChar), cyChar, cyChar, hWnd, (HMENU)ID_LEFTCHECK, g_hInstance, NULL);
 		g_hWndRightCheck = CreateWindowExA(NULL, "button", "", WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON | BS_CENTER | WS_TABSTOP,
 			10, EditIndent + (k - 2) * EditSpacing + (int)(0.4f * cyChar), cyChar, cyChar, hWnd, (HMENU)ID_RIGHTCHECK, g_hInstance, NULL);
-		g_hWndEquation_1_Adv = CreateWindow(TEXT("button"), L"1", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
+		g_hWndEquation_1_Adv = CreateWindow(TEXT("button"), L"1", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP | BS_OWNERDRAW,
 			UIWidth - EditHeight - 3, EditIndent + 1 * EditSpacing, EditHeight, EditHeight, hWnd,
-			(HMENU)ID_LEFTBOUNDADV, g_hInstance, NULL);
-		g_hWndEquation_2_Adv = CreateWindow(TEXT("button"), L"2", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
+			(HMENU)ID_FUNCTION1ADV, g_hInstance, NULL);
+		g_hWndEquation_2_Adv = CreateWindow(TEXT("button"), L"2", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP | BS_OWNERDRAW,
 			UIWidth - EditHeight - 3, EditIndent + 2 * EditSpacing, EditHeight, EditHeight, hWnd,
-			(HMENU)ID_LEFTBOUNDADV, g_hInstance, NULL);
-		g_hWndLeftBoundAdv = CreateWindow(TEXT("button"), L"3", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
+			(HMENU)ID_FUNCTION2ADV, g_hInstance, NULL);
+		g_hWndLeftBoundAdv = CreateWindow(TEXT("button"), L"3", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP | BS_OWNERDRAW,
 			UIWidth - EditHeight - 3, EditIndent + 3 * EditSpacing, EditHeight, EditHeight, hWnd,
 			(HMENU)ID_LEFTBOUNDADV, g_hInstance, NULL);
-		g_hWndRightBoundAdv = CreateWindow(TEXT("button"), L"4", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
+		g_hWndRightBoundAdv = CreateWindow(TEXT("button"), L"4", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP | BS_OWNERDRAW,
 			UIWidth - EditHeight - 3, EditIndent + 4 * EditSpacing, EditHeight, EditHeight, hWnd,
 			(HMENU)ID_RIGHTBOUNDADV, g_hInstance, NULL);
 
@@ -187,10 +231,20 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		SetWindowFont(g_hWndGoInfinite, hFont, FALSE);
 		SetWindowFont(g_hWndButton, hFont, FALSE);
 
-		ShowWindow(g_hWndGoInfinite, SW_HIDE);
 		UpdateVariables();
+		// Variables have to be updated before integration
+		Integration();
+		ShowWindow(g_hWndGoInfinite, SW_HIDE);
 		AdjustControlCoords(hWnd);
 		SetFocus(g_hWndDX);
+	}
+
+	case WM_INITDIALOG:
+	{
+
+		// Subclass the edit control. 
+		wpOrigEditProc = (WNDPROC)SetWindowLongPtr(g_hWndEquation_1_Adv, (LONG)EditSubclassProc, GWLP_WNDPROC);
+		break;
 	}
 
 	case WM_COMMAND:
@@ -326,8 +380,24 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		}
 		
 		case ID_GOINFINITE:
+		{
 			AxisOn = (AxisOn == FALSE) ? TRUE : FALSE;
 			break;
+		}
+
+		case ID_FUNCTION1ADV:
+		{
+			g_pMathInput->spMIC->Show();
+			g_pMathInput->TargetHWND = g_hWndEquation_1;
+			break;
+		}
+
+		case ID_FUNCTION2ADV:
+		{
+			g_pMathInput->spMIC->Show();
+			g_pMathInput->TargetHWND = g_hWndEquation_2;
+			break;
+		}
 
 		case ID_LEFTBOUNDADV:
 		{
@@ -393,10 +463,10 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		SelectObject(hdc, hFont);
 
 		char Result[50] = "Result = ";
-		sprintf_s(Result, 50, "Result = %.3f", IntegrationResult);
+		sprintf_s(Result, 50, "Result = %.4f", IntegrationResult);
 		std::string Buffer = std::to_string(IntegrationResult);
 		int a = (int)Buffer.find('.');
-		TextOutA(hdc, 40, 40 + EditIndent - FontHeight + EditSpacing * k++, Result, 9 + a + 4);
+		TextOutA(hdc, 40, 40 + EditIndent - FontHeight + EditSpacing * k++, Result, 9 + a + 5);
 		
 
 		DeleteObject(SelectObject(hdc, GetStockObject(SYSTEM_FONT)));
@@ -411,7 +481,36 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		return 0;
 	}
 
+	case WM_DRAWITEM:
+	{
+		if (wParam == ID_FUNCTION1ADV || wParam == ID_FUNCTION2ADV || wParam == ID_LEFTBOUNDADV || wParam == ID_RIGHTBOUNDADV)
+		{
+			LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
+			HWND hwnd = pDIS->hwndItem;
+			BITMAP bm;
+			PAINTSTRUCT ps;
+
+			HDC hdc = pDIS->hDC;
+
+
+			HDC hdcMem = CreateCompatibleDC(hdc);
+			HBITMAP hbmOld = (HBITMAP)SelectObject(hdcMem, g_hbmAdv);
+
+			GetObject(g_hbmAdv, sizeof(bm), &bm);
+
+			BitBlt(hdc, 0, 0, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0, SRCCOPY);
+
+			SelectObject(hdcMem, hbmOld);
+			DeleteDC(hdcMem);
+			return 0;
+		}
+		break;
+					
+	}
+
 	case WM_DESTROY:
+		// Remove the subclass from the edit control. 
+		SetWindowLongPtr(g_hWndEquation_1_Adv, (LONG)wpOrigEditProc, GWLP_WNDPROC);
 		PostQuitMessage(0);
 		break;
 

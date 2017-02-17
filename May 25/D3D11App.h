@@ -57,7 +57,7 @@ ID3D11Buffer*				g_pFunctionIndexBuffer = nullptr;
 ID3D11Buffer*				g_pConstantBuffer = nullptr;
 ID3D11Buffer*				g_pCbPerFrame = nullptr;
 ID3D11Buffer*				g_pConstantBuffer_Shadowmap = nullptr;
-ID3D11SamplerState*			g_pSamplerState = nullptr;
+//ID3D11SamplerState*			g_pSamplerState = nullptr;
 
 XMMATRIX					g_View = XMMatrixIdentity();
 XMMATRIX					g_Projection = XMMatrixIdentity();
@@ -69,7 +69,7 @@ std::array <std::wstring, 6> SolidMethodDropDownList =
 {
 	L"Disk",
 	L"Washer",
-	L"Shell (in terms of y)",
+	//L"Shell (in terms of y)",
 	L"CrossSection-Semicircle",
 	L"CrossSection-EquilateralTriangle",
 	L"CrossSection-Square"

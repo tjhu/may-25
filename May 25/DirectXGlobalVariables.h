@@ -32,7 +32,7 @@ extern ID3D11Buffer*				g_pFunctionIndexBuffer;
 extern ID3D11Buffer*				g_pConstantBuffer;
 extern ID3D11Buffer*				g_pCbPerFrame;
 extern ID3D11Buffer*				g_pConstantBuffer_Shadowmap;
-extern ID3D11SamplerState*			g_pSamplerState;
+//extern ID3D11SamplerState*			g_pSamplerState;
 
 extern UINT							stride;
 extern UINT							NumOfIndices_Solid;

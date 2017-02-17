@@ -236,10 +236,10 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 		mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfertices, &NumOfIndices_Solid,
 			g_NCount, g_LeftBound, g_RightBound, Expression_1, Expression_2);
 		break;
-	case ShellMethod:
-		mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfertices, &NumOfIndices_Solid,
-			g_NCount, g_LeftBound, g_RightBound, Expression_1, g_BoundToWhat);
-		break;
+	//case ShellMethod:
+	//	mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfertices, &NumOfIndices_Solid,
+	//		g_NCount, g_LeftBound, g_RightBound, Expression_1, g_BoundToWhat);
+	//	break;
 	case CrossSection_Semicircle:
 	case CrossSection_EquilateralTriangle:
 	case CrossSection_Square:
@@ -329,17 +329,17 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 
 	g_LightView = XMMatrixLookAtLH(pos, target, up);
 
-	// Create sampler state and bind it to pixel shader
-	D3D11_SAMPLER_DESC* const SamplerDesc = new(D3D11_SAMPLER_DESC);
-	SamplerDesc->Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	SamplerDesc->AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-	SamplerDesc->AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-	SamplerDesc->AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-	SamplerDesc->Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	SamplerDesc->MipLODBias = 0.0f;
-	SamplerDesc->MaxAnisotropy = 4;
-	ThrowIfFailed(g_pd3dDevice->CreateSamplerState(SamplerDesc, &g_pSamplerState));
-	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerState);
+	//// Create sampler state and bind it to pixel shader
+	//D3D11_SAMPLER_DESC* const SamplerDesc = new(D3D11_SAMPLER_DESC);
+	//SamplerDesc->Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	//SamplerDesc->AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	//SamplerDesc->AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	//SamplerDesc->AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	//SamplerDesc->Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	//SamplerDesc->MipLODBias = 0.0f;
+	//SamplerDesc->MaxAnisotropy = 4;
+	//ThrowIfFailed(g_pd3dDevice->CreateSamplerState(SamplerDesc, &g_pSamplerState));
+	//g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerState);
 
 }
 
@@ -568,7 +568,7 @@ void DrawSolids(RenderObject mRenderObject)
 	}
 	break;
 	case Washer:
-	case ShellMethod:
+	//case ShellMethod:
 	{
 		// Get world matrix
 		XMMATRIX mTranslate = XMMatrixTranslation(0.0f, 0.0f, 0.0f);

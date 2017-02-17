@@ -161,7 +161,7 @@ void UpdateVariables()
 	Inputs >> buffer >> x;
 	Inputs.close();
 
-	if (g_SolidMethod == ShellMethod)
+	if (false/*g_SolidMethod == ShellMethod*/)
 	{
 		std::string buffer = g_UnparsedExpression_1;
 		for (UINT i = 0; i < buffer.size(); i++)
@@ -237,13 +237,13 @@ void Integration()
 		IntegrationResult = XM_PI * (result_1 - result_2);
 		break;
 
-	case ShellMethod:
-	{
-		std::string ShellFunction = Expression_1;
-		ShellFunction.append("x * ");
-		IntegrationResult = XM_2PI * intergal(ShellFunction, g_LeftBound, g_RightBound, NumOfIntergal, Method);
-	}
-	break;
+	//case ShellMethod:
+	//{
+	//	std::string ShellFunction = Expression_1;
+	//	ShellFunction.append("x * ");
+	//	IntegrationResult = XM_2PI * intergal(ShellFunction, g_LeftBound, g_RightBound, NumOfIntergal, Method);
+	//}
+	//break;
 
 	case CrossSection_Semicircle:
 		IntegrationResult = XM_PIDIV2 * result_1;
@@ -277,7 +277,7 @@ void GuessZero(HWND hWnd)
 	{
 		MessageBoxA(NULL, "Unable to parse Function 1", NULL, NULL);
 	}
-	if ((g_SolidMethod == ShellMethod) || (g_SolidMethod == Washer))
+	if (/*(g_SolidMethod == ShellMethod) ||*/ (g_SolidMethod == Washer))
 	{
 		Edit_GetLine(g_hWndEquation_2, NULL, (LPTSTR)&Function, NumOfChar);
 		TcharToChar(Function);
@@ -429,14 +429,14 @@ void AdjustControlCoords(HWND hWnd)
 	ShowWindow(g_hWndRightCheck, SW_HIDE);
 	switch (CurrentMethod)
 	{
-	case ShellMethod:
+	//case ShellMethod:
 	case Washer:
 	{
-		if (CurrentMethod == ShellMethod)
-		{
-			ShowWindow(g_hWndLeftCheck, SW_SHOW);
-			ShowWindow(g_hWndRightCheck, SW_SHOW);
-		}
+		//if (CurrentMethod == ShellMethod)
+		//{
+		//	ShowWindow(g_hWndLeftCheck, SW_SHOW);
+		//	ShowWindow(g_hWndRightCheck, SW_SHOW);
+		//}
 		ShowWindow(g_hWndEquation_2, SW_SHOW);
 		ShowWindow(g_hWndEquation_2_Adv, SW_SHOW);
 		MoveWindow(g_hWndLeftBound, 40, EditIndent + 3 * EditSpacing, EditWidth, EditHeight, TRUE);

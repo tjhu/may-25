@@ -136,7 +136,7 @@ void CleanupDevice()
 	ReleaseCom(g_pFunctionVertexBuffer);
 	ReleaseCom(g_pFunctionIndexBuffer);
 	ReleaseCom(g_ShadowmapResourceView);
-	ReleaseCom(g_pSamplerState);
+	//ReleaseCom(g_pSamplerState);
 }
 
 //-----------------------------------------------------------------------

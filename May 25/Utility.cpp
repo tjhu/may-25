@@ -35,6 +35,10 @@ std::string MathMLToInfix(std::wstring str)
 	{
 		str = DealingWithPow(str);
 	}
+	while (str.find(L"msqrt") != std::wstring::npos)
+	{
+		str = DealingWithSqrt(str);
+	}
 	while (str.find(L"mo") != std::wstring::npos)
 	{
 		str = ReplaceTagWithItsValue(str, L"mo");
@@ -141,6 +145,12 @@ std::wstring DealingWithPow(std::wstring str)
 	TagPos numerpos;
 	GetTagPos(str, rowtag, &numerpos, fragtagpos.openend);
 
+	//// if there's a trig inside
+	//if ((str.substr(fragtagpos.openend, fragtagpos.closestart - fragtagpos.openend + 1)).find(L"mathvariant") != std::wstring::npos)
+	//{
+
+	//}
+
 	// Expose numerator and denominator
 	std::wstring numerator, denominator;
 	numerator = str.substr(numerpos.openstart, numerpos.closeend - numerpos.openstart + 1);
@@ -168,6 +178,18 @@ std::wstring DealingWithParanthesis(std::wstring str)
 
 	// return result
 	return str.replace(tagpos.openstart, tagpos.closeend - tagpos.openstart + 1, L"(" + value + L")");
+}
+
+std::wstring DealingWithSqrt(std::wstring str)
+{
+	std::wstring tag = L"msqrt";
+	TagPos tagpos;
+	if (!GetTagPos(str, tag, &tagpos, NULL))
+		return str;
+
+	str = str.substr(tagpos.openend + 1, tagpos.closestart - tagpos.openend - 1);
+	str = L"(" + str + L")^(1/2)";
+	return str;
 }
 
 bool GetTagPos(std::wstring str, std::wstring tag, TagPos* tagpos, size_t index = 0)

@@ -202,6 +202,8 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		// Set combo box text
 		for (auto a : SolidMethodDropDownList)
 		{
+			if (a.empty())
+				continue;
 			SendMessage(g_hWndMethod, (UINT)CB_ADDSTRING, (WPARAM)0, (LPARAM)a.c_str());
 		}
 		SendMessage(g_hWndMethod, CB_SETCURSEL, (WPARAM)(g_SolidMethod), NULL);
@@ -301,13 +303,13 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			std::string sLeftBound(cLeftBound);
 			std::string sRightBound(cRightBound);
 
-			if (Method == ShellMethod)
+			/*if (Method == ShellMethod)
 			{
 				for (UINT i = 0; i < sFunction_1.size(); i++)
 				{
 					if (sFunction_1[i] == 'x')
 					{
-						MessageBoxA(NULL, "Please enter the function in terms of y", NULL, NULL);
+						MessageBoxA(NULL, "Please enter the function1 in terms of y", NULL, NULL);
 						return 0;
 					}
 					else if (sFunction_1[i] == 'y')
@@ -315,7 +317,19 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 						sFunction_1[i] = 'x';
 					}
 				}
-			}
+				for (UINT i = 0; i < sFunction_2.size(); i++)
+				{
+					if (sFunction_2[i] == 'x')
+					{
+						MessageBoxA(NULL, "Please enter the function2 in terms of y", NULL, NULL);
+						return 0;
+					}
+					else if (sFunction_2[i] == 'y')
+					{
+						sFunction_2[i] = 'x';
+					}
+				}
+			}*/
 			ErrorCode bValid = ValidateInput(sFunction_1, sFunction_2, sLeftBound, sRightBound);
 			switch (bValid)
 			{
@@ -352,10 +366,10 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 					mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid,
 						g_NCount, g_LeftBound, g_RightBound, Expression_1, Expression_2);
 					break;
-				case ShellMethod:
-					mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid,
-						g_NCount, g_LeftBound, g_RightBound, Expression_1, g_BoundToWhat);
-					break;
+				//case ShellMethod:
+				//	mGeoPointers = BuildEntireShellGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid,
+				//		g_NCount, g_LeftBound, g_RightBound, Expression_1, g_BoundToWhat);
+				//	break;
 				case CrossSection_Semicircle:
 				case CrossSection_EquilateralTriangle:
 				case CrossSection_Square:
@@ -444,7 +458,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		UINT k = 0;
 		TextOutA(hdc, 40, EditIndent - FontHeight + EditSpacing * k++, "Method", 6);
 		TextOutA(hdc, 40, EditIndent - FontHeight + EditSpacing * k++, "Function 1", 10);
-		if ((CurrentMethod == ShellMethod) || (CurrentMethod == Washer))
+		if (/*(CurrentMethod == ShellMethod) ||*/ (CurrentMethod == Washer))
 		{
 			TextOutA(hdc, 40, EditIndent - FontHeight + EditSpacing * k++, "Function 2", 10);
 		}

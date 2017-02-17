@@ -5,8 +5,8 @@
 // Defaults for number of lights.
 #include "LightingUtil.hlsl"
 
-sampler ShadowMapSampler : register(s0);;
-Texture2D Shadowmap : register(t0);;
+//sampler ShadowMapSampler : register(s0);;
+//Texture2D Shadowmap : register(t0);;
 
 PS_INPUT VS(VS_INPUT input)
 {
@@ -40,7 +40,7 @@ float4 PS(PS_INPUT pin) : SV_Target
 
     pin.Pos_L.xyz = pin.Pos_L.xyz / pin.Pos_L.w;
     pin.Pos_L.xy = (pin.Pos_L.xy + 1) / 2;
-    float Deep_Shadowmap = Shadowmap.Sample(ShadowMapSampler, float2(pin.Pos_L.x, pin.Pos_L.y));
+    //float Deep_Shadowmap = Shadowmap.Sample(ShadowMapSampler, float2(pin.Pos_L.x, pin.Pos_L.y));
 
     // Compute Shadow
     //if (pin.Pos_L.z > Deep_Shadowmap + 0.000001f) return ambient;

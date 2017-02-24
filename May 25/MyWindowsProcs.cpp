@@ -96,6 +96,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			g_hbmAdv = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_ADVICON));
 			if (g_hbmAdv == NULL)
 				MessageBox(NULL, L"Could not load IDB_ADV", NULL, NULL);
+
+			SetFocus(g_hWndDX);
 		}
 		return 0;
 

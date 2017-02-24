@@ -355,7 +355,9 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			{
 				g_bRotateAlongX = true;
 			}
-			ErrorCode bValid = ValidateInput(sFunction_1, sFunction_2, sLeftBound, sRightBound);
+			// If method it not washer, don't check function 2
+			ErrorCode bValid = (Method == Washer) ? ValidateInput(sFunction_1, sFunction_2, sLeftBound, sRightBound) : 
+													ValidateInput(sFunction_1, "1*x", sLeftBound, sRightBound);
 			switch (bValid)
 			{
 			case INPUT_OK:
@@ -368,7 +370,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			case InvalidLeftBound:
 			case InvalidRightBound:
 				PopInvalideMessage(bValid);
-				// To that specific control
+				return 0;
 				break;
 
 			default:

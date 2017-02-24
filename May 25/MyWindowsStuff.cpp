@@ -95,6 +95,23 @@ void PopInvalideMessage(ErrorCode ErrorMessage)
 
 void SetInputs(std::string Function_1, std::string Function_2, std::string sLeftBound, std::string sRightBound, UINT NCount)
 {
+	std::replace(Function_1.begin(), Function_1.end(), 'y', 'x');
+	std::replace(Function_2.begin(), Function_2.end(), 'y', 'x');
+	g_UnparsedExpression_1 = Function_1;
+	g_UnparsedExpression_2 = Function_2;
+	Expression_1 = parse(Function_1);
+	Expression_2 = parse(Function_2);
+	g_LeftBound = std::stof(sLeftBound.c_str());
+	g_RightBound = std::stof(sRightBound.c_str());
+	g_NCount = NCount;
+
+	if (!g_bRotateAlongX)
+	{
+		std::replace(Function_1.begin(), Function_1.end(), 'x', 'y');
+		std::replace(Function_2.begin(), Function_2.end(), 'x', 'y');
+	}
+
+
 	std::ofstream Inputs(InputFile);
 	Inputs.clear();
 
@@ -104,21 +121,16 @@ void SetInputs(std::string Function_1, std::string Function_2, std::string sLeft
 	Inputs << "g_RightBound= " << sRightBound << std::endl;
 	Inputs << "Rectangle= " << NCount << std::endl;
 	Inputs << "BoundTo= " << g_BoundToWhat << std::endl;
-	Inputs << "RotateAlongX=" << g_bRotateAlongX << std::endl;
+	Inputs << "RotateAlongX= " << g_bRotateAlongX << std::endl;
 
 	Inputs.close();
-
-	g_UnparsedExpression_1 = Function_1;
-	g_UnparsedExpression_2 = Function_2;
-	Expression_1 = parse(Function_1);
-	Expression_2 = parse(Function_2);
-	g_LeftBound = std::stof(sLeftBound.c_str());
-	g_RightBound = std::stof(sRightBound.c_str());
-	g_NCount = NCount;
 }
 
 void SetInputs()
 {
+	std::replace(g_UnparsedExpression_1.begin(), g_UnparsedExpression_1.end(), 'y', 'x');
+	std::replace(g_UnparsedExpression_1.begin(), g_UnparsedExpression_1.end(), 'y', 'x');
+
 	std::ofstream Inputs(InputFile);
 	Inputs.clear();
 
@@ -164,14 +176,11 @@ void UpdateVariables()
 	Inputs >> buffer >> g_bRotateAlongX;
 	Inputs.close();
 
+	std::replace(g_UnparsedExpression_1.begin(), g_UnparsedExpression_1.end(), 'y', 'x');
+	std::replace(g_UnparsedExpression_2.begin(), g_UnparsedExpression_2.end(), 'y', 'x');
 	if (!g_bRotateAlongX)/*g_SolidMethod == ShellMethod*/
 	{
 		std::string buffer = g_UnparsedExpression_1;
-		//for (UINT i = 0; i < buffer.size(); i++)
-		//{
-		//	if (buffer[i] == 'x')
-		//		buffer[i] = 'y';
-		//}
 		std::replace(buffer.begin(), buffer.end(), 'x', 'y');
 		SetWindowTextA(g_hWndEquation_1, buffer.c_str());
 		buffer = g_UnparsedExpression_2;

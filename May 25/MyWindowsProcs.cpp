@@ -198,7 +198,6 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			UIWidth - EditHeight - 3, EditIndent + 4 * EditSpacing, EditHeight, EditHeight, hWnd,
 			(HMENU)ID_RIGHTBOUNDADV, g_hInstance, NULL);
 
-
 		// Set combo box text
 		for (auto a : SolidMethodDropDownList)
 		{
@@ -217,7 +216,6 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			a.append(std::to_wstring(i));
 			SendMessage(g_hWndNCount, CB_ADDSTRING, (WPARAM)0, (LPARAM)a.c_str());
 		}
-
 
 		// Set font
 		HFONT hFont = CreateFont(cyChar, cxChar, -0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
@@ -281,6 +279,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			{
 				MethodChanged = TRUE;
 			}
+			MethodChanged = TRUE; // Let it always to be true now because I don't have time to change.
 			// Get text from edit controls
 			Edit_GetLine(g_hWndEquation_1, NULL, (LPTSTR)&cFunction_1, NumOfChar);
 			TcharToChar(cFunction_1);
@@ -302,6 +301,8 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			std::string sFunction_2(cFunction_2);
 			std::string sLeftBound(cLeftBound);
 			std::string sRightBound(cRightBound);
+
+			
 
 			/*if (Method == ShellMethod)
 			{
@@ -330,6 +331,28 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 					}
 				}
 			}*/
+			if (sFunction_1.find('y') != std::string::npos)
+			{
+				g_bRotateAlongX = false;
+				std::replace(sFunction_1.begin(), sFunction_1.end(), 'y', 'x');
+				if (Method == Washer)
+				{
+					// If function2 is not in terms of y
+					if (sFunction_2.find('y') == std::string::npos)
+					{
+						MessageBoxA(NULL, "Function 1 is in terms of y, but function 2 is not. Please make them agree with each other", NULL, NULL);
+						return 0;
+					}
+					else
+					{
+						std::replace(sFunction_2.begin(), sFunction_2.end(), 'y', 'x');
+					}
+				}
+			}
+			else
+			{
+				g_bRotateAlongX = true;
+			}
 			ErrorCode bValid = ValidateInput(sFunction_1, sFunction_2, sLeftBound, sRightBound);
 			switch (bValid)
 			{
@@ -379,6 +402,11 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 					break;
 				default:
 					break;
+				}
+
+				if (!g_bRotateAlongX)
+				{
+					SwapXAndYVertices(mGeoPointers, NumOfVertices, NumOfIndices_Solid);
 				}
 				
 				if (mGeoPointers.pVertexPointer)

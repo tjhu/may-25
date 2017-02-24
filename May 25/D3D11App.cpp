@@ -222,7 +222,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 			// Update keypressed
 			if (GetFocus() == g_hWndDX)
-				DXOnKeyDown(&mTheta, &mPhi, &mRadius);
+				DXOnKeyDown(&mTheta, &mPhi, &mRadius, &g_pos);
 			OnKeyDown(g_hWnd, g_hWndButton);
 			UpdateScene();
 
@@ -247,8 +247,8 @@ void UpdateScene()
 	mEyePosW = XMFLOAT3(x, y, z);
 
 	// Build the view matrix.
-	XMVECTOR pos = XMVectorSet(x, y, z, 1.0f);
-	XMVECTOR target = XMVectorZero();
+	XMVECTOR pos = XMVectorSet(x + (float)g_pos.x, y + (float)g_pos.y, z, 1.0f);
+	XMVECTOR target = { g_pos.x, g_pos.y, 0.0f, 0.0f };
 	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
 	g_View = XMMatrixLookAtLH(pos, target, up);

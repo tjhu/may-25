@@ -10,6 +10,12 @@ struct SimpleVertex
 	XMFLOAT3 Normal;
 };
 
+struct FPOINT // 2D point in float
+{
+	float x = 0;
+	float y = 0;
+};
+
 struct Light
 {
     XMFLOAT3 Strength;

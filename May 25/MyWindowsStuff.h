@@ -27,7 +27,7 @@ void								GuessZero(HWND hWnd);
 void								OnMouseDown(HWND g_hWndDX, POINT* mLastMousePos, WPARAM btnState, int x, int y);
 void								OnMouseMove(WPARAM btnState, POINT* mLastMousePos,
 												int x, int y, float* mTheta, float* mPhi, float* mRadius);
-void								DXOnKeyDown(float* mTheta, float* mPhi, float* mRadius);
+void								DXOnKeyDown(float* mTheta, float* mPhi, float* mRadius, FPOINT* pos);
 void								OnKeyDown(HWND hWnd, HWND g_hWndButton);
 
 void								AdjustClientRect(RECT ClientRect, RECT* DXClientRect, RECT* UIClientRect);

@@ -249,7 +249,10 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 	default:
 		break;
 	}
-	SwapXAndYVertices(mGeoPointers, NumOfVertices, NumOfIndices_Solid);
+	if (!g_bRotateAlongX)
+	{
+		SwapXAndYVertices(mGeoPointers, NumOfVertices, NumOfIndices_Solid);
+	}
 	// Build Geometry Buffers
 	BuildGeometryBuffers(mGeoPointers, g_pVertexBuffer, g_pIndexBuffer, NumOfVertices, NumOfIndices_Solid);
 	BuildAxisGeometryBuffers(g_pAxesVertexBuffer, g_pAxesIndexBuffer, NumOfIndices_Cylinder, NumOfIndices_Cone);
@@ -527,10 +530,18 @@ void DrawSolids(RenderObject mRenderObject)
 		{
 			float x = g_LeftBound + i * dx;
 			float y = evaluate(Expression_1, x);
-			/*XMMATRIX mTranslate = XMMatrixTranslation(x, 0.0f, 0.0f);
-			XMMATRIX mScale = XMMatrixScaling(dx, y, y);*/
-			XMMATRIX mTranslate = XMMatrixTranslation(0.0f, x, 0.0f);
-			XMMATRIX mScale = XMMatrixScaling(y, dx, y);
+			XMMATRIX mTranslate, mScale;
+			if (g_bRotateAlongX)
+			{
+				mTranslate = XMMatrixTranslation(x, 0.0f, 0.0f);
+				mScale = XMMatrixScaling(dx, y, y);
+			}
+			else
+			{
+				mTranslate = XMMatrixTranslation(0.0f, x, 0.0f);
+				mScale = XMMatrixScaling(y, dx, y);
+			}
+			
 			g_World = mScale * mTranslate;
 
 			//

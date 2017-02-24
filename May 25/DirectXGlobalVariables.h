@@ -40,4 +40,3 @@ extern UINT							NumOfIndices_Function;
 extern UINT							NumOfIndices_Cone;
 extern UINT							NumOfIndices_Cylinder;
 extern UINT							NumOfIndices_Axis;
-

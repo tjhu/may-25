@@ -28,7 +28,7 @@ ErrorCode ValidateInput(std::string Function_1, std::string Function_2, std::str
 	try
 	{
 		sample = parse(Function_1);
-		evaluate(sample, 1.09f);
+		evaluate(sample, 1.234567f);
 	}
 	catch (...)
 	{
@@ -38,7 +38,7 @@ ErrorCode ValidateInput(std::string Function_1, std::string Function_2, std::str
 	try
 	{
 		sample = parse(Function_2);
-		evaluate(sample, 1.09f);
+		evaluate(sample, 1.234567f);
 	}
 	catch (...)
 	{
@@ -104,6 +104,7 @@ void SetInputs(std::string Function_1, std::string Function_2, std::string sLeft
 	Inputs << "g_RightBound= " << sRightBound << std::endl;
 	Inputs << "Rectangle= " << NCount << std::endl;
 	Inputs << "BoundTo= " << g_BoundToWhat << std::endl;
+	Inputs << "RotateAlongX=" << g_bRotateAlongX << std::endl;
 
 	Inputs.close();
 
@@ -127,6 +128,7 @@ void SetInputs()
 	Inputs << "g_RightBound= " << g_RightBound << std::endl;
 	Inputs << "Rectangle= " << g_NCount << std::endl;
 	Inputs << "BoundTo= " << g_BoundToWhat << std::endl;
+	Inputs << "RotateAlongX= " << g_bRotateAlongX << std::endl;
 
 	Inputs.close();
 }
@@ -159,23 +161,28 @@ void UpdateVariables()
 	Inputs >> buffer >> g_RightBound;
 	Inputs >> buffer >> g_NCount;
 	Inputs >> buffer >> x;
+	Inputs >> buffer >> g_bRotateAlongX;
 	Inputs.close();
 
-	if (false/*g_SolidMethod == ShellMethod*/)
+	if (!g_bRotateAlongX)/*g_SolidMethod == ShellMethod*/
 	{
 		std::string buffer = g_UnparsedExpression_1;
-		for (UINT i = 0; i < buffer.size(); i++)
-		{
-			if (buffer[i] == 'x')
-				buffer[i] = 'y';
-		}
+		//for (UINT i = 0; i < buffer.size(); i++)
+		//{
+		//	if (buffer[i] == 'x')
+		//		buffer[i] = 'y';
+		//}
+		std::replace(buffer.begin(), buffer.end(), 'x', 'y');
 		SetWindowTextA(g_hWndEquation_1, buffer.c_str());
+		buffer = g_UnparsedExpression_2;
+		std::replace(buffer.begin(), buffer.end(), 'x', 'y');
+		SetWindowTextA(g_hWndEquation_2, buffer.c_str());
 	}
 	else
 	{
 		SetWindowTextA(g_hWndEquation_1, g_UnparsedExpression_1.c_str());
+		SetWindowTextA(g_hWndEquation_2, g_UnparsedExpression_2.c_str());
 	}
-	SetWindowTextA(g_hWndEquation_2, g_UnparsedExpression_2.c_str());
 	SetWindowTextA(g_hWndLeftBound, std::to_string(g_LeftBound).c_str());
 	SetWindowTextA(g_hWndRightBound, std::to_string(g_RightBound).c_str());
 	SendMessage(g_hWndNCount, CB_SETCURSEL, (WPARAM)(g_NCount), NULL);
@@ -219,13 +226,13 @@ void Integration()
 	UnParsedFunctionSquare_1.append(g_UnparsedExpression_1);
 	UnParsedFunctionSquare_1.append(")^2");
 	std::string FunctionSquare_1 = parse(UnParsedFunctionSquare_1);
-	float result_1 = intergal(FunctionSquare_1, g_LeftBound, g_RightBound, NumOfIntergal, Method);
+	double result_1 = intergal(FunctionSquare_1, g_LeftBound, g_RightBound, NumOfIntergal, Method);
 
 	std::string UnParsedFunctionSquare_2 = "(";
 	UnParsedFunctionSquare_2.append(g_UnparsedExpression_2);
 	UnParsedFunctionSquare_2.append(")^2");
 	std::string FunctionSquare_2 = parse(UnParsedFunctionSquare_2);
-	float result_2 = intergal(FunctionSquare_2, g_LeftBound, g_RightBound, NumOfIntergal, Method);
+	double result_2 = intergal(FunctionSquare_2, g_LeftBound, g_RightBound, NumOfIntergal, Method);
 
 	switch (g_SolidMethod)
 	{
@@ -350,41 +357,67 @@ void OnMouseMove(WPARAM btnState, POINT* mLastMousePos,
 	mLastMousePos->y = y;
 }
 
-void DXOnKeyDown(float* mTheta, float* mPhi, float* mRadius)
+void DXOnKeyDown(float* mTheta, float* mPhi, float* mRadius, FPOINT* pos)
 {
 	// Do nothing if this program is not the foreground window
 	HWND ForegroundWindow = GetForegroundWindow();
 	if (ForegroundWindow != g_hWnd)
 		return;
 
-	float dx = 0.006f;
-	float dy = 0.006f;
-	float dr = 0.036f;
+	float dTheta = 0.006f;
+	float dPhi = 0.006f;
+	float dRadius = 0.036f;
+	float dx = 0.1f;
+	float dy = 0.1f;
 
 	if (GetAsyncKeyState(VK_LCONTROL) & 0x8000)
 	{
+		dTheta *= 2.0f;
+		dPhi *= 2.0f;
+		dRadius *= 2.0f;
 		dx *= 2.0f;
 		dy *= 2.0f;
-		dr *= 2.0f;
 	}
 
 	if (GetAsyncKeyState('W') & 0x8000)
-		*mPhi += dy;
+		*mPhi += dPhi;
 
 	if (GetAsyncKeyState('S') & 0x8000)
-		*mPhi -= dy;
+		*mPhi -= dPhi;
 
 	if (GetAsyncKeyState('A') & 0x8000)
-		*mTheta += dx;
+		*mTheta += dTheta;
 
 	if (GetAsyncKeyState('D') & 0x8000)
-		*mTheta -= dx;
+		*mTheta -= dTheta;
 
 	if (GetAsyncKeyState('Q') & 0x8000)
-		*mRadius -= dr;
+		*mRadius -= dRadius;
 
 	if (GetAsyncKeyState('E') & 0x8000)
-		*mRadius += dr;
+		*mRadius += dRadius;
+
+	if (GetAsyncKeyState('I') & 0x8000)
+		pos->y += dy;
+
+	if (GetAsyncKeyState('K') & 0x8000)
+		pos->y -= dy;
+
+	if (GetAsyncKeyState('J') & 0x8000)
+		pos->x -= dx;
+
+	if (GetAsyncKeyState('L') & 0x8000)
+		pos->x += dx;
+
+	// If space, reset
+	if (GetAsyncKeyState(' ') & 0x8000)
+	{
+		*mPhi = DirectX::XM_PIDIV2;
+		*mTheta = -DirectX::XM_PIDIV2;
+		pos->x = 0.0f;
+		pos->y = 0.0f;
+	}
+		
 
 	*mPhi = Clamp(*mPhi, 0.1f, DirectX::XM_PI - 0.1f);
 	*mRadius = Clamp(*mRadius, MinRaidus, MaxRaidus);

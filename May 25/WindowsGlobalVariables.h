@@ -64,6 +64,7 @@ extern std::string						Expression_2;
 extern std::string						g_UnparsedExpression_2;
 extern SolidMethod						g_SolidMethod;
 extern BoundToWhat						g_BoundToWhat;
+extern bool								g_bRotateAlongX;
 
 // Setting File
 extern float							mTheta;
@@ -71,6 +72,7 @@ extern float							mPhi;
 extern float							mRadius;
 extern bool								AxisOn;
 extern bool								bMathInput;
+extern FPOINT							g_pos;
 
 extern float							IntegrationResult;
 

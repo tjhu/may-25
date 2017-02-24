@@ -65,6 +65,8 @@ XMMATRIX					g_World = XMMatrixIdentity();
 XMFLOAT3					g_LightDir = XMFLOAT3{ 0.57735f, -0.57735f, 0.57735f };
 XMMATRIX					g_LightView = XMMatrixIdentity();
 
+
+
 std::array <std::wstring, 6> SolidMethodDropDownList =
 {
 	L"Disk",
@@ -92,12 +94,14 @@ std::string				Expression_1 = "";
 std::string				g_UnparsedExpression_1 = "x";
 std::string				Expression_2 = "";
 std::string				g_UnparsedExpression_2 = "sin(x)";
+bool					g_bRotateAlongX = true;
 
 // Setting File
 float					mTheta = 136.772f;
 float					mPhi = 1.33159f;
 float					mRadius = 15.0f;
 bool					AxisOn = FALSE;
+FPOINT					g_pos;
 
 // Functions
 void Render();

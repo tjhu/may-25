@@ -51,7 +51,7 @@ struct ConstantBuffer_Shadowmap
 struct GeometryPointers
 {
 	SimpleVertex*           pVertexPointer = nullptr;
-	WORD*					pIndexPointer = nullptr;
+	UINT*					pIndexPointer = nullptr;
 };
 
 

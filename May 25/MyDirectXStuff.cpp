@@ -226,14 +226,14 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 
 	// Get vertices and indices data
 	GeometryPointers mGeoPointers;
-	UINT NumOfertices;
+	UINT NumOfVertices;
 	switch (g_SolidMethod)
 	{
 	case Disk:
-		mGeoPointers = BuildDiskGeometryBuffers(&NumOfertices, &NumOfIndices_Solid);
+		mGeoPointers = BuildDiskGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid);
 		break;
 	case Washer:
-		mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfertices, &NumOfIndices_Solid,
+		mGeoPointers = BuildEntireWasherGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid,
 			g_NCount, g_LeftBound, g_RightBound, Expression_1, Expression_2);
 		break;
 	//case ShellMethod:
@@ -243,15 +243,15 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 	case CrossSection_Semicircle:
 	case CrossSection_EquilateralTriangle:
 	case CrossSection_Square:
-		mGeoPointers = BuildCrossSectionGeometryBuffers(&NumOfertices, &NumOfIndices_Solid,
+		mGeoPointers = BuildCrossSectionGeometryBuffers(&NumOfVertices, &NumOfIndices_Solid,
 			g_SolidMethod);
 		break;
 	default:
 		break;
 	}
-
+	SwapXAndYVertices(mGeoPointers, NumOfVertices, NumOfIndices_Solid);
 	// Build Geometry Buffers
-	BuildGeometryBuffers(mGeoPointers, g_pVertexBuffer, g_pIndexBuffer, NumOfertices, NumOfIndices_Solid);
+	BuildGeometryBuffers(mGeoPointers, g_pVertexBuffer, g_pIndexBuffer, NumOfVertices, NumOfIndices_Solid);
 	BuildAxisGeometryBuffers(g_pAxesVertexBuffer, g_pAxesIndexBuffer, NumOfIndices_Cylinder, NumOfIndices_Cone);
 
 	// Create the constant buffer
@@ -455,7 +455,7 @@ void BuildGeometryBuffers(GeometryPointers mGeoPointers, ID3D11Buffer*& pVertexB
 	InitData.pSysMem = mGeoPointers.pVertexPointer;
 	ThrowIfFailed(g_pd3dDevice->CreateBuffer(&bd, &InitData, &pVertexBuffer));
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = NumOfIndice * sizeof(WORD);        // 36 vertices needed for 12 triangles in a triangle list
+	bd.ByteWidth = NumOfIndice * sizeof(UINT);        // 36 vertices needed for 12 triangles in a triangle list
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	InitData.pSysMem = mGeoPointers.pIndexPointer;
@@ -479,16 +479,16 @@ void BuildAxisGeometryBuffers(ID3D11Buffer*& pVertexBuffer, ID3D11Buffer*& pInde
 	GeometryPointers ConeGeometry = BuildConeGeometryBuffers(&NumOfVertices_Cone, &NumOfIndices_Cone);
 	GeometryPointers AxisGeometry;
 	AxisGeometry.pVertexPointer = new SimpleVertex[NumOfVertices_Cone + NumOfVertices_Cylinder];
-	AxisGeometry.pIndexPointer = new WORD[NumOfIndices_Cone + NumOfIndices_Cylinder];
+	AxisGeometry.pIndexPointer = new UINT[NumOfIndices_Cone + NumOfIndices_Cylinder];
 
 	// Fill out vertices array
 	SimpleVertex* VertexPointerToCylinder = AxisGeometry.pVertexPointer + NumOfVertices_Cylinder;
 	memcpy(AxisGeometry.pVertexPointer, CylinderGeometry.pVertexPointer, NumOfVertices_Cylinder * sizeof(SimpleVertex));
 	memcpy(VertexPointerToCylinder, ConeGeometry.pVertexPointer, NumOfVertices_Cone * sizeof(SimpleVertex));
 	// Fill out indices array
-	WORD* IndexPointerToCylinder = AxisGeometry.pIndexPointer + NumOfIndices_Cylinder;
-	memcpy(AxisGeometry.pIndexPointer, CylinderGeometry.pIndexPointer, NumOfIndices_Cylinder * sizeof(WORD));
-	memcpy(IndexPointerToCylinder, ConeGeometry.pIndexPointer, NumOfIndices_Cone * sizeof(WORD));
+	UINT* IndexPointerToCylinder = AxisGeometry.pIndexPointer + NumOfIndices_Cylinder;
+	memcpy(AxisGeometry.pIndexPointer, CylinderGeometry.pIndexPointer, NumOfIndices_Cylinder * sizeof(UINT));
+	memcpy(IndexPointerToCylinder, ConeGeometry.pIndexPointer, NumOfIndices_Cone * sizeof(UINT));
 
 	UINT NumOfVertices = NumOfVertices_Cone + NumOfVertices_Cylinder;
 	UINT NumOfIndices = NumOfIndices_Cone + NumOfIndices_Cylinder;
@@ -527,8 +527,10 @@ void DrawSolids(RenderObject mRenderObject)
 		{
 			float x = g_LeftBound + i * dx;
 			float y = evaluate(Expression_1, x);
-			XMMATRIX mTranslate = XMMatrixTranslation(x, 0.0f, 0.0f);
-			XMMATRIX mScale = XMMatrixScaling(dx, y, y);
+			/*XMMATRIX mTranslate = XMMatrixTranslation(x, 0.0f, 0.0f);
+			XMMATRIX mScale = XMMatrixScaling(dx, y, y);*/
+			XMMATRIX mTranslate = XMMatrixTranslation(0.0f, x, 0.0f);
+			XMMATRIX mScale = XMMatrixScaling(y, dx, y);
 			g_World = mScale * mTranslate;
 
 			//
@@ -623,7 +625,7 @@ void DrawAxis()
 	g_pImmediateContext->VSSetShader(g_pVertexShader, nullptr, 0);
 	g_pImmediateContext->PSSetShader(g_pPixelShader, nullptr, 0);
 	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pAxesVertexBuffer, &stride, &offset);
-	g_pImmediateContext->IASetIndexBuffer(g_pAxesIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+	g_pImmediateContext->IASetIndexBuffer(g_pAxesIndexBuffer, DXGI_FORMAT_R32_UINT, 0); // Set format to R16 if using WORD
 
 	const float SemiLengthOfStick = 0.35f * mRadius;
 	const float r_stick = 0.002f * mRadius;

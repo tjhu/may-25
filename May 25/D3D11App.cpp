@@ -26,7 +26,7 @@ void Render()
 	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer, &stride, &offset);
 
 	// Set index buffer
-	g_pImmediateContext->IASetIndexBuffer(g_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+	g_pImmediateContext->IASetIndexBuffer(g_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0); // Set format to R16 if you are using WORD
 
 	// Unbind shadowmap to PS
 	ID3D11ShaderResourceView* const * nullSRV = nullptr ;

@@ -17,6 +17,8 @@ GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices_Axis, UINT * NumO
 
 GeometryPointers BuildInfDiskGeometryBuffers(UINT* NumOfVertex, UINT* NumOfIndice);
 
+void SwapXAndYVertices(GeometryPointers in, UINT n, UINT NumOfIndices);
+
 
 
 //void BuildAxesGeometryBuffers();

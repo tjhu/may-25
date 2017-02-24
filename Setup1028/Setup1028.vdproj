@@ -360,7 +360,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:E:\\VirtualBox VMs\\Shared Folder\\Setup1028.msi"
+        "OutputFilename" = "8:Release\\Setup1028.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -1484,7 +1484,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:May25"
         "ProductCode" = "8:{BD7DD694-DCA0-47DF-9B66-B03E49B7DB3A}"
-        "PackageCode" = "8:{A4AA0B6D-766A-48B7-BE88-BF81D37F72AA}"
+        "PackageCode" = "8:{83ED991B-66A9-4C7D-8F34-BE675C6409FF}"
         "UpgradeCode" = "8:{C7963007-5ECA-4790-B14B-C00F75E557DC}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -2033,7 +2033,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C5C6BED92353457FB087FCC573536CC0"
             {
-            "SourcePath" = "8:..\\x64\\Debug\\May 25.exe"
+            "SourcePath" = "8:..\\x64\\Release\\May 25.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"

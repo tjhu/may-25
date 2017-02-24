@@ -8,8 +8,8 @@ GeometryPointers BuildDiskGeometryBuffers(UINT* NumOfVertex, UINT* NumOfIndice)
 	vertices = new SimpleVertex[*NumOfVertex];
 
 	*NumOfIndice = 4 * NumOfSlices * 3;
-	WORD* indices;
-	indices = new WORD[*NumOfIndice];
+	UINT* indices;
+	indices = new UINT[*NumOfIndice];
 
 	float radius = 1.0f;
 	float a = 0.0f;
@@ -96,8 +96,8 @@ GeometryPointers BuildEntireWasherGeometryBuffers(UINT* NumOfVertex, UINT* NumOf
 	SimpleVertex* vertices = nullptr;
 	vertices = new SimpleVertex[*NumOfVertex];
 	*NumOfIndice = 8 * NumOfSlices * g_NCount * 3;
-	WORD* indices = nullptr;
-	indices = new WORD[*NumOfIndice];
+	UINT* indices = nullptr;
+	indices = new UINT[*NumOfIndice];
 
 	float yf = 0.0f;
 	float y0 = 0.0f;
@@ -255,8 +255,8 @@ GeometryPointers BuildEntireShellGeometryBuffers(UINT* NumOfVertex, UINT* NumOfI
 	SimpleVertex* vertices = nullptr;
 	vertices = new SimpleVertex[*NumOfVertex];
 	*NumOfIndice = 8 * NumOfSlices * g_NCount * 3;
-	WORD* indices = nullptr;
-	indices = new WORD[*NumOfIndice];
+	UINT* indices = nullptr;
+	indices = new UINT[*NumOfIndice];
 
 	bool IsBoundToLeft = (g_BoundToWhat == BoundToLeft) ? TRUE : FALSE;
 
@@ -433,7 +433,7 @@ GeometryPointers BuildCrossSectionGeometryBuffers(UINT* NumOfVertex, UINT* NumOf
 	SolidMethod g_SolidMethod)
 {
 	SimpleVertex* vertices = nullptr;
-	WORD* indices = nullptr;
+	UINT* indices = nullptr;
 
 	switch (g_SolidMethod)
 	{
@@ -442,7 +442,7 @@ GeometryPointers BuildCrossSectionGeometryBuffers(UINT* NumOfVertex, UINT* NumOf
 		*NumOfVertex = (NumOfSlices + 1) * 4 + 8;
 		*NumOfIndice = (4 * (NumOfSlices + 1)) * 3;
 		vertices = new SimpleVertex[*NumOfVertex];
-		indices = new WORD[*NumOfIndice];
+		indices = new UINT[*NumOfIndice];
 		float radius = 1.0f;
 		float a = 0.0f;
 		float b = 1.0f;
@@ -474,7 +474,7 @@ GeometryPointers BuildCrossSectionGeometryBuffers(UINT* NumOfVertex, UINT* NumOf
 			// Right curved side
 			vertices[i + 2 + 3 * (NumOfSlices + 1)] = { XMFLOAT3{ b, pY, pZ }, XMFLOAT3{ 0.0f, nY, nZ } };
 		}
-		WORD j = 0;
+		UINT j = 0;
 		// Left Bottom side
 		vertices[2 + 4 * (NumOfSlices + 1)] = { XMFLOAT3{ a, 0.0f, radius }, XMFLOAT3{ 0.0f, -1.0f, 0.0f } };
 		vertices[3 + 4 * (NumOfSlices + 1)] = { XMFLOAT3{ a, 0.0f, 0.0f }, XMFLOAT3{ 0.0f, -1.0f, 0.0f } };
@@ -539,7 +539,7 @@ GeometryPointers BuildCrossSectionGeometryBuffers(UINT* NumOfVertex, UINT* NumOf
 		*NumOfVertex = 6 + 3 * 4;
 		*NumOfIndice = 3 * (2 + 3 * 2);
 		vertices = new SimpleVertex[*NumOfVertex];
-		indices = new WORD[*NumOfIndice];
+		indices = new UINT[*NumOfIndice];
 
 		float a = 0.0f;
 		float b = 1.0f;
@@ -583,7 +583,7 @@ GeometryPointers BuildCrossSectionGeometryBuffers(UINT* NumOfVertex, UINT* NumOf
 		k = 0;
 		// Fill in indices
 		{
-			std::array <WORD, 3 * (2 + 3 * 2)>  aIndices = {
+			std::array <UINT, 3 * (2 + 3 * 2)>  aIndices = {
 				// Left
 				0, 1, 2,
 
@@ -608,7 +608,7 @@ GeometryPointers BuildCrossSectionGeometryBuffers(UINT* NumOfVertex, UINT* NumOf
 		*NumOfVertex = 24;
 		*NumOfIndice = 3 * (6 * 2);
 		vertices = new SimpleVertex[*NumOfVertex];
-		indices = new WORD[*NumOfIndice];
+		indices = new UINT[*NumOfIndice];
 
 		float a = 0.0f;
 		float b = 1.0f;
@@ -651,7 +651,7 @@ GeometryPointers BuildCrossSectionGeometryBuffers(UINT* NumOfVertex, UINT* NumOf
 		k = 0;
 		// Fill in indices
 		{
-			std::array <WORD, 3 * (6 * 2)> aIndices = {
+			std::array <UINT, 3 * (6 * 2)> aIndices = {
 				// Left
 				0, 2, 1, 		0, 3, 2,
 				// Right
@@ -695,8 +695,8 @@ GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices, UINT * NumOfIndi
 	SimpleVertex* vertices = nullptr;
 	vertices = new SimpleVertex[*NumOfVertices];
 	*NumOfIndices = 2 * NumOfSlices * 3;
-	WORD* indices = nullptr;
-	indices = new WORD[*NumOfIndices];
+	UINT* indices = nullptr;
+	indices = new UINT[*NumOfIndices];
 
 	float radius = 1.0f;
 	float height = 1.0f;
@@ -724,7 +724,7 @@ GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices, UINT * NumOfIndi
 
 	UINT k = 0;
 	// Side
-	for (WORD i = 0; i < NumOfSlices - 1; i++)
+	for (UINT i = 0; i < NumOfSlices - 1; i++)
 	{
 		indices[k++] = i;
 		indices[k++] = i + NumOfSlices;
@@ -735,7 +735,7 @@ GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices, UINT * NumOfIndi
 	indices[k++] = NumOfSlices;
 
 	// Buttom
-	for (WORD i = 0; i < NumOfSlices - 1; i++)
+	for (UINT i = 0; i < NumOfSlices - 1; i++)
 	{
 		indices[k++] = 3 * NumOfSlices;
 		indices[k++] = 2 * NumOfSlices + i + 1;
@@ -749,6 +749,21 @@ GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices, UINT * NumOfIndi
 	mGeoPointers.pVertexPointer = vertices;
 	mGeoPointers.pIndexPointer = indices;
 	return mGeoPointers;
+}
+
+void SwapXAndYVertices(GeometryPointers in, UINT NumOfVertices, UINT NumOfIndices)
+{
+	SimpleVertex* vertices = in.pVertexPointer;
+	UINT* indices = in.pIndexPointer;
+	for (UINT i = 0; i < NumOfVertices; ++i)
+	{
+		vertices[i] = { { vertices[i].Pos.y, vertices[i].Pos.x, vertices[i].Pos.z }, { vertices[i].Normal.y, vertices[i].Normal.x, vertices[i].Normal.z } };
+	}
+	for (UINT i = 0; i < NumOfIndices / 2; ++i)
+	{
+		std::swap(indices[i], indices[NumOfIndices - i - 1]);
+	}
+	return;
 }
 
 //void BuildFunctionVertexBuffer()
@@ -790,7 +805,7 @@ GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices, UINT * NumOfIndi
 //	ReleaseCom(g_pFunctionIndexBuffer);
 //
 //	NumOfIndices_Function = 2 * ((NumOfPoint - 1) * 2);
-//	WORD indices[2 * ((NumOfPoint - 1) * 2)];
+//	UINT indices[2 * ((NumOfPoint - 1) * 2)];
 //
 //	UINT k = 0;
 //	// Function 1
@@ -811,7 +826,7 @@ GeometryPointers BuildConeGeometryBuffers(UINT * NumOfVertices, UINT * NumOfIndi
 //	D3D11_BUFFER_DESC bd;
 //	ZeroMemory(&bd, sizeof(bd));
 //	bd.Usage = D3D11_USAGE_DEFAULT;
-//	bd.ByteWidth = sizeof(WORD) * NumOfIndices_Function;        // 36 vertices needed for 12 triangles in a triangle list
+//	bd.ByteWidth = sizeof(UINT) * NumOfIndices_Function;        // 36 vertices needed for 12 triangles in a triangle list
 //	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 //	bd.CPUAccessFlags = 0;
 //	D3D11_SUBRESOURCE_DATA InitData;

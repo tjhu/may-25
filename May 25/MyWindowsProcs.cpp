@@ -159,7 +159,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		static UINT cxChar = LOWORD(GetDialogBaseUnits());
 		static UINT cyChar = (UINT)(HIWORD(GetDialogBaseUnits()) * 1.4f);
 		// Create grandchild windows
-		EditSpacing = (UINT)(UIClientRect.bottom / 8.5f);
+		EditSpacing = (UINT)(UIClientRect.bottom / 9.5f);
 		EditIndent = 100;
 		UINT EditHeight = (UINT)(cyChar * 1.4f);
 		UINT EditWidth = UIWidth * 4 / 5;
@@ -175,8 +175,10 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			40, EditIndent + k++ * EditSpacing, EditWidth, EditHeight, hWnd, (HMENU)ID_LEFTBOUND, g_hInstance, NULL);
 		g_hWndRightBound = CreateWindowExA(NULL, "edit", "g_RightBound", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
 			40, EditIndent + k++ * EditSpacing, EditWidth, EditHeight, hWnd, (HMENU)ID_RIGHTBOUND, g_hInstance, NULL);
-		g_hWndNCount = CreateWindowExA(NULL, "combobox", "g_NCount", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL,
-			40, EditIndent + k++ * EditSpacing, EditWidth, 200, hWnd, (HMENU)ID_NCOUNT, g_hInstance, NULL);
+		//g_hWndNCount = CreateWindowExA(NULL, "combobox", "g_NCount", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP | CBS_DROPDOWN | WS_VSCROLL,
+		//	40, EditIndent + k++ * EditSpacing, EditWidth, 1000, hWnd, (HMENU)ID_NCOUNT, g_hInstance, NULL);
+		g_hWndNCount = CreateWindowExA(NULL, "edit", "g_NCount", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP,
+			40, EditIndent + k++ * EditSpacing, EditWidth, EditHeight, hWnd, (HMENU)ID_NCOUNT, g_hInstance, NULL);
 		g_hWndGoInfinite = CreateWindowExA(NULL, "button", "Toggle Axes", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX | BS_CENTER | WS_TABSTOP,
 			40, EditIndent + 30 + (k - 1) * EditSpacing, 20 * cxChar, cyChar * 7 / 4, hWnd, (HMENU)ID_GOINFINITE, g_hInstance, NULL);
 		g_hWndButton = CreateWindow(TEXT("button"), TEXT("Compute"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
@@ -209,15 +211,15 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		}
 		SendMessage(g_hWndMethod, CB_SETCURSEL, (WPARAM)(g_SolidMethod), NULL);
 
-		SendMessage(g_hWndNCount, CB_ADDSTRING, (WPARAM)0, (LPARAM)L"infinite");
-		for (UINT i = 1; i <= g_WorldCount; i++)
-		{
-			std::wstring a;
-			if (i < 10)
-				a.append(L"0");
-			a.append(std::to_wstring(i));
-			SendMessage(g_hWndNCount, CB_ADDSTRING, (WPARAM)0, (LPARAM)a.c_str());
-		}
+		//SendMessage(g_hWndNCount, CB_ADDSTRING, (WPARAM)0, (LPARAM)L"infinite");
+		//for (UINT i = 1; i <= g_WorldCount; i++)
+		//{
+		//	std::wstring a;
+		//	if (i < 10)
+		//		a.append(L"0");
+		//	a.append(std::to_wstring(i));
+		//	SendMessage(g_hWndNCount, CB_ADDSTRING, (WPARAM)0, (LPARAM)a.c_str());
+		//}
 
 		// Set font
 		HFONT hFont = CreateFont(cyChar, cxChar, -0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
@@ -274,6 +276,7 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			char cFunction_2[NumOfChar] = "";
 			char cLeftBound[NumOfChar] = "";
 			char cRightBound[NumOfChar] = "";
+			char cNCount[NumOfChar] = "";
 
 			int Method = 0;
 			Method = (int)SendMessage(g_hWndMethod, CB_GETCURSEL, NULL, NULL);
@@ -292,8 +295,13 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			Edit_GetLine(g_hWndRightBound, NULL, (LPTSTR)&cRightBound, NumOfChar);
 			TcharToChar(cRightBound);
 
+			
 			// Get selection from g_NCount
-			UINT NCount = (UINT)SendMessage(g_hWndNCount, CB_GETCURSEL, NULL, NULL);
+			std::string s
+			Edit_GetLine(g_hWndNCount, NULL, (LPTSTR)&cNCount, NumOfChar);
+			TcharToChar(cNCount);
+			std::string sNCount(cNCount);
+			UINT NCount = std::stoi(sNCount);
 
 			// Get check state from radio buttons
 			g_BoundToWhat =

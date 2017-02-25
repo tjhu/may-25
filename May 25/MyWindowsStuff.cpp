@@ -194,7 +194,8 @@ void UpdateVariables()
 	}
 	SetWindowTextA(g_hWndLeftBound, std::to_string(g_LeftBound).c_str());
 	SetWindowTextA(g_hWndRightBound, std::to_string(g_RightBound).c_str());
-	SendMessage(g_hWndNCount, CB_SETCURSEL, (WPARAM)(g_NCount), NULL);
+	SetWindowTextA(g_hWndNCount, std::to_string(g_NCount).c_str());
+	/*SendMessage(g_hWndNCount, CB_SETCURSEL, (WPARAM)(g_NCount), NULL);*/
 
 	g_BoundToWhat = (BoundToWhat)x;
 	if (g_BoundToWhat == BoundToLeft)

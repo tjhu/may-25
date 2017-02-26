@@ -2,6 +2,7 @@
 #include "App.h"
 
 #include <ppltasks.h>
+#include <string>
 
 using namespace UWP_DX12_;
 
@@ -65,6 +66,9 @@ void App::SetWindow(CoreWindow^ window)
 
 	window->Closed += 
 		ref new TypedEventHandler<CoreWindow^, CoreWindowEventArgs^>(this, &App::OnWindowClosed);
+
+	window->KeyDown +=
+		ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &App::OnKeyPressed);
 
 	DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
 
@@ -197,6 +201,15 @@ void App::OnOrientationChanged(DisplayInformation^ sender, Object^ args)
 void App::OnDisplayContentsInvalidated(DisplayInformation^ sender, Object^ args)
 {
 	GetDeviceResources()->ValidateDevice();
+}
+
+void UWP_DX12_::App::OnKeyPressed(Windows::UI::Core::CoreWindow ^ sender, Windows::UI::Core::KeyEventArgs ^ args)
+{
+	int key = (int)(args->VirtualKey);
+	Windows::UI::Popups::MessageDialog dialog("Hello" + key);
+	m_main->OnSuspending();
+	dialog.ShowAsync();
+	return;
 }
 
 std::shared_ptr<DX::DeviceResources> App::GetDeviceResources()

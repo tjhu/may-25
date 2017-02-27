@@ -5,7 +5,6 @@
 
 #include "pch.h"
 #include "DirectXPage.xaml.h"
-#include "MouseAndKeyController.h"
 
 using namespace UWP_DX11_XAML_;
 
@@ -29,8 +28,6 @@ using namespace Windows::UI::Xaml::Navigation;
 /// </summary>
 App::App()
 {
-	MoveLookController controller;
-	controller.Initialize(Window::Current->CoreWindow);
 	Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
 	Resuming += ref new EventHandler<Object^>(this, &App::OnResuming);
 }

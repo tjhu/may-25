@@ -187,9 +187,9 @@ void DirectXPage::OnPointerReleased(Object^ sender, PointerEventArgs^ e)
 void UWP_DX11_XAML_::DirectXPage::OnKeyDown(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::KeyEventArgs^ e)
 {
 	Windows::UI::Popups::MessageDialog dialog("Key pressed");
+	dialog.ShowAsync();
 	m_main->StopRenderLoop();
 	return;
-	throw ref new Platform::NotImplementedException();
 }
 
 void DirectXPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args)

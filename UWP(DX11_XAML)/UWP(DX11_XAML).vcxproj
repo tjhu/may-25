@@ -201,7 +201,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Common\DeviceResources.h" />
-    <ClInclude Include="MouseAndKeyController.h" />
     <ClInclude Include="UWP_DX11_XAML_Main.h" />
     <ClInclude Include="DirectXPage.xaml.h">
       <DependentUpon>DirectXPage.xaml</DependentUpon>
@@ -218,7 +217,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Common\DeviceResources.cpp" />
-    <ClCompile Include="MouseAndKeyController.cpp" />
     <ClCompile Include="UWP_DX11_XAML_Main.cpp" />
     <ClCompile Include="DirectXPage.xaml.cpp">
       <DependentUpon>DirectXPage.xaml</DependentUpon>

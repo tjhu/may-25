@@ -74,14 +74,12 @@
     <ClCompile Include="UWP_DX11_XAML_Main.cpp" />
     <ClCompile Include="DirectXPage.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="MouseAndKeyController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />
     <ClInclude Include="UWP_DX11_XAML_Main.h" />
     <ClInclude Include="DirectXPage.xaml.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="MouseAndKeyController.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">

@@ -55,6 +55,20 @@ bool UWP_DX12_Main::Render()
 	return m_sceneRenderer->Render();
 }
 
+void UWP_DX12_::UWP_DX12_Main::Pause()
+{
+	if (m_sceneRenderer->IsTracking())
+		m_sceneRenderer->StopTracking();
+	else
+		m_sceneRenderer->StartTracking();
+}
+
+void UWP_DX12_::UWP_DX12_Main::Resume()
+{
+}
+
+
+
 // Updates application state when the window's size changes (e.g. device orientation change)
 void UWP_DX12_Main::OnWindowSizeChanged()
 {

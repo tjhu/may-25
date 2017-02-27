@@ -67,6 +67,7 @@ void App::SetWindow(CoreWindow^ window)
 	window->Closed += 
 		ref new TypedEventHandler<CoreWindow^, CoreWindowEventArgs^>(this, &App::OnWindowClosed);
 
+	// Add self-defined event handler
 	window->KeyDown +=
 		ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &App::OnKeyPressed);
 
@@ -205,10 +206,18 @@ void App::OnDisplayContentsInvalidated(DisplayInformation^ sender, Object^ args)
 
 void UWP_DX12_::App::OnKeyPressed(Windows::UI::Core::CoreWindow ^ sender, Windows::UI::Core::KeyEventArgs ^ args)
 {
-	int key = (int)(args->VirtualKey);
-	Windows::UI::Popups::MessageDialog dialog("Hello" + key);
-	m_main->OnSuspending();
-	dialog.ShowAsync();
+	switch (args->VirtualKey)
+	{
+	// pause the renderer and show UI
+	case VirtualKey::Escape:
+		m_main->Pause();
+		break;
+
+	default:
+		break;
+	}
+	
+	
 	return;
 }
 

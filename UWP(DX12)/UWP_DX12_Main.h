@@ -14,6 +14,8 @@ namespace UWP_DX12_
 		void CreateRenderers(const std::shared_ptr<DX::DeviceResources>& deviceResources);
 		void Update();
 		bool Render();
+		void Pause();
+		void Resume();
 
 		void OnWindowSizeChanged();
 		void OnSuspending();

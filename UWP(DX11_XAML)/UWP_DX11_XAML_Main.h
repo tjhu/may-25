@@ -20,6 +20,7 @@ namespace UWP_DX11_XAML_
 		bool IsTracking() { return m_sceneRenderer->IsTracking(); }
 		void StartRenderLoop();
 		void StopRenderLoop();
+		void OnDXKeyDown(Windows::System::VirtualKey key);
 		Concurrency::critical_section& GetCriticalSection() { return m_criticalSection; }
 
 		// IDeviceNotify

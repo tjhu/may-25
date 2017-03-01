@@ -10,7 +10,18 @@ namespace UWP_DX11_XAML_
 	class Sample3DSceneRenderer
 	{
 	public:
-		Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources);
+		class Camera 
+		{
+			// Angular and linear displacement
+			float	m_theta = 0.0f, m_phi = 0.0f;
+			float	x = 0.0f, y = 0.0f, z = 0.0f;
+		};
+
+	public:
+		Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources, 
+							  const std::shared_ptr<Windows::UI::Core::CoreWindow^>& window);
+		Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources,
+							  Windows::UI::Core::CoreWindow^ window);
 		void CreateDeviceDependentResources();
 		void CreateWindowSizeDependentResources();
 		void ReleaseDeviceDependentResources();
@@ -19,15 +30,21 @@ namespace UWP_DX11_XAML_
 		void StartTracking();
 		void TrackingUpdate(float positionX);
 		void StopTracking();
-		bool IsTracking() { return m_tracking; }
+		void OnKeyDown();
+		bool IsTracking() { return m_tracking; }	
+		bool IsKeyPressed(Windows::System::VirtualKey key);
 
+
+		// Get
+		Camera* GetCamera() { return &m_camera; }
 
 	private:
 		void Rotate(float radians);
 
 	private:
-		// Cached pointer to device resources.
+		// Cached pointer to device resources and core window
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
+		Platform::Agile<Windows::UI::Core::CoreWindow^> m_window;
 
 		// Direct3D resources for cube geometry.
 		Microsoft::WRL::ComPtr<ID3D11InputLayout>	m_inputLayout;
@@ -45,6 +62,8 @@ namespace UWP_DX11_XAML_
 		bool	m_loadingComplete;
 		float	m_degreesPerSecond;
 		bool	m_tracking;
+		Camera	m_camera;
+
 	};
 }
 

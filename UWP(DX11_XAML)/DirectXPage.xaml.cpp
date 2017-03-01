@@ -87,7 +87,6 @@ DirectXPage::DirectXPage():
 	m_inputLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
 
 	m_main = std::unique_ptr<UWP_APP_Main>(new UWP_APP_Main(m_deviceResources));
-	m_main->StartRenderLoop();
 }
 
 DirectXPage::~DirectXPage()
@@ -122,15 +121,15 @@ void DirectXPage::LoadInternalState(IPropertySet^ state)
 
 void DirectXPage::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEventArgs^ args)
 {
-	m_bWindowVisible = args->Visible;
-	if (m_bWindowVisible)
-	{
-		m_main->StartRenderLoop();
-	}
-	else
-	{
-		m_main->StopRenderLoop();
-	}
+	//m_bWindowVisible = args->Visible;
+	//if (m_bWindowVisible)
+	//{
+	//	m_main->StartRenderLoop();
+	//}
+	//else
+	//{
+	//	m_main->StopRenderLoop();
+	//}
 }
 
 // DisplayInformation event handlers.
@@ -189,20 +188,52 @@ void DirectXPage::OnPointerReleased(Object^ sender, PointerEventArgs^ e)
 
 void UWP_DX11_XAML_::DirectXPage::OnKeyDown(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::KeyEventArgs^ e)
 {
-	using namespace Windows::System;
-	switch (e->VirtualKey)
-	{
-	// Pause app and show UIs at esc
-	case VirtualKey::Escape:
-		m_bPaused = !m_bPaused;
-		m_bPaused ? m_main->StopRenderLoop() : m_main->StartRenderLoop();
-		this->UI_Panel->Visibility = m_bPaused ? Windows::UI::Xaml::Visibility::Visible : Windows::UI::Xaml::Visibility::Collapsed;
-	break;
+	//using namespace Windows::System;
 
-	default:
-		break;
-	}
-	return;
+	//// Revert the state
+	//m_bPaused = !m_bPaused;
+	//
+	//auto key = e->VirtualKey;
+	//// On run
+	//if (m_bPaused)
+	//{
+	//	switch (key)
+	//	{
+	//		// Pause app and show UIs at esc
+	//	case VirtualKey::Escape:
+	//	{
+	//		m_main->StartRenderLoop();
+	//		UI_Panel->Visibility = Windows::UI::Xaml::Visibility::Visible;
+	//		break;
+	//	}
+
+
+	//	default:
+	//		break;
+	//	}
+
+
+	//}
+	//// On pause
+	//else
+	//{
+	//	switch (key)
+	//	{
+	//		// Pause app and show UIs at esc
+	//	case VirtualKey::Escape:
+	//	{
+	//		m_main->StopRenderLoop();
+	//		UI_Panel->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+	//		break;
+	//	}
+
+	//	}
+	//}
+	////m_main->OnDXKeyDown(VirtualKey::A);
+
+	//return;
+
+	m_main->StartRenderLoop();
 }
 
 void DirectXPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args)

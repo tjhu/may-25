@@ -15,6 +15,7 @@
                FontSize="30" />
 			<Button x:Name="button" Content="Start" HorizontalAlignment="Left" Margin="528,375,0,0" VerticalAlignment="Top" Height="64" Width="124" Click="button_Click"/>
 			<Button x:Name="button1" Content="Stop" HorizontalAlignment="Left" Margin="1034,407,0,0" VerticalAlignment="Top" Height="58" Width="103" Click="button1_Click"/>
+			<RichEditBox HorizontalAlignment="Left" Margin="821,606,0,0" VerticalAlignment="Top" Height="53" Width="291" InputScope="Formula"/>
 		</Grid>
 	</SwapChainPanel>
 

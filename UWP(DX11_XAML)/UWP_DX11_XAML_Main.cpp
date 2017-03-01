@@ -15,7 +15,7 @@ UWP_APP_Main::UWP_APP_Main(const std::shared_ptr<DX::DeviceResources>& deviceRes
 	m_deviceResources->RegisterDeviceNotify(this);
 
 	// TODO: Replace this with your app's content initialization.
-	m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources));
+	m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources, Windows::UI::Xaml::Window::Current->CoreWindow));
 
 	m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
 
@@ -42,6 +42,7 @@ void UWP_APP_Main::CreateWindowSizeDependentResources()
 
 void UWP_APP_Main::StartRenderLoop()
 {
+
 	// If the animation render loop is already running then do not start another thread.
 	if (m_renderLoopWorker != nullptr && m_renderLoopWorker->Status == AsyncStatus::Started)
 	{
@@ -72,6 +73,11 @@ void UWP_APP_Main::StopRenderLoop()
 	m_renderLoopWorker->Cancel();
 }
 
+void UWP_DX11_XAML_::UWP_APP_Main::OnDXKeyDown(Windows::System::VirtualKey key)
+{
+	m_sceneRenderer->OnKeyDown();
+}
+
 // Updates the application state once per frame.
 void UWP_APP_Main::Update() 
 {
@@ -91,6 +97,7 @@ void UWP_APP_Main::ProcessInput()
 {
 	// TODO: Add per frame input handling here.
 	m_sceneRenderer->TrackingUpdate(m_pointerLocationX);
+	m_sceneRenderer->OnKeyDown();
 }
 
 // Renders the current frame according to the current application state.

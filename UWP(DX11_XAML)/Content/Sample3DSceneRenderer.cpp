@@ -9,12 +9,28 @@ using namespace DirectX;
 using namespace Windows::Foundation;
 
 // Loads vertex and pixel shaders from files and instantiates the cube geometry.
-Sample3DSceneRenderer::Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
+UWP_DX11_XAML_::Sample3DSceneRenderer::Sample3DSceneRenderer(
+	const std::shared_ptr<DX::DeviceResources>& deviceResources, 
+	const std::shared_ptr<Windows::UI::Core::CoreWindow^>& window)
+	:
 	m_loadingComplete(false),
 	m_degreesPerSecond(45),
 	m_indexCount(0),
 	m_tracking(false),
 	m_deviceResources(deviceResources)
+{
+	CreateDeviceDependentResources();
+	CreateWindowSizeDependentResources();
+}
+
+UWP_DX11_XAML_::Sample3DSceneRenderer::Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources, Windows::UI::Core::CoreWindow^ window)
+	:
+	m_loadingComplete(false),
+	m_degreesPerSecond(45),
+	m_indexCount(0),
+	m_tracking(false),
+	m_deviceResources(deviceResources),
+	m_window(window)
 {
 	CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
@@ -68,15 +84,7 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 // Called once per frame, rotates the cube and calculates the model and view matrices.
 void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 {
-	if (!m_tracking)
-	{
-		// Convert degrees to radians, then convert seconds to rotation angle
-		float radiansPerSecond = XMConvertToRadians(m_degreesPerSecond);
-		double totalRotation = timer.GetTotalSeconds() * radiansPerSecond;
-		float radians = static_cast<float>(fmod(totalRotation, XM_2PI));
-
-		Rotate(radians);
-	}
+	Rotate(0.0f);
 }
 
 // Rotate the 3D cube model a set amount of radians.
@@ -104,6 +112,23 @@ void Sample3DSceneRenderer::TrackingUpdate(float positionX)
 void Sample3DSceneRenderer::StopTracking()
 {
 	m_tracking = false;
+}
+
+void UWP_DX11_XAML_::Sample3DSceneRenderer::OnKeyDown()
+{
+	
+	// auto window = Windows::ApplicationModel::Core::CoreApplication::MainView->CoreWindow;
+	if (m_window->GetAsyncKeyState(Windows::System::VirtualKey::Control) != Windows::UI::Core::CoreVirtualKeyStates::None)
+	{
+		Windows::UI::Popups::MessageDialog dialog("I see a ctrl");
+		dialog.ShowAsync();
+	}
+
+}
+
+bool UWP_DX11_XAML_::Sample3DSceneRenderer::IsKeyPressed(Windows::System::VirtualKey key)
+{
+	return false;
 }
 
 // Renders one frame using the vertex and pixel shaders.

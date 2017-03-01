@@ -25,10 +25,13 @@ using namespace Windows::UI::Xaml::Navigation;
 using namespace concurrency;
 
 DirectXPage::DirectXPage():
-	m_windowVisible(true),
+	m_bWindowVisible(true),
 	m_coreInput(nullptr)
 {
 	InitializeComponent();
+
+	// Hide UI panel on startup
+	this->UI_Panel->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
 
 	// Register event handlers for page lifecycle.
 	CoreWindow^ window = Window::Current->CoreWindow;
@@ -119,8 +122,8 @@ void DirectXPage::LoadInternalState(IPropertySet^ state)
 
 void DirectXPage::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEventArgs^ args)
 {
-	m_windowVisible = args->Visible;
-	if (m_windowVisible)
+	m_bWindowVisible = args->Visible;
+	if (m_bWindowVisible)
 	{
 		m_main->StartRenderLoop();
 	}
@@ -186,9 +189,19 @@ void DirectXPage::OnPointerReleased(Object^ sender, PointerEventArgs^ e)
 
 void UWP_DX11_XAML_::DirectXPage::OnKeyDown(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::KeyEventArgs^ e)
 {
-	Windows::UI::Popups::MessageDialog dialog("Key pressed");
-	dialog.ShowAsync();
-	m_main->StopRenderLoop();
+	using namespace Windows::System;
+	switch (e->VirtualKey)
+	{
+	// Pause app and show UIs at esc
+	case VirtualKey::Escape:
+		m_bPaused = !m_bPaused;
+		m_bPaused ? m_main->StopRenderLoop() : m_main->StartRenderLoop();
+		this->UI_Panel->Visibility = m_bPaused ? Windows::UI::Xaml::Visibility::Visible : Windows::UI::Xaml::Visibility::Collapsed;
+	break;
+
+	default:
+		break;
+	}
 	return;
 }
 

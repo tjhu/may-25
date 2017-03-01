@@ -12,6 +12,7 @@ namespace Windows {
         namespace Xaml {
             namespace Controls {
                 ref class SwapChainPanel;
+                ref class Grid;
                 ref class Button;
                 ref class AppBar;
             }
@@ -35,6 +36,7 @@ namespace UWP_DX11_XAML_
         bool _contentLoaded;
     
         private: ::Windows::UI::Xaml::Controls::SwapChainPanel^ swapChainPanel;
+        private: ::Windows::UI::Xaml::Controls::Grid^ UI_Panel;
         private: ::Windows::UI::Xaml::Controls::Button^ button;
         private: ::Windows::UI::Xaml::Controls::Button^ button1;
         private: ::Windows::UI::Xaml::Controls::AppBar^ bottomAppBar;

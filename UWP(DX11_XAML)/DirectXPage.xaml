@@ -8,7 +8,7 @@
     mc:Ignorable="d">
 
 	<SwapChainPanel x:Name="swapChainPanel">
-		<Grid>
+		<Grid x:Name="UI_Panel">
 			<TextBlock Text="Hello from you!"
                HorizontalAlignment="Right"
                VerticalAlignment="Top"

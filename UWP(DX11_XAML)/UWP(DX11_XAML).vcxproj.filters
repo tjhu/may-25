@@ -2,14 +2,14 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Common">
-      <UniqueIdentifier>8cb921ba-291a-4c73-aca5-33d49efd666d</UniqueIdentifier>
+      <UniqueIdentifier>da18ec9c-a34e-493d-a500-7bca45a9fa5a</UniqueIdentifier>
     </Filter>
     <Filter Include="Assets">
-      <UniqueIdentifier>75725c05-6765-4984-a0a3-41bf9f53ece8</UniqueIdentifier>
+      <UniqueIdentifier>02695a3d-84d5-4557-9a11-ca9a338e3aa6</UniqueIdentifier>
       <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
     </Filter>
     <Filter Include="Content">
-      <UniqueIdentifier>6526574e-fbcc-4470-a58a-c996147cfcb5</UniqueIdentifier>
+      <UniqueIdentifier>ad687ca1-4c3d-4c1a-91a3-856b0b757f38</UniqueIdentifier>
     </Filter>
     <ClInclude Include="Common\DirectXHelper.h">
       <Filter>Common</Filter>
@@ -63,7 +63,7 @@
       <Filter>Assets</Filter>
     </Image>
     <Filter Include="Control">
-      <UniqueIdentifier>{94fc6a6e-6e1a-4ab8-a97c-ff2f94d571e9}</UniqueIdentifier>
+      <UniqueIdentifier>{2085264f-5445-4673-a4cc-6671ee8b5848}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -74,12 +74,18 @@
     <ClCompile Include="UWP_DX11_XAML_Main.cpp" />
     <ClCompile Include="DirectXPage.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="MouseAndKeyboardController.cpp">
+      <Filter>Control</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />
     <ClInclude Include="UWP_DX11_XAML_Main.h" />
     <ClInclude Include="DirectXPage.xaml.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="MouseAndKeyboardController.h">
+      <Filter>Control</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">

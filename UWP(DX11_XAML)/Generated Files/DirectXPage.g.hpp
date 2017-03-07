@@ -34,32 +34,25 @@ void ::UWP_DX11_XAML_::DirectXPage::Connect(int __connectionId, ::Platform::Obje
             break;
         case 2:
             {
-                this->UI_Panel = safe_cast<::Windows::UI::Xaml::Controls::Grid^>(__target);
+                this->UIPanel = safe_cast<::Windows::UI::Xaml::Controls::Grid^>(__target);
             }
             break;
         case 3:
             {
-                this->button = safe_cast<::Windows::UI::Xaml::Controls::Button^>(__target);
-                (safe_cast<::Windows::UI::Xaml::Controls::Button^>(this->button))->Click += ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::UWP_DX11_XAML_::DirectXPage::*)
-                    (::Platform::Object^, ::Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::button_Click);
+                this->submitButton = safe_cast<::Windows::UI::Xaml::Controls::Button^>(__target);
+                (safe_cast<::Windows::UI::Xaml::Controls::Button^>(this->submitButton))->Click += ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::UWP_DX11_XAML_::DirectXPage::*)
+                    (::Platform::Object^, ::Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::submitButton_Click);
             }
             break;
         case 4:
             {
-                this->button1 = safe_cast<::Windows::UI::Xaml::Controls::Button^>(__target);
-                (safe_cast<::Windows::UI::Xaml::Controls::Button^>(this->button1))->Click += ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::UWP_DX11_XAML_::DirectXPage::*)
-                    (::Platform::Object^, ::Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::button1_Click);
+                this->bottomAppBar = safe_cast<::Windows::UI::Xaml::Controls::AppBar^>(__target);
             }
             break;
         case 5:
             {
-                this->bottomAppBar = safe_cast<::Windows::UI::Xaml::Controls::AppBar^>(__target);
-            }
-            break;
-        case 6:
-            {
-                ::Windows::UI::Xaml::Controls::AppBarButton^ element6 = safe_cast<::Windows::UI::Xaml::Controls::AppBarButton^>(__target);
-                (safe_cast<::Windows::UI::Xaml::Controls::AppBarButton^>(element6))->Click += ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::UWP_DX11_XAML_::DirectXPage::*)
+                ::Windows::UI::Xaml::Controls::AppBarButton^ element5 = safe_cast<::Windows::UI::Xaml::Controls::AppBarButton^>(__target);
+                (safe_cast<::Windows::UI::Xaml::Controls::AppBarButton^>(element5))->Click += ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::UWP_DX11_XAML_::DirectXPage::*)
                     (::Platform::Object^, ::Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::AppBarButton_Click);
             }
             break;

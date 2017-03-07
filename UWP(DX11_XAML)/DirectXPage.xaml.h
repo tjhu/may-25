@@ -53,11 +53,15 @@ namespace UWP_DX11_XAML_
 
 		// Resources used to render the DirectX content in the XAML page background.
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
-		std::unique_ptr<UWP_APP_Main> m_main; 
-		bool m_bWindowVisible;
-		bool m_bPaused = false;
-		void button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-		void button1_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		std::unique_ptr<UWP_DX11_XAML_Main> m_main; 
+		bool m_windowVisible;
+		bool m_pause = false;
+
+		// Xaml element event handler
+		void submitButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+
+		// User input handler
+		void OnSubmit();
 	};
 }
 

@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "UWP_DX11_XAML_Main.h"
 #include "Common\DirectXHelper.h"
+#include "MouseAndKeyboardController.h"
 
 using namespace UWP_DX11_XAML_;
 using namespace Windows::Foundation;
@@ -8,14 +9,14 @@ using namespace Windows::System::Threading;
 using namespace Concurrency;
 
 // Loads and initializes application assets when the application is loaded.
-UWP_APP_Main::UWP_APP_Main(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
+UWP_DX11_XAML_Main::UWP_DX11_XAML_Main(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
 	m_deviceResources(deviceResources), m_pointerLocationX(0.0f)
 {
 	// Register to be notified if the Device is lost or recreated
 	m_deviceResources->RegisterDeviceNotify(this);
 
 	// TODO: Replace this with your app's content initialization.
-	m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources, Windows::UI::Xaml::Window::Current->CoreWindow));
+	m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources));
 
 	m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
 
@@ -27,22 +28,27 @@ UWP_APP_Main::UWP_APP_Main(const std::shared_ptr<DX::DeviceResources>& deviceRes
 	*/
 }
 
-UWP_APP_Main::~UWP_APP_Main()
+UWP_DX11_XAML_Main::~UWP_DX11_XAML_Main()
 {
 	// Deregister device notification
 	m_deviceResources->RegisterDeviceNotify(nullptr);
 }
 
 // Updates application state when the window size changes (e.g. device orientation change)
-void UWP_APP_Main::CreateWindowSizeDependentResources() 
+void UWP_DX11_XAML_Main::CreateWindowSizeDependentResources() 
 {
 	// TODO: Replace this with the size-dependent initialization of your app's content.
 	m_sceneRenderer->CreateWindowSizeDependentResources();
 }
 
-void UWP_APP_Main::StartRenderLoop()
+void UWP_DX11_XAML_::UWP_DX11_XAML_Main::CreateController(Windows::UI::Core::CoreWindow ^ window, Windows::UI::Core::CoreDispatcher ^ dispatcher)
 {
+	m_controller = ref new MouseAndKeyboardController(window, dispatcher);
+	m_sceneRenderer->SetController(m_controller);
+}
 
+void UWP_DX11_XAML_Main::StartRenderLoop()
+{
 	// If the animation render loop is already running then do not start another thread.
 	if (m_renderLoopWorker != nullptr && m_renderLoopWorker->Status == AsyncStatus::Started)
 	{
@@ -68,18 +74,13 @@ void UWP_APP_Main::StartRenderLoop()
 	m_renderLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
 }
 
-void UWP_APP_Main::StopRenderLoop()
+void UWP_DX11_XAML_Main::StopRenderLoop()
 {
 	m_renderLoopWorker->Cancel();
 }
 
-void UWP_DX11_XAML_::UWP_APP_Main::OnDXKeyDown(Windows::System::VirtualKey key)
-{
-	m_sceneRenderer->OnKeyDown();
-}
-
 // Updates the application state once per frame.
-void UWP_APP_Main::Update() 
+void UWP_DX11_XAML_Main::Update() 
 {
 	ProcessInput();
 
@@ -93,16 +94,15 @@ void UWP_APP_Main::Update()
 }
 
 // Process all input from the user before updating game state
-void UWP_APP_Main::ProcessInput()
+void UWP_DX11_XAML_Main::ProcessInput()
 {
 	// TODO: Add per frame input handling here.
 	m_sceneRenderer->TrackingUpdate(m_pointerLocationX);
-	m_sceneRenderer->OnKeyDown();
 }
 
 // Renders the current frame according to the current application state.
 // Returns true if the frame was rendered and is ready to be displayed.
-bool UWP_APP_Main::Render() 
+bool UWP_DX11_XAML_Main::Render() 
 {
 	// Don't try to render anything before the first Update.
 	if (m_timer.GetFrameCount() == 0)
@@ -133,14 +133,14 @@ bool UWP_APP_Main::Render()
 }
 
 // Notifies renderers that device resources need to be released.
-void UWP_APP_Main::OnDeviceLost()
+void UWP_DX11_XAML_Main::OnDeviceLost()
 {
 	m_sceneRenderer->ReleaseDeviceDependentResources();
 	m_fpsTextRenderer->ReleaseDeviceDependentResources();
 }
 
 // Notifies renderers that device resources may now be recreated.
-void UWP_APP_Main::OnDeviceRestored()
+void UWP_DX11_XAML_Main::OnDeviceRestored()
 {
 	m_sceneRenderer->CreateDeviceDependentResources();
 	m_fpsTextRenderer->CreateDeviceDependentResources();

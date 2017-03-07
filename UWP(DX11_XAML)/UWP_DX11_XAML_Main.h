@@ -5,22 +5,26 @@
 #include "Content\Sample3DSceneRenderer.h"
 #include "Content\SampleFpsTextRenderer.h"
 
+
 // Renders Direct2D and 3D content on the screen.
 namespace UWP_DX11_XAML_
 {
-	class UWP_APP_Main : public DX::IDeviceNotify
+	class UWP_DX11_XAML_Main : public DX::IDeviceNotify
 	{
 	public:
-		UWP_APP_Main(const std::shared_ptr<DX::DeviceResources>& deviceResources);
-		~UWP_APP_Main();
+		UWP_DX11_XAML_Main(const std::shared_ptr<DX::DeviceResources>& deviceResources);
+		~UWP_DX11_XAML_Main();
 		void CreateWindowSizeDependentResources();
+		void CreateController(
+			_In_ Windows::UI::Core::CoreWindow^ window,
+			_In_ Windows::UI::Core::CoreDispatcher^ dispatcher
+		);
 		void StartTracking() { m_sceneRenderer->StartTracking(); }
 		void TrackingUpdate(float positionX) { m_pointerLocationX = positionX; }
 		void StopTracking() { m_sceneRenderer->StopTracking(); }
 		bool IsTracking() { return m_sceneRenderer->IsTracking(); }
 		void StartRenderLoop();
 		void StopRenderLoop();
-		void OnDXKeyDown(Windows::System::VirtualKey key);
 		Concurrency::critical_section& GetCriticalSection() { return m_criticalSection; }
 
 		// IDeviceNotify
@@ -47,5 +51,7 @@ namespace UWP_DX11_XAML_
 
 		// Track current input pointer position.
 		float m_pointerLocationX;
+
+		MouseAndKeyboardController^ m_controller;
 	};
 }

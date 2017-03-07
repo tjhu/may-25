@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="cb3a5e38-beea-467a-8289-70c1bf30b863"
+    Name="15e0aad1-0e35-4231-ba77-dcd3afe0f3d6"
     Publisher="CN=maiti"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="cb3a5e38-beea-467a-8289-70c1bf30b863" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="15e0aad1-0e35-4231-ba77-dcd3afe0f3d6" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>UWP(DX11_XAML)</DisplayName>

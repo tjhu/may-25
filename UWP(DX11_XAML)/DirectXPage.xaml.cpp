@@ -25,22 +25,23 @@ using namespace Windows::UI::Xaml::Navigation;
 using namespace concurrency;
 
 DirectXPage::DirectXPage():
-	m_bWindowVisible(true),
+	m_windowVisible(true),
 	m_coreInput(nullptr)
 {
 	InitializeComponent();
 
-	// Hide UI panel on startup
-	this->UI_Panel->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+	// Hide UI at startup, set this property at XAML page on debug version
+	 this->UIPanel->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
 
 	// Register event handlers for page lifecycle.
 	CoreWindow^ window = Window::Current->CoreWindow;
 
-	window->VisibilityChanged +=
-		ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &DirectXPage::OnVisibilityChanged);
 
 	window->KeyDown +=
 		ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &DirectXPage::OnKeyDown);
+
+	window->VisibilityChanged +=
+		ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &DirectXPage::OnVisibilityChanged);
 
 	DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
 
@@ -86,7 +87,9 @@ DirectXPage::DirectXPage():
 	// Run task on a dedicated high priority background thread.
 	m_inputLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
 
-	m_main = std::unique_ptr<UWP_APP_Main>(new UWP_APP_Main(m_deviceResources));
+	m_main = std::unique_ptr<UWP_DX11_XAML_Main>(new UWP_DX11_XAML_Main(m_deviceResources));
+	m_main->CreateController(Window::Current->CoreWindow, m_deviceResources->GetSwapChainPanel()->Dispatcher);
+	m_main->StartRenderLoop();
 }
 
 DirectXPage::~DirectXPage()
@@ -121,15 +124,15 @@ void DirectXPage::LoadInternalState(IPropertySet^ state)
 
 void DirectXPage::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEventArgs^ args)
 {
-	//m_bWindowVisible = args->Visible;
-	//if (m_bWindowVisible)
-	//{
-	//	m_main->StartRenderLoop();
-	//}
-	//else
-	//{
-	//	m_main->StopRenderLoop();
-	//}
+	m_windowVisible = args->Visible;
+	if (m_windowVisible)
+	{
+		m_main->StartRenderLoop();
+	}
+	else
+	{
+		m_main->StopRenderLoop();
+	}
 }
 
 // DisplayInformation event handlers.
@@ -186,54 +189,20 @@ void DirectXPage::OnPointerReleased(Object^ sender, PointerEventArgs^ e)
 	m_main->StopTracking();
 }
 
-void UWP_DX11_XAML_::DirectXPage::OnKeyDown(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::KeyEventArgs^ e)
+void UWP_DX11_XAML_::DirectXPage::OnKeyDown(Windows::UI::Core::CoreWindow ^ sender, Windows::UI::Core::KeyEventArgs ^ e)
 {
-	//using namespace Windows::System;
-
-	//// Revert the state
-	//m_bPaused = !m_bPaused;
-	//
-	//auto key = e->VirtualKey;
-	//// On run
-	//if (m_bPaused)
-	//{
-	//	switch (key)
-	//	{
-	//		// Pause app and show UIs at esc
-	//	case VirtualKey::Escape:
-	//	{
-	//		m_main->StartRenderLoop();
-	//		UI_Panel->Visibility = Windows::UI::Xaml::Visibility::Visible;
-	//		break;
-	//	}
-
-
-	//	default:
-	//		break;
-	//	}
-
-
-	//}
-	//// On pause
-	//else
-	//{
-	//	switch (key)
-	//	{
-	//		// Pause app and show UIs at esc
-	//	case VirtualKey::Escape:
-	//	{
-	//		m_main->StopRenderLoop();
-	//		UI_Panel->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
-	//		break;
-	//	}
-
-	//	}
-	//}
-	////m_main->OnDXKeyDown(VirtualKey::A);
-
-	//return;
-
-	m_main->StartRenderLoop();
+	using namespace Windows::System;
+	switch (e->VirtualKey)
+	{
+	// Stop render loop and pop UIs at pause
+	case VirtualKey::P:
+	case VirtualKey::Escape:
+		m_pause = !m_pause;
+		m_pause ? m_main->StopRenderLoop() : m_main->StartRenderLoop();
+		this->UIPanel->Visibility = m_pause ? Windows::UI::Xaml::Visibility::Visible : Windows::UI::Xaml::Visibility::Collapsed;
+	default:
+		break;
+	}
 }
 
 void DirectXPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args)
@@ -251,14 +220,12 @@ void DirectXPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventAr
 }
 
 
-
-void UWP_DX11_XAML_::DirectXPage::button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void UWP_DX11_XAML_::DirectXPage::submitButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	m_main->StartRenderLoop();
+	OnSubmit();
 }
 
-
-void UWP_DX11_XAML_::DirectXPage::button1_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void UWP_DX11_XAML_::DirectXPage::OnSubmit()
 {
-	m_main->StopRenderLoop();
+	MESSAGEBOX("I Gotcha");
 }

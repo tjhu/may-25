@@ -25,12 +25,11 @@ namespace DX
 		void Trim();
 		void Present();
 
-		// The size of the render target, in pixels.
+		// Device Accessors.
 		Windows::Foundation::Size	GetOutputSize() const					{ return m_outputSize; }
-
-		// The size of the render target, in dips.
 		Windows::Foundation::Size	GetLogicalSize() const					{ return m_logicalSize; }
 		float						GetDpi() const							{ return m_effectiveDpi; }
+		Windows::UI::Xaml::Controls::SwapChainPanel^ GetSwapChainPanel() const { return m_swapChainPanel; }
 
 		// D3D Accessors.
 		ID3D11Device3*				GetD3DDevice() const					{ return m_d3dDevice.Get(); }

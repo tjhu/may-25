@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_030D7BC012BC4EE7AD7936D728DBDF13"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_0C025B95684849B7A84BB1199AA34371"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -165,12 +171,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_96FC54C4C1DC40DAAA3CFF16A4FA9552"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A2E6EDED704D437AA4725122AFBF6692"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -178,12 +178,6 @@
         "Entry"
         {
         "MsmKey" = "8:_A6B35C39BF5448208C869C57E1C8363A"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_AA3A945E70274412BAE26E1E64D3D7F0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -214,12 +208,6 @@
         "Entry"
         {
         "MsmKey" = "8:_B8AAC7D36D674C19925C3C43D05B04F3"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B9EE6DC7625645AA95B553C1B7811BF4"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -286,12 +274,6 @@
         "Entry"
         {
         "MsmKey" = "8:_DA89B75959CF4B74BDE95D88BB5445ED"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_DDA11C9B340944438365956AF4655C61"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -907,26 +889,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_96FC54C4C1DC40DAAA3CFF16A4FA9552"
-            {
-            "SourcePath" = "8:C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Redist\\MSVC\\14.10.24930\\x64\\Microsoft.VC150.CRT\\msvcp140.dll"
-            "TargetName" = "8:msvcp140.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A2E6EDED704D437AA4725122AFBF6692"
             {
             "SourcePath" = "8:C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x64\\api-ms-win-core-errorhandling-l1-1-0.dll"
@@ -951,26 +913,6 @@
             {
             "SourcePath" = "8:C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x64\\api-ms-win-core-processthreads-l1-1-1.dll"
             "TargetName" = "8:api-ms-win-core-processthreads-l1-1-1.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AA3A945E70274412BAE26E1E64D3D7F0"
-            {
-            "SourcePath" = "8:C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Redist\\MSVC\\14.10.24930\\x64\\Microsoft.VC150.CRT\\concrt140.dll"
-            "TargetName" = "8:concrt140.dll"
             "Tag" = "8:"
             "Folder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"
             "Condition" = "8:"
@@ -1071,26 +1013,6 @@
             {
             "SourcePath" = "8:C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x64\\api-ms-win-core-string-l1-1-0.dll"
             "TargetName" = "8:api-ms-win-core-string-l1-1-0.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B9EE6DC7625645AA95B553C1B7811BF4"
-            {
-            "SourcePath" = "8:C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Redist\\MSVC\\14.10.24930\\x64\\Microsoft.VC150.CRT\\vcruntime140.dll"
-            "TargetName" = "8:vcruntime140.dll"
             "Tag" = "8:"
             "Folder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"
             "Condition" = "8:"
@@ -1307,26 +1229,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DDA11C9B340944438365956AF4655C61"
-            {
-            "SourcePath" = "8:C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Redist\\MSVC\\14.10.24930\\x64\\Microsoft.VC150.CRT\\vccorlib140.dll"
-            "TargetName" = "8:vccorlib140.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E2D873BD22DC41128A7158E738534F05"
             {
             "SourcePath" = "8:C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x64\\api-ms-win-crt-process-l1-1-0.dll"
@@ -1484,7 +1386,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:May25"
         "ProductCode" = "8:{BD7DD694-DCA0-47DF-9B66-B03E49B7DB3A}"
-        "PackageCode" = "8:{83ED991B-66A9-4C7D-8F34-BE675C6409FF}"
+        "PackageCode" = "8:{8E06A107-EB10-4BA8-B5E1-D4AF85197CA2}"
         "UpgradeCode" = "8:{C7963007-5ECA-4790-B14B-C00F75E557DC}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -2028,12 +1930,26 @@
         }
         "MergeModule"
         {
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_030D7BC012BC4EE7AD7936D728DBDF13"
+            {
+            "UseDynamicProperties" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
+            "SourcePath" = "8:C:\\Program Files (x86)\\Common Files\\Merge Modules\\Microsoft_VC140_CRT_x64.msm"
+                "Properties"
+                {
+                }
+            "LanguageId" = "3:0"
+            "Exclude" = "11:FALSE"
+            "Folder" = "8:"
+            "Feature" = "8:"
+            "IsolateTo" = "8:"
+            }
         }
         "ProjectOutput"
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C5C6BED92353457FB087FCC573536CC0"
             {
-            "SourcePath" = "8:..\\Debug\\May 25.exe"
+            "SourcePath" = "8:..\\x64\\Debug\\May 25.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B5F197FE6BA942768E3D3B707D3FA900"

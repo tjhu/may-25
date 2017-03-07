@@ -36,9 +36,8 @@ namespace UWP_DX11_XAML_
         bool _contentLoaded;
     
         private: ::Windows::UI::Xaml::Controls::SwapChainPanel^ swapChainPanel;
-        private: ::Windows::UI::Xaml::Controls::Grid^ UI_Panel;
-        private: ::Windows::UI::Xaml::Controls::Button^ button;
-        private: ::Windows::UI::Xaml::Controls::Button^ button1;
+        private: ::Windows::UI::Xaml::Controls::Grid^ UIPanel;
+        private: ::Windows::UI::Xaml::Controls::Button^ submitButton;
         private: ::Windows::UI::Xaml::Controls::AppBar^ bottomAppBar;
     };
 }

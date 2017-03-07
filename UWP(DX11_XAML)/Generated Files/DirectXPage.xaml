@@ -8,25 +8,23 @@
     mc:Ignorable="d">
 
 	<SwapChainPanel x:ConnectionId='1' x:Name="swapChainPanel">
-		<Grid x:ConnectionId='2' x:Name="UI_Panel">
-			<TextBlock Text="Hello from you!"
+		<Grid x:ConnectionId='2' x:Name="UIPanel">
+			<TextBlock Text="Hello from XAML!"
                HorizontalAlignment="Right"
                VerticalAlignment="Top"
                FontSize="30" />
-			<Button x:ConnectionId='3' x:Name="button" Content="Start" HorizontalAlignment="Left" Margin="528,375,0,0" VerticalAlignment="Top" Height="64" Width="124"                     />
-			<Button x:ConnectionId='4' x:Name="button1" Content="Stop" HorizontalAlignment="Left" Margin="1034,407,0,0" VerticalAlignment="Top" Height="58" Width="103"                      />
-			<RichEditBox HorizontalAlignment="Left" Margin="821,606,0,0" VerticalAlignment="Top" Height="53" Width="291" InputScope="Formula"/>
+			<Button x:ConnectionId='3' x:Name="submitButton" Content="Button" HorizontalAlignment="Left" Margin="1077,747,0,0" VerticalAlignment="Top" Height="50" Width="140"                           />
 		</Grid>
 	</SwapChainPanel>
 
-	<Page.BottomAppBar>
-		<AppBar x:ConnectionId='5' x:Name="bottomAppBar" Padding="10,0,10,0">
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<AppBarButton x:ConnectionId='6' AutomationProperties.Name="Sample Button"
+  <Page.BottomAppBar>
+    <AppBar x:ConnectionId='4' x:Name="bottomAppBar" Padding="10,0,10,0">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+        <AppBarButton x:ConnectionId='5' AutomationProperties.Name="Sample Button"
                       AutomationProperties.AutomationId="SampleAppBarButton"
                                                 />
-			</StackPanel>
-		</AppBar>
-	</Page.BottomAppBar>
+      </StackPanel>
+    </AppBar>
+  </Page.BottomAppBar>
 </Page>
 

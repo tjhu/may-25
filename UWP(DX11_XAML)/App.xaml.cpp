@@ -28,6 +28,7 @@ using namespace Windows::UI::Xaml::Navigation;
 /// </summary>
 App::App()
 {
+	InitializeComponent();
 	Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
 	Resuming += ref new EventHandler<Object^>(this, &App::OnResuming);
 }

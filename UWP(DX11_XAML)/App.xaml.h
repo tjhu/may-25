@@ -25,3 +25,11 @@ namespace UWP_DX11_XAML_
 		DirectXPage^ m_directXPage;
 	};
 }
+
+
+// Some debug utilities
+#ifndef MESSAGEBOX
+#define MESSAGEBOX(x);\
+	Windows::UI::Popups::MessageDialog d(x);\
+	d.ShowAsync();
+#endif // _DEBUGMESSAGEBOX

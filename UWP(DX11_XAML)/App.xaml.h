@@ -33,3 +33,10 @@ namespace UWP_DX11_XAML_
 	Windows::UI::Popups::MessageDialog d(x);\
 	d.ShowAsync();
 #endif // _DEBUGMESSAGEBOX
+
+#ifndef DEBUGMESSAGE
+#define DEBUGMESSAGE(x);\
+		OutputDebugString(x);
+#endif // !DEBUGMESSAGE
+
+

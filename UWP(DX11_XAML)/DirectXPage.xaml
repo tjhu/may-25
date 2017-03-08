@@ -1,29 +1,167 @@
 ﻿<Page
-    x:Class="UWP_DX11_XAML_.DirectXPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:UWP_DX11_XAML_"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+	x:Class="UWP_DX11_XAML_.DirectXPage"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="using:UWP_DX11_XAML_"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d">
 
 	<SwapChainPanel x:Name="swapChainPanel">
 		<Grid x:Name="UIPanel">
-			<TextBlock Text="Hello from XAML!"
-               HorizontalAlignment="Right"
-               VerticalAlignment="Top"
-               FontSize="30" />
-			<Button x:Name="submitButton" Content="Button" HorizontalAlignment="Left" Margin="1077,747,0,0" VerticalAlignment="Top" Height="50" Width="140" Click="submitButton_Click"/>
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="1*" />
+				<RowDefinition Height="8*" />
+				<RowDefinition Height="1*" />
+			</Grid.RowDefinitions>
+
+			<Grid
+				x:Name="UImainContent"
+				Grid.Row="1"
+				Background="#44000000">
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="2*" />
+					<ColumnDefinition Width="1*" />
+				</Grid.ColumnDefinitions>
+
+				<Grid x:Name="userInputGrid" Grid.Column="1">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="1*" />
+						<RowDefinition Height="1*" />
+						<RowDefinition Height="1*" />
+						<RowDefinition Height="1*" />
+						<RowDefinition Height="1*" />
+						<RowDefinition Height="1*" />
+						<RowDefinition Height="3*" />
+					</Grid.RowDefinitions>
+					<!--  First row  -->
+					<RelativePanel 
+						x:Name="fuc1Panel"
+						Grid.Row="1">
+						<TextBlock
+							x:Name="fuc1Txt"
+							RelativePanel.AlignLeftWithPanel="True"
+							FontSize="30"
+							Text="Function"/>
+						<TextBox
+							x:Name="fuc1Val"
+							Width="auto"
+							Height="auto"
+							MinWidth="300"
+							RelativePanel.Below="fuc1Txt"
+							FontSize="16"
+							PlaceholderText="Type your function here"/>
+					</RelativePanel>
+
+					<!--  Second row  -->
+					<RelativePanel 
+						x:Name="fuc2Panel"
+						Grid.Row="2">
+						<TextBlock
+							x:Name="fuc2Txt"
+							RelativePanel.AlignLeftWithPanel="True"
+							Height="auto"
+							FontSize="30"
+							Text="Function 2" />
+						<TextBox
+							x:Name="fuc2Val"
+							Width="auto"
+							Height="auto"
+							MinWidth="300"
+							RelativePanel.Below="fuc2Txt"
+							FontSize="16" 
+							PlaceholderText="Type your second function here"/>
+					</RelativePanel>
+
+					<!--  Third row  -->
+					<RelativePanel 
+						x:Name="lbPanel"
+						Grid.Row="3">
+						<TextBlock
+							x:Name="lbTxt"
+							RelativePanel.AlignLeftWithPanel="True"
+							Height="auto"
+							FontSize="30"
+							Text="Left bound" />
+						<TextBox
+							x:Name="lbVal"
+							Width="auto"
+							Height="auto"
+							MinWidth="300"
+							RelativePanel.Below="lbTxt"
+							FontSize="16" 
+							PlaceholderText="Type your left bound here"/>
+					</RelativePanel>
+
+					<!--  Third row  -->
+					<RelativePanel 
+						x:Name="rbPanel"
+						Grid.Row="4">
+						<TextBlock
+							x:Name="rbTxt"
+							RelativePanel.AlignLeftWithPanel="True"
+							Height="auto"
+							FontSize="30"
+							Text="Right bound" />
+						<TextBox
+							x:Name="rbVal"
+							Width="auto"
+							Height="auto"
+							MinWidth="300"
+							RelativePanel.Below="rbTxt"
+							FontSize="16" 
+							PlaceholderText="Type your right bound here"/>
+					</RelativePanel>
+
+					<!--  Third row  -->
+					<RelativePanel 
+						x:Name="numPanel"
+						Grid.Row="5">
+						<TextBlock
+							x:Name="numTxt"
+							RelativePanel.AlignLeftWithPanel="True"
+							Height="auto"
+							FontSize="30"
+							Text="Right bound" />
+						<TextBox
+							x:Name="numVal"
+							Width="auto"
+							Height="auto"
+							MinWidth="300"
+							RelativePanel.Below="numTxt"
+							FontSize="16" 
+							PlaceholderText="Type number of solids here"/>
+					</RelativePanel>
+
+
+				</Grid>
+
+
+				<Button
+					Grid.Column="2"
+					x:Name="submitButton"
+					Width="140"
+					Height="50"
+					Margin="0 0 0 100"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Bottom"
+					Click="submitButton_Click"
+					Content="Button" />
+			</Grid>
 		</Grid>
 	</SwapChainPanel>
 
-  <Page.BottomAppBar>
-    <AppBar x:Name="bottomAppBar" Padding="10,0,10,0">
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-        <AppBarButton AutomationProperties.Name="Sample Button"
-                      AutomationProperties.AutomationId="SampleAppBarButton"
-                      Click="AppBarButton_Click"/>
-      </StackPanel>
-    </AppBar>
-  </Page.BottomAppBar>
+	<Page.BottomAppBar>
+		<AppBar x:Name="bottomAppBar" Padding="10,0,10,0">
+			<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+				<AppBarButton
+					AutomationProperties.AutomationId="SampleAppBarButton"
+					AutomationProperties.Name="Sample Button"
+					Click="AppBarButton_Click" />
+			</StackPanel>
+		</AppBar>
+	</Page.BottomAppBar>
 </Page>

@@ -14,6 +14,9 @@ namespace Windows {
                 ref class SwapChainPanel;
                 ref class Grid;
                 ref class Button;
+                ref class RelativePanel;
+                ref class TextBlock;
+                ref class TextBox;
                 ref class AppBar;
             }
         }
@@ -37,7 +40,24 @@ namespace UWP_DX11_XAML_
     
         private: ::Windows::UI::Xaml::Controls::SwapChainPanel^ swapChainPanel;
         private: ::Windows::UI::Xaml::Controls::Grid^ UIPanel;
+        private: ::Windows::UI::Xaml::Controls::Grid^ UImainContent;
+        private: ::Windows::UI::Xaml::Controls::Grid^ userInputGrid;
         private: ::Windows::UI::Xaml::Controls::Button^ submitButton;
+        private: ::Windows::UI::Xaml::Controls::RelativePanel^ fuc1Panel;
+        private: ::Windows::UI::Xaml::Controls::RelativePanel^ fuc2Panel;
+        private: ::Windows::UI::Xaml::Controls::RelativePanel^ lbPanel;
+        private: ::Windows::UI::Xaml::Controls::RelativePanel^ rbPanel;
+        private: ::Windows::UI::Xaml::Controls::RelativePanel^ numPanel;
+        private: ::Windows::UI::Xaml::Controls::TextBlock^ numTxt;
+        private: ::Windows::UI::Xaml::Controls::TextBox^ numVal;
+        private: ::Windows::UI::Xaml::Controls::TextBlock^ rbTxt;
+        private: ::Windows::UI::Xaml::Controls::TextBox^ rbVal;
+        private: ::Windows::UI::Xaml::Controls::TextBlock^ lbTxt;
+        private: ::Windows::UI::Xaml::Controls::TextBox^ lbVal;
+        private: ::Windows::UI::Xaml::Controls::TextBlock^ fuc2Txt;
+        private: ::Windows::UI::Xaml::Controls::TextBox^ fuc2Val;
+        private: ::Windows::UI::Xaml::Controls::TextBlock^ fuc1Txt;
+        private: ::Windows::UI::Xaml::Controls::TextBox^ fuc1Val;
         private: ::Windows::UI::Xaml::Controls::AppBar^ bottomAppBar;
     };
 }

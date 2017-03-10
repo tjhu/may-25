@@ -36,6 +36,11 @@ void MouseAndKeyboardController::OnKeyDown(Windows::UI::Core::CoreWindow ^ sende
 	Key = args->VirtualKey;
 
 	// Figure out the command from the keyboard.
+	if (Key == VirtualKey::P || Key == VirtualKey::Escape)
+		m_pause = !m_pause;
+	// If is paused, don't evaluate key for FPS
+	if (m_pause)
+		return;
 	if (Key == VirtualKey::W)
 		m_forward = true;
 	if (Key == VirtualKey::S)
@@ -48,8 +53,7 @@ void MouseAndKeyboardController::OnKeyDown(Windows::UI::Core::CoreWindow ^ sende
 		m_up = true;
 	if (Key == VirtualKey::X)
 		m_down = true;
-	if (Key == VirtualKey::P || Key == VirtualKey::Escape)
-		m_pause = true;
+
 }
 
 void MouseAndKeyboardController::OnKeyUp(Windows::UI::Core::CoreWindow ^ sender, Windows::UI::Core::KeyEventArgs ^ args)
@@ -70,6 +74,4 @@ void MouseAndKeyboardController::OnKeyUp(Windows::UI::Core::CoreWindow ^ sender,
 		m_up = false;
 	if (Key == VirtualKey::X)
 		m_down = false;
-	if (Key == VirtualKey::P || Key == VirtualKey::Escape)
-		m_pause = false;
 }

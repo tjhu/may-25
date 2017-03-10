@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 #include "Sample3DSceneRenderer.h"
-
+#include "MouseAndKeyboardController.h"
 #include "..\Common\DirectXHelper.h"
 
 using namespace UWP_DX11_XAML_;

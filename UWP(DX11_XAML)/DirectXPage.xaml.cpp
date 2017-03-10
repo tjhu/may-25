@@ -5,6 +5,7 @@
 
 #include "pch.h"
 #include "DirectXPage.xaml.h"
+#include "InputHandler.h"
 
 using namespace UWP_DX11_XAML_;
 
@@ -26,7 +27,8 @@ using namespace concurrency;
 
 DirectXPage::DirectXPage():
 	m_windowVisible(true),
-	m_coreInput(nullptr)
+	m_coreInput(nullptr),
+	m_inputHandler(new InputHandler())
 {
 	InitializeComponent();
 
@@ -198,8 +200,14 @@ void UWP_DX11_XAML_::DirectXPage::OnKeyDown(Windows::UI::Core::CoreWindow ^ send
 	case VirtualKey::P:
 	case VirtualKey::Escape:
 		m_pause = !m_pause;
-		m_pause ? m_main->StopRenderLoop() : m_main->StartRenderLoop();
 		this->UIPanel->Visibility = m_pause ? Windows::UI::Xaml::Visibility::Visible : Windows::UI::Xaml::Visibility::Collapsed;
+		break;
+
+	case VirtualKey::Enter:
+		if (m_pause)
+			OnSubmit();
+		break;
+
 	default:
 		break;
 	}
@@ -227,5 +235,18 @@ void UWP_DX11_XAML_::DirectXPage::submitButton_Click(Platform::Object^ sender, W
 
 void UWP_DX11_XAML_::DirectXPage::OnSubmit()
 {
-	MESSAGEBOX("I Gotcha");
+	Platform::String^ str = fuc1Val->Text;
+	int iSize = str->Length();
+	std::wstring ws1(str->Data());
+	char* ascii = new char[iSize + 1];
+	ascii[iSize] = 0;
+	for (int y = 0; y< iSize; y++)
+	{
+		ascii[y] = (char)ws1[y];
+	}
+	std::string a(ascii);
+	if (a.size())
+		return;
+
+	fuc1Val->Focus(Windows::UI::Xaml::FocusState::Programmatic);
 }

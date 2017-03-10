@@ -133,7 +133,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Link>
-      <AdditionalDependencies>d2d1.lib; d3d11.lib; dxgi.lib; windowscodecs.lib; dwrite.lib; %(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>tmathlibd.lib;d2d1.lib;d3d11.lib;dxgi.lib;windowscodecs.lib;dwrite.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories); $(VCInstallDir)\lib\store; $(VCInstallDir)\lib</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
@@ -201,6 +201,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Common\DeviceResources.h" />
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="MouseAndKeyboardController.h" />
     <ClInclude Include="UWP_DX11_XAML_Main.h" />
     <ClInclude Include="DirectXPage.xaml.h">
@@ -218,6 +219,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Common\DeviceResources.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="MouseAndKeyboardController.cpp" />
     <ClCompile Include="UWP_DX11_XAML_Main.cpp" />
     <ClCompile Include="DirectXPage.xaml.cpp">

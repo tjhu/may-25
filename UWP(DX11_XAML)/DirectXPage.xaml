@@ -23,7 +23,8 @@
 
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="1*" />
-					<ColumnDefinition Width="2*" />
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" />
 					<ColumnDefinition Width="1*" />
 				</Grid.ColumnDefinitions>
 
@@ -96,7 +97,7 @@
 							PlaceholderText="Type your left bound here"/>
 					</RelativePanel>
 
-					<!--  Third row  -->
+					<!--  Fourth row  -->
 					<RelativePanel 
 						x:Name="rbPanel"
 						Grid.Row="4">
@@ -116,7 +117,7 @@
 							PlaceholderText="Type your right bound here"/>
 					</RelativePanel>
 
-					<!--  Third row  -->
+					<!--  Fifth row  -->
 					<RelativePanel 
 						x:Name="numPanel"
 						Grid.Row="5">
@@ -125,7 +126,7 @@
 							RelativePanel.AlignLeftWithPanel="True"
 							Height="auto"
 							FontSize="30"
-							Text="Right bound" />
+							Text="Number of Solid" />
 						<TextBox
 							x:Name="numVal"
 							Width="auto"

@@ -10,6 +10,9 @@
 #include "Common\DeviceResources.h"
 #include "UWP_DX11_XAML_Main.h"
 
+// Class forward declearation
+class InputHandler;
+
 namespace UWP_DX11_XAML_
 {
 	/// <summary>
@@ -62,6 +65,7 @@ namespace UWP_DX11_XAML_
 
 		// User input handler
 		void OnSubmit();
+		std::unique_ptr<InputHandler> m_inputHandler;
 	};
 }
 

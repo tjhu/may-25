@@ -28,8 +28,8 @@ namespace UWP_DX11_XAML_
 
 
 // Some debug utilities
-#ifndef MESSAGEBOX
-#define MESSAGEBOX(x);\
+#ifndef _MessageBox
+#define _MessageBox(x);\
 	Windows::UI::Popups::MessageDialog d(x);\
 	d.ShowAsync();
 #endif // _DEBUGMESSAGEBOX

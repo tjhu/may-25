@@ -25,7 +25,7 @@ public:
 		std::string function2,
 		std::string leftBound,
 		std::string rightBound,
-		UINT numCount
+		std::string numCount
 	);
 	InputValidationCode Validate
 	(
@@ -33,16 +33,33 @@ public:
 		std::string function2,
 		std::string leftBound,
 		std::string rightBound,
-		UINT numCount
+		std::string numCount
 	);
 
+	InputValidationCode Validate
+	(
+		Platform::String^ function1,
+		Platform::String^ function2,
+		Platform::String^ leftBound,
+		Platform::String^ rightBound,
+		Platform::String^ numCount
+	);
+
+	// Get functions
+	InputValidationCode GetError() const { return err; }
+
 private:
-	// Variables
+	// Helper functions
+	std::string SystemStringToCppString(Platform::String^ str);
+
+	// User input variables
 	std::string m_function1;
 	std::string m_function2;
-	std::string m_leftBound;
-	std::string m_rightBound;
+	double m_leftBound;
+	double m_rightBound;
 	UINT m_numCount;
+	// Most recent error
+	InputValidationCode err;
 };
 
 #endif // !INPUTHANDLER_H

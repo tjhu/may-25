@@ -235,18 +235,56 @@ void UWP_DX11_XAML_::DirectXPage::submitButton_Click(Platform::Object^ sender, W
 
 void UWP_DX11_XAML_::DirectXPage::OnSubmit()
 {
-	Platform::String^ str = fuc1Val->Text;
-	int iSize = str->Length();
-	std::wstring ws1(str->Data());
-	char* ascii = new char[iSize + 1];
-	ascii[iSize] = 0;
-	for (int y = 0; y< iSize; y++)
+	// Validate input
+	auto err = m_inputHandler->Validate
+	(
+		fuc1Val->Text,
+		fuc2Val->Text,
+		lbVal->Text,
+		rbVal->Text,
+		numVal->Text
+	);
+	switch (err)
 	{
-		ascii[y] = (char)ws1[y];
+	case InputValidationCode::InvalidFunction_1:
+	{
+		_MessageBox("Function 1 is invalid");
+		break;
 	}
-	std::string a(ascii);
-	if (a.size())
-		return;
+
+	case InputValidationCode::InvalidFunction_2:
+	{
+		_MessageBox("Function 2 is invalid");
+		break;
+	}
+
+	case InputValidationCode::InvalidLeftBound:
+	{
+		_MessageBox("Leftbound is invalid");
+		break;
+	}
+
+	case InputValidationCode::InvalidRightBound:
+	{
+		_MessageBox("Rightbound is invalid");
+		break;
+	}
+
+	case InputValidationCode::InvalidNumCount:
+	{
+		_MessageBox("Number of solids is invalid");
+		break;
+	}
+
+	case InputValidationCode::OK:
+	{
+		_MessageBox("All good");
+		break;
+	}
+
+	default:
+		break;
+	}
 
 	fuc1Val->Focus(Windows::UI::Xaml::FocusState::Programmatic);
 }

@@ -6,11 +6,22 @@
 // Declear it in hpp because other files need this enum
 enum class InputValidationCode
 {
-	InvalidFunction_1,
-	InvalidFunction_2,
-	InvalidLeftBound,
-	InvalidRightBound,
-	InvalidNumCount,
+	// Errors relate to function 1
+	Invalid_Function1,
+	IsEmpty_Function1,
+	// Errors relate to function 1
+	Invalid_Function2,
+	IsEmpty_Function2,
+	// Errors relate to left bound
+	Invalid_LeftBound,
+	IsEmpty_LeftBound,
+	// Errors relate to right bound
+	Invalid_RightBound,
+	IsEmpty_RightBound,
+	// Errors relate to number of solids
+	Invalid_NumCount,
+	IsEmpty_NumCount,
+	// All inputs are okay
 	OK
 };
 

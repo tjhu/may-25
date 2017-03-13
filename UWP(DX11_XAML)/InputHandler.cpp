@@ -37,15 +37,17 @@ InputValidationCode InputHandler::Validate
 	std::string numCount
 )
 {
+	double can;
 	std::string sample;
+	std::string::size_type sz;
 	try
 	{
 		sample = tmathlib::parse(function1);
-		tmathlib::evaluate(sample, 1.234567f);
+		can = tmathlib::evaluate(sample, 1.234567f);
 	}
 	catch (...)
 	{
-		return err = InputValidationCode::InvalidFunction_1;
+		return err = InputValidationCode::Invalid_Function1;
 	}
 
 	try
@@ -55,26 +57,41 @@ InputValidationCode InputHandler::Validate
 	}
 	catch (...)
 	{
-		return err = InputValidationCode::InvalidFunction_2;
+		return err = InputValidationCode::Invalid_Function2;
 	}
-
-	for (auto s : leftBound)
+	// Validate left bound
+	try 
 	{
-		if (!(isdigit(s) || s == '.' || s == 'e' || leftBound[0] == '-'))
-			return err = InputValidationCode::InvalidLeftBound;
+		std::stod(leftBound, &sz);
 	}
-
-	for (auto s : rightBound)
+	catch (...)
 	{
-		if (!(isdigit(s) || s == '.' || s == 'e' || rightBound[0] == '-'))
-			return err = InputValidationCode::InvalidLeftBound;
+		return err = InputValidationCode::Invalid_LeftBound;
 	}
-
-	for (auto s : numCount)
+	if (sz != leftBound.size())
+		return err = InputValidationCode::Invalid_LeftBound;
+	// Validate right bound
+	try
 	{
-		if (!(isdigit(s) || s == '.' || s == 'e' || numCount[0] == '-'))
-			return err = InputValidationCode::InvalidNumCount;
+		std::stod(rightBound, &sz);
 	}
+	catch (...)
+	{
+		return err = InputValidationCode::Invalid_RightBound;
+	}
+	if (sz != leftBound.size())
+		return err = InputValidationCode::Invalid_RightBound;
+	// Validate number of solids
+	try
+	{
+		std::stol(numCount, &sz);
+	}
+	catch (...)
+	{
+		return err = InputValidationCode::Invalid_NumCount;
+	}
+	if (sz != leftBound.size())
+		return err = InputValidationCode::Invalid_NumCount;
 	// If everything is okay, copy values of inputs to members, and return OK
 	Set(function1,
 		function2,
@@ -86,7 +103,16 @@ InputValidationCode InputHandler::Validate
 
 InputValidationCode InputHandler::Validate(Platform::String ^ function1, Platform::String ^ function2, Platform::String ^ leftBound, Platform::String ^ rightBound, Platform::String ^ numCount)
 {
-	
+	if (function1->IsEmpty())
+		return InputValidationCode::IsEmpty_Function1;
+	if (function2->IsEmpty())
+		return InputValidationCode::IsEmpty_Function2;
+	if (leftBound->IsEmpty())
+		return InputValidationCode::IsEmpty_LeftBound;
+	if (rightBound->IsEmpty())
+		return InputValidationCode::IsEmpty_RightBound;
+	if (numCount->IsEmpty())
+		return InputValidationCode::IsEmpty_NumCount;
 	return Validate
 	(
 		SystemStringToCppString(function1),

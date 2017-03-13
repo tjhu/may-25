@@ -246,36 +246,66 @@ void UWP_DX11_XAML_::DirectXPage::OnSubmit()
 	);
 	switch (err)
 	{
-	case InputValidationCode::InvalidFunction_1:
+	// Errors for function 1
+	case InputValidationCode::Invalid_Function1:
 	{
 		_MessageBox("Function 1 is invalid");
 		break;
 	}
+	case InputValidationCode::IsEmpty_Function1:
+	{
+		_MessageBox("Please enter a function");
+		break;
+	}
 
-	case InputValidationCode::InvalidFunction_2:
+	// Errors for function 2
+	case InputValidationCode::Invalid_Function2:
 	{
 		_MessageBox("Function 2 is invalid");
 		break;
 	}
+	case InputValidationCode::IsEmpty_Function2:
+	{
+		_MessageBox("Please enter function 2");
+		break;
+	}
 
-	case InputValidationCode::InvalidLeftBound:
+	// Errors for left bound
+	case InputValidationCode::Invalid_LeftBound:
 	{
 		_MessageBox("Leftbound is invalid");
 		break;
 	}
+	case InputValidationCode::IsEmpty_LeftBound:
+	{
+		_MessageBox("Please enter left bound");
+		break;
+	}
 
-	case InputValidationCode::InvalidRightBound:
+	// Errors for right bound
+	case InputValidationCode::Invalid_RightBound:
 	{
 		_MessageBox("Rightbound is invalid");
 		break;
 	}
+	case InputValidationCode::IsEmpty_RightBound:
+	{
+		_MessageBox("Please enter right bound");
+		break;
+	}
 
-	case InputValidationCode::InvalidNumCount:
+	// Errors for number of solids
+	case InputValidationCode::Invalid_NumCount:
 	{
 		_MessageBox("Number of solids is invalid");
 		break;
 	}
-
+	case InputValidationCode::IsEmpty_NumCount:
+	{
+		_MessageBox("Please enter number of solids");
+		break;
+	}
+	// Everything is okay
 	case InputValidationCode::OK:
 	{
 		_MessageBox("All good");

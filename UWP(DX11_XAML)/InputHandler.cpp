@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "InputHandler.h"
 #include "tmath.h"
+#include <ppltasks.h> // create_task
 
 
 
@@ -11,11 +12,11 @@ InputHandler::InputHandler()
 
 void InputHandler::Set
 (
-	std::string function1,
-	std::string function2,
-	std::string leftBound,
-	std::string rightBound,
-	std::string numCount
+	std::wstring function1,
+	std::wstring function2,
+	std::wstring leftBound,
+	std::wstring rightBound,
+	std::wstring numCount
 )
 {
 	
@@ -30,16 +31,16 @@ void InputHandler::Set
 
 InputValidationCode InputHandler::Validate
 (
-	std::string function1,
-	std::string function2,
-	std::string leftBound,
-	std::string rightBound,
-	std::string numCount
+	std::wstring function1,
+	std::wstring function2,
+	std::wstring leftBound,
+	std::wstring rightBound,
+	std::wstring numCount
 )
 {
 	double can;
-	std::string sample;
-	std::string::size_type sz;
+	std::wstring sample;
+	std::wstring::size_type sz;
 	try
 	{
 		sample = tmathlib::parse(function1);
@@ -115,14 +116,66 @@ InputValidationCode InputHandler::Validate(Platform::String ^ function1, Platfor
 		return InputValidationCode::IsEmpty_NumCount;
 	return Validate
 	(
-		SystemStringToCppString(function1),
-		SystemStringToCppString(function2),
-		SystemStringToCppString(leftBound),
-		SystemStringToCppString(rightBound),
-		SystemStringToCppString(numCount)
+		function1->Data(),
+		function2->Data(),
+		leftBound->Data(),
+		rightBound->Data(),
+		numCount->Data()
 	);
 }
 
+void InputHandler::ReadInputFromFile()
+{
+	using namespace Windows::Data::Json;
+	using namespace Windows::Storage;
+	using namespace Concurrency;
+
+	StorageFolder^ storageFolder = ApplicationData::Current->LocalFolder;
+	Windows::Foundation::IAsyncOperation<StorageFile^>^ ifile =
+	storageFolder->GetFileAsync(m_inputFileName);
+
+	auto ifileEnumTask = create_task(ifile);
+	// Call the task's .then member function, and provide
+	// the lambda to be invoked when the async operation completes.
+	ifileEnumTask.then([this](StorageFile^ file)
+	{
+		JsonObject^ jsonObject;
+		Windows::Foundation::IAsyncOperation<Platform::String^>^ readOper = FileIO::ReadTextAsync(file);
+
+		auto readFileTask = create_task(readOper);
+		readFileTask.then([](Platform::String^ str)
+		{
+			_MessageBox(str);
+		});
+	}); //
+
+	JsonObject^ jsonObject;
+}
+
+void InputHandler::WriteInputToFile()
+{
+	using namespace Windows::Data::Json;
+	using namespace Windows::Storage;
+	using namespace Concurrency;
+	JsonObject^ jsonObject = ref new JsonObject();
+	jsonObject->Insert("function1", JsonValue::CreateStringValue(ref new Platform::String(this->m_function1.c_str())));
+	jsonObject->Insert("function2", JsonValue::CreateStringValue(ref new Platform::String(this->m_function2.c_str())));
+	jsonObject->Insert("GPU", JsonValue::CreateStringValue("Nvida"));
+	auto string = jsonObject->Stringify();
+
+
+	StorageFolder^ storageFolder = ApplicationData::Current->LocalFolder;
+	Windows::Foundation::IAsyncOperation<StorageFile^>^ ofile = 
+		storageFolder->CreateFileAsync(m_inputFileName, CreationCollisionOption::ReplaceExisting);
+
+	auto ofileEnumTask = create_task(ofile);
+	// Call the task's .then member function, and provide
+	// the lambda to be invoked when the async operation completes.
+	ofileEnumTask.then([this, string](StorageFile^ file)
+	{
+		FileIO::WriteTextAsync(file, string);
+	}); // end lambda
+}
 std::string InputHandler::SystemStringToCppString(Platform::String ^ str)
 {
 	std::wstring wstr(str->Data());

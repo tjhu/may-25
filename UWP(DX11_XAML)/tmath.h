@@ -1,5 +1,5 @@
 //**********************************************//
-//Copyright (c) 2016, Tianjiao Huang			//
+//Copyright (c) 2016-2017, Tianjiao Huang		//
 //All rights reserved.							//
 //**********************************************//
 
@@ -14,34 +14,35 @@ namespace tmathlib
 	struct Exception
 	{
 	public:
-		std::basic_string <char> err;
-		std::string file;
-		std::string function;
+		std::wstring err;
+		std::wstring file;
+		std::wstring function;
 		long line;
 	};
+#define Throw(err) { throw err; }
 #define tThrow(err) {Exception exception = { err, __FILE__ ,__FUNCTION__, __LINE__ }; throw (exception); }
 
 
 	enum intMethod { LeftRiemann, Simpson, ALGLIB };
 
 
-	std::string parse(std::string exp);
-	bool hasHigherPrecedence(std::string stack, std::string token);
-	unsigned int getOperLvl(std::string buffer);
-	double evaluate(std::string exp, double x);
-	double operate(double operL, double operR, char opert);
-	double operate(double operL, std::string opert);
-	bool isNumber(char x);
-	bool isOperator(std::string x);
-	std::string getOperator(std::string exp, unsigned int i);
-	double intergal(std::string exp, double a, double b, unsigned long n, intMethod method);
-	std::string PutTimesSimbolInFrontOfXAndOtherStuff(std::string& exp);
+	std::wstring parse(std::wstring exp);
+	bool hasHigherPrecedence(std::wstring stack, std::wstring token);
+	unsigned int getOperLvl(std::wstring buffer);
+	double evaluate(std::wstring exp, double x);
+	double operate(double operL, double operR, wchar_t opert);
+	double operate(double operL, std::wstring opert);
+	bool isNumber(wchar_t x);
+	bool isOperator(std::wstring x);
+	std::wstring getOperator(std::wstring exp, unsigned int i);
+	double intergal(std::wstring exp, double a, double b, unsigned long n, intMethod method);
+	std::wstring PutTimesSimbolInFrontOfXAndOtherStuff(std::wstring& exp);
 	double Clamp(double x, double low, double high);
 	double IfOverflowThenReset(double x, double low, double high);
 
 	// Newton's method stuff
-	double derivative(std::string exp, double x);
-	bool FindZero(std::string exp, double* x);
+	double derivative(std::wstring exp, double x);
+	bool FindZero(std::wstring exp, double* x);
 }
 
 #define TMATH_H

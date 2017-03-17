@@ -32,19 +32,19 @@ public:
 	InputHandler();
 	void Set
 	(
-		std::string function1,
-		std::string function2,
-		std::string leftBound,
-		std::string rightBound,
-		std::string numCount
+		std::wstring function1,
+		std::wstring function2,
+		std::wstring leftBound,
+		std::wstring rightBound,
+		std::wstring numCount
 	);
 	InputValidationCode Validate
 	(
-		std::string function1,
-		std::string function2,
-		std::string leftBound,
-		std::string rightBound,
-		std::string numCount
+		std::wstring function1,
+		std::wstring function2,
+		std::wstring leftBound,
+		std::wstring rightBound,
+		std::wstring numCount
 	);
 
 	InputValidationCode Validate
@@ -56,6 +56,9 @@ public:
 		Platform::String^ numCount
 	);
 
+	void ReadInputFromFile();
+	void WriteInputToFile();
+
 	// Get functions
 	InputValidationCode GetError() const { return err; }
 
@@ -64,13 +67,16 @@ private:
 	std::string SystemStringToCppString(Platform::String^ str);
 
 	// User input variables
-	std::string m_function1;
-	std::string m_function2;
-	double m_leftBound;
-	double m_rightBound;
-	UINT m_numCount;
+	std::wstring m_function1 = L"sin(x)";
+	std::wstring m_function2 = L"cos(x)";
+	double m_leftBound = -3.0;
+	double m_rightBound = 3.0;
+	UINT m_numCount = 15;
 	// Most recent error
 	InputValidationCode err;
+
+	// File name
+	Platform::String^ m_inputFileName = "input.json";
 };
 
 #endif // !INPUTHANDLER_H

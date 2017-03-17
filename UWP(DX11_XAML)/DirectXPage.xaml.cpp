@@ -230,7 +230,8 @@ void DirectXPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventAr
 
 void UWP_DX11_XAML_::DirectXPage::submitButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	OnSubmit();
+	//OnSubmit();
+	m_inputHandler->ReadInputFromFile();
 }
 
 void UWP_DX11_XAML_::DirectXPage::OnSubmit()

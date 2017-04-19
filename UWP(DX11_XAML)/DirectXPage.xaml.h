@@ -10,7 +10,7 @@
 #include "Common\DeviceResources.h"
 #include "UWP_DX11_XAML_Main.h"
 
-// Class forward declearation
+// Class forward declaration
 class InputHandler;
 
 namespace UWP_DX11_XAML_
@@ -28,6 +28,8 @@ namespace UWP_DX11_XAML_
 		void LoadInternalState(Windows::Foundation::Collections::IPropertySet^ state);
 
 	private:
+		void LoadResources();
+
 		// XAML low-level rendering event handler.
 		void OnRendering(Platform::Object^ sender, Platform::Object^ args);
 

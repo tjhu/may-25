@@ -35,7 +35,7 @@ DirectXPage::DirectXPage():
 	// Hide UI at startup, set this property at XAML page on debug version
 	 this->UIPanel->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
 
-	// Register event handlers for page lifecycle.
+	// Register event handlers for page life-cycle.
 	CoreWindow^ window = Window::Current->CoreWindow;
 
 
@@ -92,6 +92,7 @@ DirectXPage::DirectXPage():
 	m_main = std::unique_ptr<UWP_DX11_XAML_Main>(new UWP_DX11_XAML_Main(m_deviceResources));
 	m_main->CreateController(Window::Current->CoreWindow, m_deviceResources->GetSwapChainPanel()->Dispatcher);
 	m_main->StartRenderLoop();
+	this->LoadResources();
 }
 
 DirectXPage::~DirectXPage()
@@ -120,6 +121,25 @@ void DirectXPage::LoadInternalState(IPropertySet^ state)
 
 	// Start rendering when the app is resumed.
 	m_main->StartRenderLoop();
+}
+
+void UWP_DX11_XAML_::DirectXPage::LoadResources()
+{
+	auto dispatcher = this->Dispatcher;
+	m_inputHandler->ReadInputFromFile().then([this, dispatcher]() {
+		dispatcher->RunAsync(CoreDispatcherPriority::Normal, ref new DispatchedHandler([this]() {
+			auto WsToPs = [](std::wstring str)
+			{
+				return ref new String(str.c_str());
+			}; // Convert wstring to Platform::String
+
+			this->fuc1Val->Text = WsToPs(this->m_inputHandler->function1());
+			this->fuc2Val->Text = WsToPs(this->m_inputHandler->function2());
+			this->lbVal->Text = WsToPs(std::to_wstring(this->m_inputHandler->leftBound()));
+			this->rbVal->Text = WsToPs(std::to_wstring(this->m_inputHandler->rightBound()));
+			this->numVal->Text = WsToPs(std::to_wstring(this->m_inputHandler->numCount()));
+		}));
+	});
 }
 
 // Window event handlers.
@@ -230,8 +250,9 @@ void DirectXPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventAr
 
 void UWP_DX11_XAML_::DirectXPage::submitButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	//OnSubmit();
+	OnSubmit();
 	m_inputHandler->ReadInputFromFile();
+
 }
 
 void UWP_DX11_XAML_::DirectXPage::OnSubmit()
@@ -274,7 +295,7 @@ void UWP_DX11_XAML_::DirectXPage::OnSubmit()
 	// Errors for left bound
 	case InputValidationCode::Invalid_LeftBound:
 	{
-		_MessageBox("Leftbound is invalid");
+		_MessageBox("Left-bound is invalid");
 		break;
 	}
 	case InputValidationCode::IsEmpty_LeftBound:
@@ -286,7 +307,7 @@ void UWP_DX11_XAML_::DirectXPage::OnSubmit()
 	// Errors for right bound
 	case InputValidationCode::Invalid_RightBound:
 	{
-		_MessageBox("Rightbound is invalid");
+		_MessageBox("Right-bound is invalid");
 		break;
 	}
 	case InputValidationCode::IsEmpty_RightBound:
@@ -309,6 +330,8 @@ void UWP_DX11_XAML_::DirectXPage::OnSubmit()
 	// Everything is okay
 	case InputValidationCode::OK:
 	{
+		// Save inputs to file when input is okay
+		m_inputHandler->SaveInputToFile();
 		_MessageBox("All good");
 		break;
 	}
@@ -317,5 +340,38 @@ void UWP_DX11_XAML_::DirectXPage::OnSubmit()
 		break;
 	}
 
-	fuc1Val->Focus(Windows::UI::Xaml::FocusState::Programmatic);
+	// Set focus to the invalid input
+	switch (err)
+	{
+	case InputValidationCode::Invalid_Function1:
+	case InputValidationCode::IsEmpty_Function1:
+		fuc1Val->Focus(Windows::UI::Xaml::FocusState::Programmatic);
+		break;
+
+	case InputValidationCode::Invalid_Function2:
+	case InputValidationCode::IsEmpty_Function2:
+		fuc2Val->Focus(Windows::UI::Xaml::FocusState::Programmatic);
+		break;
+
+	case InputValidationCode::Invalid_LeftBound:
+	case InputValidationCode::IsEmpty_LeftBound:
+		lbVal->Focus(Windows::UI::Xaml::FocusState::Programmatic);
+		break;
+
+	case InputValidationCode::Invalid_RightBound:
+	case InputValidationCode::IsEmpty_RightBound:
+		rbVal->Focus(Windows::UI::Xaml::FocusState::Programmatic);
+		break;
+
+	case InputValidationCode::Invalid_NumCount:
+	case InputValidationCode::IsEmpty_NumCount:
+		numVal->Focus(Windows::UI::Xaml::FocusState::Programmatic);
+		break;
+
+	case InputValidationCode::OK:
+		break;
+	default:
+		break;
+	}
+	
 }

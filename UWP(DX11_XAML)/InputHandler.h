@@ -1,9 +1,10 @@
 #pragma once
 #ifndef INPUTHANDLER_H
 #define INPUTHANDLER_H
+
 // Definitions of possible input errors
 // Should be more specific
-// Declear it in hpp because other files need this enum
+// Declare it in hpp because other files need this enum
 enum class InputValidationCode
 {
 	// Errors relate to function 1
@@ -30,6 +31,8 @@ class InputHandler sealed
 public:
 
 	InputHandler();
+
+	// Set members to given values
 	void Set
 	(
 		std::wstring function1,
@@ -38,6 +41,8 @@ public:
 		std::wstring rightBound,
 		std::wstring numCount
 	);
+
+	
 	InputValidationCode Validate
 	(
 		std::wstring function1,
@@ -47,6 +52,7 @@ public:
 		std::wstring numCount
 	);
 
+	// Validate input; if it's valid, set members to input
 	InputValidationCode Validate
 	(
 		Platform::String^ function1,
@@ -56,11 +62,16 @@ public:
 		Platform::String^ numCount
 	);
 
-	void ReadInputFromFile();
-	void WriteInputToFile();
+	Concurrency::task<void> ReadInputFromFile();
+	void SaveInputToFile();
 
 	// Get functions
-	InputValidationCode GetError() const { return err; }
+	InputValidationCode GetError() const { return m_err; }
+	std::wstring function1() const { return m_function1; }
+	std::wstring function2() const { return m_function2; }
+	double leftBound() const { return m_leftBound; }
+	double rightBound() const { return m_rightBound; }
+	UINT numCount() const { return m_numCount; }
 
 private:
 	// Helper functions
@@ -72,11 +83,20 @@ private:
 	double m_leftBound = -3.0;
 	double m_rightBound = 3.0;
 	UINT m_numCount = 15;
+	// Name of those variables
+	Platform::String ^m_fuc1Name = "function 1";
+	Platform::String ^m_fuc2Name = "function 2";
+	Platform::String ^m_lbName = "left bound";
+	Platform::String ^m_rbName = "right bound";
+	Platform::String ^m_numName = "number of solids";
+
 	// Most recent error
-	InputValidationCode err;
+	InputValidationCode m_err;
 
 	// File name
 	Platform::String^ m_inputFileName = "input.json";
+
+
 };
 
 #endif // !INPUTHANDLER_H

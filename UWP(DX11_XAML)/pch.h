@@ -15,3 +15,8 @@
 #include <concrt.h>
 #include <collection.h>
 #include "App.xaml.h"
+
+// Concurrency
+#include <ppltasks.h> // create_task
+#include <pplawait.h> // co_await
+#include <experimental\resumable>

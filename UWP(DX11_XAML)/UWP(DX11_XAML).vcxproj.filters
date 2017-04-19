@@ -87,6 +87,9 @@
     <ClCompile Include="pch.cpp">
       <Filter>App</Filter>
     </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />
@@ -102,6 +105,9 @@
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Content</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

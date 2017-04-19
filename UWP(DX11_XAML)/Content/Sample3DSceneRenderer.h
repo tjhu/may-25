@@ -4,7 +4,7 @@
 #include "ShaderStructures.h"
 #include "..\Common\StepTimer.h"
 
-// Forward declearing class
+// Forward declaring class
 ref class MouseAndKeyboardController;
 
 namespace UWP_DX11_XAML_

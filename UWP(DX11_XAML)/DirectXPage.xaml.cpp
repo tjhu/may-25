@@ -92,6 +92,8 @@ DirectXPage::DirectXPage():
 	m_main = std::unique_ptr<UWP_DX11_XAML_Main>(new UWP_DX11_XAML_Main(m_deviceResources));
 	m_main->CreateController(Window::Current->CoreWindow, m_deviceResources->GetSwapChainPanel()->Dispatcher);
 	m_main->StartRenderLoop();
+
+	// Load archived input from files
 	this->LoadResources();
 }
 
@@ -252,7 +254,6 @@ void UWP_DX11_XAML_::DirectXPage::submitButton_Click(Platform::Object^ sender, W
 {
 	OnSubmit();
 	m_inputHandler->ReadInputFromFile();
-
 }
 
 void UWP_DX11_XAML_::DirectXPage::OnSubmit()

@@ -2,6 +2,7 @@
 #include "Sample3DSceneRenderer.h"
 #include "MouseAndKeyboardController.h"
 #include "..\Common\DirectXHelper.h"
+#include "Geometry.h"
 
 using namespace UWP_DX11_XAML_;
 
@@ -135,7 +136,7 @@ void Sample3DSceneRenderer::Render()
 		);
 
 	// Each vertex is one instance of the VertexPositionColor struct.
-	UINT stride = sizeof(VertexPositionColor);
+	UINT stride = sizeof(SimpleVertex);
 	UINT offset = 0;
 	context->IASetVertexBuffers(
 		0,
@@ -147,7 +148,7 @@ void Sample3DSceneRenderer::Render()
 
 	context->IASetIndexBuffer(
 		m_indexBuffer.Get(),
-		DXGI_FORMAT_R16_UINT, // Each index is one 16-bit unsigned integer (short).
+		DXGI_FORMAT_R32_UINT, // Each index is one 16-bit unsigned integer (short).
 		0
 		);
 
@@ -244,6 +245,10 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 	// Once both shaders are loaded, create the mesh.
 	auto createCubeTask = (createPSTask && createVSTask).then([this] () {
 
+		UINT NumVer, NumInd;
+		auto mesh = Geometry::BuildDiskGeometryBuffers(&NumVer, &NumInd);
+		m_indexCount = mesh.indices.size;
+
 		// Load mesh vertices. Each vertex has a position and a color.
 		static const VertexPositionColor cubeVertices[] = 
 		{
@@ -257,15 +262,20 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 			{XMFLOAT3( 0.5f,  0.5f,  0.5f), XMFLOAT3(1.0f, 1.0f, 1.0f)},
 		};
 
-		D3D11_SUBRESOURCE_DATA vertexBufferData = {0};
-		vertexBufferData.pSysMem = cubeVertices;
-		vertexBufferData.SysMemPitch = 0;
-		vertexBufferData.SysMemSlicePitch = 0;
-		CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(cubeVertices), D3D11_BIND_VERTEX_BUFFER);
+		D3D11_SUBRESOURCE_DATA InitData = {0};
+		InitData.pSysMem = mesh.vertices.data;
+		InitData.SysMemPitch = 0;
+		InitData.SysMemSlicePitch = 0;
+		CD3D11_BUFFER_DESC bd;
+		ZeroMemory(&bd, sizeof(bd));
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = sizeof(SimpleVertex) * mesh.vertices.size;
+		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		bd.CPUAccessFlags = 0;
 		DX::ThrowIfFailed(
 			m_deviceResources->GetD3DDevice()->CreateBuffer(
-				&vertexBufferDesc,
-				&vertexBufferData,
+				&bd,
+				&InitData,
 				&m_vertexBuffer
 				)
 			);
@@ -296,20 +306,21 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 			1,7,5,
 		};
 
-		m_indexCount = ARRAYSIZE(cubeIndices);
-
-		D3D11_SUBRESOURCE_DATA indexBufferData = {0};
-		indexBufferData.pSysMem = cubeIndices;
-		indexBufferData.SysMemPitch = 0;
-		indexBufferData.SysMemSlicePitch = 0;
-		CD3D11_BUFFER_DESC indexBufferDesc(sizeof(cubeIndices), D3D11_BIND_INDEX_BUFFER);
+		ZeroMemory(&bd, sizeof(bd));
+		ZeroMemory(&InitData, sizeof(InitData));
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = mesh.indices.size * sizeof(UINT);        // 36 vertices needed for 12 triangles in a triangle list
+		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		bd.CPUAccessFlags = 0;
+		InitData.pSysMem = mesh.indices.data;
 		DX::ThrowIfFailed(
 			m_deviceResources->GetD3DDevice()->CreateBuffer(
-				&indexBufferDesc,
-				&indexBufferData,
+				&bd,
+				&InitData,
 				&m_indexBuffer
 				)
 			);
+		mesh.release();
 	});
 
 	// Once the cube is loaded, the object is ready to be rendered.

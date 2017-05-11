@@ -73,7 +73,7 @@ InputValidationCode InputHandler::Validate
 	{
 		return m_err = InputValidationCode::Invalid_RightBound;
 	}
-	if (sz != leftBound.size())
+	if (sz != rightBound.size())
 		return m_err = InputValidationCode::Invalid_RightBound;
 	// Validate number of solids
 	try
@@ -84,7 +84,7 @@ InputValidationCode InputHandler::Validate
 	{
 		return m_err = InputValidationCode::Invalid_NumCount;
 	}
-	if (sz != leftBound.size())
+	if (sz != numCount.size())
 		return m_err = InputValidationCode::Invalid_NumCount;
 	// If everything is okay, copy values of inputs to members, and return OK
 	Set(function1,

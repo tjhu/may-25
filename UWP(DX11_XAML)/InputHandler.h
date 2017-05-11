@@ -93,7 +93,8 @@ private:
 	// Most recent error
 	InputValidationCode m_err;
 
-	// File name
+	// File
+	Windows::Storage::StorageFolder^ m_storageFolder = Windows::Storage::ApplicationData::Current->LocalFolder;
 	Platform::String^ m_inputFileName = "input.json";
 
 

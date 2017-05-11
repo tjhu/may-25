@@ -125,13 +125,28 @@ Concurrency::task<void> InputHandler::ReadInputFromFile()
 	using namespace Concurrency;
 
 	JsonObject^ result;
-
-	StorageFolder^ storageFolder = ApplicationData::Current->LocalFolder;
 	try 
 	{
+		String^ str;
 		// Throw when the file is not exist
-		auto file = co_await storageFolder->GetFileAsync(m_inputFileName);
-		String^ str = co_await FileIO::ReadTextAsync(file);
+		auto t = create_task(m_storageFolder->GetFileAsync(m_inputFileName));
+		t.then(
+			[](task<StorageFile^> t)
+		{ 
+			try
+			{
+				StorageFile^ file = t.get();
+				return file;
+			}
+			catch (...)
+			{
+
+			}
+		});
+		auto a = t.wait();
+		StorageFile^ file = t.get();
+
+		str = co_await FileIO::ReadTextAsync(file);
 		result = JsonObject::Parse(str);
 
 		// Throw when content of the file does not match 
@@ -167,9 +182,8 @@ void InputHandler::SaveInputToFile()
 	auto string = jsonObject->Stringify();
 
 
-	StorageFolder^ storageFolder = ApplicationData::Current->LocalFolder;
 	Windows::Foundation::IAsyncOperation<StorageFile^>^ ofile = 
-		storageFolder->CreateFileAsync(m_inputFileName, CreationCollisionOption::ReplaceExisting);
+		m_storageFolder->CreateFileAsync(m_inputFileName, CreationCollisionOption::ReplaceExisting);
 
 	auto ofileEnumTask = create_task(ofile);
 	// Call the task's .then member function, and provide

@@ -6,6 +6,11 @@ InputHandler::InputHandler()
 {
 }
 
+void InputHandler::SetPage(UWP_DX11_XAML_::DirectXPage ^ page)
+{
+	m_page = page;
+}
+
 void InputHandler::Set
 (
 	std::wstring function1,
@@ -119,7 +124,7 @@ InputValidationCode InputHandler::Validate(Platform::String ^ function1, Platfor
 
 Concurrency::task<void> InputHandler::ReadInputFromFile()
 {
-	/*
+	
 	using namespace Platform;
 	using namespace Windows::Storage;
 	using namespace Windows::Data::Json;
@@ -128,7 +133,7 @@ Concurrency::task<void> InputHandler::ReadInputFromFile()
 	JsonObject^ result;
 	try 
 	{
-		String^ str;
+
 		// Throw when the file is not exist
 		auto t = create_task(m_storageFolder->GetFileAsync(m_inputFileName));
 		t.then(
@@ -150,7 +155,28 @@ Concurrency::task<void> InputHandler::ReadInputFromFile()
 
 		StorageFile^ file = t.get();
 
-		str = co_await FileIO::ReadTextAsync(file);
+		auto readTask = create_task(FileIO::ReadTextAsync(file));
+		readTask.then(
+			[](task<Platform::String^> t)
+		{
+			try
+			{
+				auto str = t.get();
+				return str;
+			}
+			catch (Platform::COMException^ e)
+			{
+				_MessageBox(e->Message);
+			}
+		}
+		);
+
+		auto readTastState = readTask.wait();
+		if (task_status::canceled == readTastState)
+			return;
+
+		String^ str = readTask.get();
+
 		result = JsonObject::Parse(str);
 
 		// Throw when content of the file does not match 
@@ -171,27 +197,34 @@ Concurrency::task<void> InputHandler::ReadInputFromFile()
 		// If throw, set everything to default(do nothing)
 		_MessageBox("Unable to get saved setting; default is used.")
 	}
-	*/
 
-	using namespace Windows::Storage;
-	using namespace concurrency;
 
 	StorageFolder^ documentsFolder = m_storageFolder;
 	auto getFileTask = create_task(documentsFolder->GetFileAsync(m_inputFileName));
 
-	getFileTask.then([](StorageFile^ file)
+	getFileTask.then([this](StorageFile^ file)
 	{
 		return FileIO::ReadTextAsync(file);
 	})
 
-		.then([](task<Platform::String^> t)
+		.then([this](task<Platform::String^> t)
 	{
 
 		try
 		{
 			auto str = t.get();
 			// .get() didn' t throw, so we succeeded.
+
+			auto result = JsonObject::Parse(str);
+
+			// Throw when content of the file does not match 
+			Validate(result->GetNamedString(m_fuc1Name),
+				result->GetNamedString(m_fuc2Name),
+				result->GetNamedNumber(m_lbName).ToString(),
+				result->GetNamedNumber(m_rbName).ToString(),
+				result->GetNamedNumber(m_numName).ToString());
 			_MessageBox(str);
+			m_page->LoadResources();
 		}
 		catch (Platform::COMException^ e)
 		{
@@ -200,6 +233,8 @@ Concurrency::task<void> InputHandler::ReadInputFromFile()
 		}
 
 	});
+	getFileTask.wait();
+
 	auto ofile = co_await m_storageFolder->CreateFileAsync("created.txt", CreationCollisionOption::ReplaceExisting);
 	FileIO::WriteTextAsync(ofile, "yo");
 }

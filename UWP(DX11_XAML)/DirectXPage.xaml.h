@@ -27,9 +27,9 @@ namespace UWP_DX11_XAML_
 		void SaveInternalState(Windows::Foundation::Collections::IPropertySet^ state);
 		void LoadInternalState(Windows::Foundation::Collections::IPropertySet^ state);
 
-	private:
 		void LoadResources();
 
+	private:
 		// XAML low-level rendering event handler.
 		void OnRendering(Platform::Object^ sender, Platform::Object^ args);
 

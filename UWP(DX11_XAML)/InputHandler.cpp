@@ -119,6 +119,7 @@ InputValidationCode InputHandler::Validate(Platform::String ^ function1, Platfor
 
 Concurrency::task<void> InputHandler::ReadInputFromFile()
 {
+	/*
 	using namespace Platform;
 	using namespace Windows::Storage;
 	using namespace Windows::Data::Json;
@@ -140,10 +141,13 @@ Concurrency::task<void> InputHandler::ReadInputFromFile()
 			}
 			catch (...)
 			{
-
+				_MessageBox("File not found");
 			}
 		});
 		auto a = t.wait();
+		if (task_status::canceled == a)
+			return;
+
 		StorageFile^ file = t.get();
 
 		str = co_await FileIO::ReadTextAsync(file);
@@ -160,12 +164,44 @@ Concurrency::task<void> InputHandler::ReadInputFromFile()
 		if (m_err != InputValidationCode::OK)
 			throw;
 
+
 	}
 	catch (...)
 	{
 		// If throw, set everything to default(do nothing)
 		_MessageBox("Unable to get saved setting; default is used.")
-	}	
+	}
+	*/
+
+	using namespace Windows::Storage;
+	using namespace concurrency;
+
+	StorageFolder^ documentsFolder = m_storageFolder;
+	auto getFileTask = create_task(documentsFolder->GetFileAsync(m_inputFileName));
+
+	getFileTask.then([](StorageFile^ file)
+	{
+		return FileIO::ReadTextAsync(file);
+	})
+
+		.then([](task<Platform::String^> t)
+	{
+
+		try
+		{
+			auto str = t.get();
+			// .get() didn' t throw, so we succeeded.
+			_MessageBox(str);
+		}
+		catch (Platform::COMException^ e)
+		{
+			//Example output: The system cannot find the specified file.
+			_MessageBox(e->Message);
+		}
+
+	});
+	auto ofile = co_await m_storageFolder->CreateFileAsync("created.txt", CreationCollisionOption::ReplaceExisting);
+	FileIO::WriteTextAsync(ofile, "yo");
 }
 
 void InputHandler::SaveInputToFile()

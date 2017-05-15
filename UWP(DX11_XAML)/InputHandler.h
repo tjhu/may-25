@@ -94,7 +94,7 @@ private:
 	InputValidationCode m_err;
 
 	// File
-	Windows::Storage::StorageFolder^ m_storageFolder = Windows::Storage::ApplicationData::Current->LocalFolder;
+	Windows::Storage::StorageFolder^ m_storageFolder = Windows::Storage::ApplicationData::Current->RoamingFolder;
 	Platform::String^ m_inputFileName = "input.json";
 
 

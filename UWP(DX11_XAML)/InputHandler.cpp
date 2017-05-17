@@ -6,11 +6,6 @@ InputHandler::InputHandler()
 {
 }
 
-void InputHandler::SetPage(UWP_DX11_XAML_::DirectXPage ^ page)
-{
-	m_page = page;
-}
-
 void InputHandler::Set
 (
 	std::wstring function1,

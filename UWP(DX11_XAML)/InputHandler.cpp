@@ -122,7 +122,7 @@ InputValidationCode InputHandler::Validate(Platform::String ^ function1, Platfor
 	);
 }
 
-Concurrency::task<void> InputHandler::ReadInputFromFile()
+void InputHandler::ReadInputFromFile()
 {
 	
 	using namespace Platform;
@@ -130,6 +130,7 @@ Concurrency::task<void> InputHandler::ReadInputFromFile()
 	using namespace Windows::Data::Json;
 	using namespace Concurrency;
 
+	/*
 	JsonObject^ result;
 	try 
 	{
@@ -197,46 +198,38 @@ Concurrency::task<void> InputHandler::ReadInputFromFile()
 		// If throw, set everything to default(do nothing)
 		_MessageBox("Unable to get saved setting; default is used.")
 	}
-
-
+	*/
+	DEBUGMESSAGE(L"Call ReadInputFromFile()\n");
+	_MessageBox("Call ReadInputFromFile()");
 	StorageFolder^ documentsFolder = m_storageFolder;
 	auto getFileTask = create_task(documentsFolder->GetFileAsync(m_inputFileName));
 
-	getFileTask.then([this](StorageFile^ file)
+
+	try
 	{
-		return FileIO::ReadTextAsync(file);
-	})
+		auto file = getFileTask.get();
+		auto readTask = create_task(FileIO::ReadTextAsync(file));
+		auto str = readTask.get();
+		auto result = JsonObject::Parse(str);
 
-		.then([this](task<Platform::String^> t)
+		// Throw when content of the file does not match 
+		Validate(result->GetNamedString(m_fuc1Name),
+			result->GetNamedString(m_fuc2Name),
+			result->GetNamedNumber(m_lbName).ToString(),
+			result->GetNamedNumber(m_rbName).ToString(),
+			result->GetNamedNumber(m_numName).ToString());
+		_MessageBox(str);
+	}
+	catch (Platform::COMException^ e)
 	{
+		//Example output: The system cannot find the specified file.
+		_MessageBox(e->Message);
+	}
+	catch (...)
+	{
+		_MessageBox("File cannot be opened");
+	}
 
-		try
-		{
-			auto str = t.get();
-			// .get() didn' t throw, so we succeeded.
-
-			auto result = JsonObject::Parse(str);
-
-			// Throw when content of the file does not match 
-			Validate(result->GetNamedString(m_fuc1Name),
-				result->GetNamedString(m_fuc2Name),
-				result->GetNamedNumber(m_lbName).ToString(),
-				result->GetNamedNumber(m_rbName).ToString(),
-				result->GetNamedNumber(m_numName).ToString());
-			_MessageBox(str);
-			m_page->LoadResources();
-		}
-		catch (Platform::COMException^ e)
-		{
-			//Example output: The system cannot find the specified file.
-			_MessageBox(e->Message);
-		}
-
-	});
-	getFileTask.wait();
-
-	auto ofile = co_await m_storageFolder->CreateFileAsync("created.txt", CreationCollisionOption::ReplaceExisting);
-	FileIO::WriteTextAsync(ofile, "yo");
 }
 
 void InputHandler::SaveInputToFile()

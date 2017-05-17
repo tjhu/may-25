@@ -29,9 +29,7 @@ enum class InputValidationCode
 class InputHandler sealed
 {
 public:
-
 	InputHandler();
-	void SetPage(UWP_DX11_XAML_::DirectXPage^ page);
 
 	// Set members to given values
 	void Set
@@ -63,7 +61,7 @@ public:
 		Platform::String^ numCount
 	);
 
-	Concurrency::task<void> ReadInputFromFile();
+	void ReadInputFromFile();
 	void SaveInputToFile();
 
 	// Get functions
@@ -77,9 +75,6 @@ public:
 private:
 	// Helper functions
 	std::string SystemStringToCppString(Platform::String^ str);
-
-	// Cache page
-	UWP_DX11_XAML_::DirectXPage^ m_page;
 
 	// User input variables
 	std::wstring m_function1 = L"sin(x)";

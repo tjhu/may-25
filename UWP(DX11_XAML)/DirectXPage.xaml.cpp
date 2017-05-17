@@ -94,8 +94,7 @@ DirectXPage::DirectXPage():
 	m_main->StartRenderLoop();
 
 	// Load archived input from files
-	m_inputHandler->SetPage(this);
-	m_inputHandler->ReadInputFromFile();
+	LoadResources();
 }
 
 DirectXPage::~DirectXPage()
@@ -129,6 +128,13 @@ void DirectXPage::LoadInternalState(IPropertySet^ state)
 void UWP_DX11_XAML_::DirectXPage::LoadResources()
 {
 	auto dispatcher = this->Dispatcher;
+	create_task(
+		[this, dispatcher]()
+	{
+		m_inputHandler->ReadInputFromFile();
+	}).then(
+		[this, dispatcher]()
+	{
 		dispatcher->RunAsync(CoreDispatcherPriority::Normal, ref new DispatchedHandler([this]() {
 			auto WsToPs = [](std::wstring str)
 			{
@@ -141,6 +147,9 @@ void UWP_DX11_XAML_::DirectXPage::LoadResources()
 			this->rbVal->Text = WsToPs(std::to_wstring(this->m_inputHandler->rightBound()));
 			this->numVal->Text = WsToPs(std::to_wstring(this->m_inputHandler->numCount()));
 		}));
+	}
+	);
+
 
 }
 

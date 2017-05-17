@@ -91,7 +91,6 @@ DirectXPage::DirectXPage():
 
 	m_main = std::unique_ptr<UWP_DX11_XAML_Main>(new UWP_DX11_XAML_Main(m_deviceResources));
 	m_main->CreateController(Window::Current->CoreWindow, m_deviceResources->GetSwapChainPanel()->Dispatcher);
-	m_main->StartRenderLoop();
 
 	// Load archived input from files
 	LoadResources();
@@ -147,6 +146,7 @@ void UWP_DX11_XAML_::DirectXPage::LoadResources()
 			this->rbVal->Text = WsToPs(std::to_wstring(this->m_inputHandler->rightBound()));
 			this->numVal->Text = WsToPs(std::to_wstring(this->m_inputHandler->numCount()));
 		}));
+		m_main->StartRenderLoop();
 	}
 	);
 

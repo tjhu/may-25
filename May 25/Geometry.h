@@ -1,4 +1,11 @@
 #pragma once
+//******************************************************//
+//Geometry.h by Tianjiao Huang, 2016-2017				//
+//******************************************************//
+#ifndef GEOMETRY_H
+#define GEOMETRY_H
+
+
 #include <DirectXMath.h>
 #include "DXUtility.h"
 
@@ -22,3 +29,5 @@ void SwapXAndYVertices(GeometryPointers in, UINT n, UINT NumOfIndices);
 
 
 //void BuildAxesGeometryBuffers();
+
+#endif // !GEOMETRY_H

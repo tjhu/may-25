@@ -1,4 +1,7 @@
 #pragma once
+//******************************************************//
+//MyWindowsProcs.h by Tianjiao Huang, 2016-2017			//
+//******************************************************//
 #ifndef MYWINDOWSPROCS_H
 #define MYWINDOWSPROCS_H
 #include "MyWindowsStuff.h"

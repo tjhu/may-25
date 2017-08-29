@@ -1,4 +1,7 @@
 #pragma once
+//******************************************************//
+//WindowsGlobalVariable.h by Tianjiao Huang, 2016-2017	//
+//******************************************************//
 #ifndef WINDOWSGLOBALVARIABLES_H
 #define WINDOWSGLOBALVARIABLES_H
 

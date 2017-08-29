@@ -1,3 +1,6 @@
+//******************************************************//
+//MathInput.cpp by Tianjiao Huang, 2016-2017				//
+//******************************************************//
 #include "stdafx.h"
 #include "MathInput.h"
 #include "micaut_i.c"

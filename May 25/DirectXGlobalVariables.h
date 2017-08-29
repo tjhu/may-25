@@ -1,4 +1,11 @@
+//******************************************************//
+//DirectXGlobalVariables.h by Tianjiao Huang, 2016-2017	//
+//******************************************************//
 #pragma once
+
+#ifndef DIRECTXGLOBALVARIABLES_H
+#define DIRECTXGLOBALVARIABLES_H
+
 #include <DirectXMath.h>
 #include "stdafx.h"
 using namespace DirectX;
@@ -40,3 +47,5 @@ extern UINT							NumOfIndices_Function;
 extern UINT							NumOfIndices_Cone;
 extern UINT							NumOfIndices_Cylinder;
 extern UINT							NumOfIndices_Axis;
+
+#endif // !DIRECTXGLOBALVARIABLES_H

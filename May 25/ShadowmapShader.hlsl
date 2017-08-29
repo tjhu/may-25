@@ -1,4 +1,6 @@
-
+//******************************************************//
+//ShadowmapShader.hlsl by Tianjiao Huang, 2016-2017		//
+//******************************************************//
 cbuffer cbPerObject : register(b0)
 {
     matrix gWorldViewProj;

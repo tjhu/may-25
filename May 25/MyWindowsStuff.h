@@ -1,4 +1,7 @@
 #pragma once
+//******************************************************//
+//MyWindowsStuff.h by Tianjiao Huang, 2016-2017			//
+//******************************************************//
 #ifndef MYWINDOWSSTUFF_H
 #define MYWINDOWSSTUFF_H
 

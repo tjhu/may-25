@@ -1,17 +1,10 @@
-﻿//**********************************************//
-//Copyright (c) 2016, Tianjiao Huang			//
-//All rights reserved.							//
-//**********************************************//
-
-
-
-//咯，这是给Tanimasa写的那个演示revolution程序中的子程序
-
-//e或E的格式：1E10; e^3
+﻿//******************************************************//
+//D3D11App.cpp by Tianjiao Huang, 2016-2017				//
+//******************************************************//
 
 
 //Evaluate a mathematical expression
-//教程链接:https://www.youtube.com/watch?v=vq-nUF0G4fI&list=PL2_aWCzGMAwI3W_JlcBbtYTwiQSsOTa6P&annotation_id=annotation_1770609109&feature=iv&src_vid=MeRb_1bddWg
+//Reference:https://www.youtube.com/watch?v=vq-nUF0G4fI&list=PL2_aWCzGMAwI3W_JlcBbtYTwiQSsOTa6P&annotation_id=annotation_1770609109&feature=iv&src_vid=MeRb_1bddWg
 //
 
 //早回的猫

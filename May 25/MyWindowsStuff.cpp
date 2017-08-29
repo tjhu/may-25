@@ -1,3 +1,6 @@
+//******************************************************//
+//MyWindowsStuff.cpp by Tianjiao Huang, 2016-2017		//
+//******************************************************//
 #include "stdafx.h"
 #include "MyWindowsStuff.h"
 #include <DirectXMath.h>

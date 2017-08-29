@@ -1,4 +1,7 @@
 #pragma once
+//******************************************************//
+//MyDirectXStuff.h by Tianjiao Huang, 2016-2017			//
+//******************************************************//
 #ifndef MYDIRECTXSTUFF_H
 #define MYDIRECTXSTUFF_H
 

@@ -1,3 +1,6 @@
+//**********************************************//
+//CommonStruct.h by Tianjiao Huang, 2016-2017	//
+//**********************************************//
 #pragma once
 #include <DirectXMath.h>
 #include <Windows.h>

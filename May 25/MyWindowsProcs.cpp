@@ -1,3 +1,6 @@
+//******************************************************//
+//MyWindowsProcs.cpp by Tianjiao Huang, 2016-2017				//
+//******************************************************//
 #include "stdafx.h"
 #include "Resource.h"
 #include "MyWindowsProcs.h"

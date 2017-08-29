@@ -1,4 +1,8 @@
-﻿#include "stdafx.h"
+﻿//******************************************************//
+//Untility.cpp by Tianjiao Huang, 2016-2017				//
+//******************************************************//
+
+#include "stdafx.h"
 #include "Utility.h"
 #include <codecvt>
 

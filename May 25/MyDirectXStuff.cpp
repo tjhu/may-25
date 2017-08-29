@@ -1,3 +1,6 @@
+//******************************************************//
+//MyDirectXStuff.cpp by Tianjiao Huang, 2016-2017		//
+//******************************************************//
 #include "stdafx.h"
 #include "MyDirectXStuff.h"
 #include "Geometry.h"

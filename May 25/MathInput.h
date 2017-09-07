@@ -1,7 +1,7 @@
 #pragma once
 #ifndef MATHINPUT_H
 #define MATHINPUT_H
-
+// Reference: https://msdn.microsoft.com/en-us/library/windows/desktop/dd371425(v=vs.85).aspx
 
 #include "micaut.h"
 #include <atlbase.h>	// CComPtr

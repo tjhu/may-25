@@ -351,9 +351,13 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 
 void CompileShaders()
 {
+#define hlslDir L"./hlsl/"
+
 	// Compile the vertex shader
 	ID3DBlob* pVSBlob = nullptr;
-	HRESULT hr = CompileShaderFromFile(L"LightShader.hlsl", "VS", "vs_5_0", &pVSBlob);
+	
+	
+	HRESULT hr = CompileShaderFromFile(hlslDir L"LightShader.hlsl", "VS", "vs_5_0", &pVSBlob);
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr,
@@ -389,7 +393,7 @@ void CompileShaders()
 
 	// Compile the pixel shader
 	ID3DBlob* pPSBlob = nullptr;
-	hr = CompileShaderFromFile(L"LightShader.hlsl", "PS", "ps_5_0", &pPSBlob);
+	hr = CompileShaderFromFile(hlslDir L"LightShader.hlsl", "PS", "ps_5_0", &pPSBlob);
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr,
@@ -404,7 +408,7 @@ void CompileShaders()
 
 	// Compile shaders for shadow map
 	ID3DBlob* pVSBlob_s = nullptr;
-	hr = CompileShaderFromFile(L"ShadowmapShader.hlsl", "ShadowMapVS", "vs_5_0", &pVSBlob_s);
+	hr = CompileShaderFromFile(hlslDir L"ShadowmapShader.hlsl", "ShadowMapVS", "vs_5_0", &pVSBlob_s);
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr,
@@ -412,7 +416,7 @@ void CompileShaders()
 		ThrowIfFailed(hr);
 	}
 	ID3DBlob* pPSBlob_s = nullptr;
-	hr = CompileShaderFromFile(L"ShadowmapShader.hlsl", "ShadowMapPS", "ps_5_0", &pPSBlob_s);
+	hr = CompileShaderFromFile(hlslDir L"ShadowmapShader.hlsl", "ShadowMapPS", "ps_5_0", &pPSBlob_s);
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr,

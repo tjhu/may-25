@@ -195,23 +195,23 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="LightingUtil.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="ShadowmapShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="StructsForShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="LightShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
     <None Include=".tfignore" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="mathml.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="hlsl\LightingUtil.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="hlsl\LightShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="hlsl\ShadowmapShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="hlsl\StructsForShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -7,7 +7,6 @@
 //Reference:https://www.youtube.com/watch?v=vq-nUF0G4fI&list=PL2_aWCzGMAwI3W_JlcBbtYTwiQSsOTa6P&annotation_id=annotation_1770609109&feature=iv&src_vid=MeRb_1bddWg
 //
 
-//早回的猫
 #include <iostream>
 #include "tmath.h"
 #include <stdlib.h>

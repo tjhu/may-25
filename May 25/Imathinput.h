@@ -2,7 +2,7 @@
 
 #include "micaut.h"
 #include <atlwin.h>
-
+// Reference: https://msdn.microsoft.com/en-us/library/windows/desktop/dd371425(v=vs.85).aspx
 
 static const int MATHINPUTCONTROL_SINK_ID = 1;
 

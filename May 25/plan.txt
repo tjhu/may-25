@@ -1,0 +1,7 @@
+Requested:
+1. Shell
+2. Rotate along a line
+
+1. Users are able to see axis through solids.
+2. Users are able to use IMathInputContol to input functions.
+3. Highlight the solid which is pointed by cursor.

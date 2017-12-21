@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{02159b3c-84f6-4cf7-9afa-3042b5a97c25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Windows">
+      <UniqueIdentifier>{a3849457-5670-48af-b657-8a3917d63740}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{9b7a232c-77a4-4963-a491-c443cb1be7bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DirectX">
+      <UniqueIdentifier>{f18f1789-d242-4478-92d7-02012b7ea45f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{4dfb8d73-83fb-4793-ae61-84015117d2d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DirectX">
+      <UniqueIdentifier>{28ff9b75-5479-4516-a448-10d90b77d04f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Windows">
+      <UniqueIdentifier>{8645ca12-3a3b-4b54-84b1-711314ce97ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Windows\MathInput">
+      <UniqueIdentifier>{e5ceb679-48da-4966-ad8e-8d96e6107fdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ALGLIB">
+      <UniqueIdentifier>{c82996a3-0ea7-4750-8d69-f97d1b8e1868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\ALGLIB">
+      <UniqueIdentifier>{e0e64f46-3325-48ae-a717-ac2a59732573}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+    <Text Include="plan.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowsGlobalVariables.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="EvaluateExpression\tmath.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="DXUtility.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11App.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonStruct.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="MyWindowsStuff.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="MyWindowsProcs.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGlobalVariables.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="MyDirectXStuff.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimer.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="MathInput.h">
+      <Filter>Header Files\Windows\MathInput</Filter>
+    </ClInclude>
+    <ClInclude Include="Imathinput.h">
+      <Filter>Header Files\Windows\MathInput</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUtility.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\tmath.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11App.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="MyWindowsProcs.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="MyWindowsStuff.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="MyDirectXStuff.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTimer.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="MathInput.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\alglibinternal.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\alglibmisc.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\ap.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\dataanalysis.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\diffequations.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\fasttransforms.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\integration.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\interpolation.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\linalg.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\optimization.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\solvers.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\specialfunctions.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateExpression\alglib\statistics.cpp">
+      <Filter>Source Files\Utilities\ALGLIB</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="May 25.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="adv_ico.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="adv_ico_acti.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".tfignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="mathml.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="hlsl\LightingUtil.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="hlsl\LightShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="hlsl\ShadowmapShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="hlsl\StructsForShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

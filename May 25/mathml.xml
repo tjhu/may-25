@@ -1,0 +1,9 @@
+<m:math xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:MicrosoftMathRecognizer="http://schemas.microsoft.com/mathrecognizer" >
+  <m:msqrt>
+    <m:mrow>
+      <m:mi>x</m:mi>
+      <m:mo>-</m:mo>
+      <m:mn>1</m:mn>
+    </m:mrow>
+  </m:msqrt>
+</m:math>

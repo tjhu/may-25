@@ -77,8 +77,10 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 		//double totalRotation = timer.GetTotalSeconds() * radiansPerSecond;
 		//float radians = static_cast<float>(fmod(totalRotation, XM_2PI));
 
-		Rotate(m_controller->Yaw());
+		// Rotate(m_controller->Yaw());
 	}
+	//Rotate(m_controller->Yaw());
+	//Rotate(m_controller->Yaw());
 }
 
 // Rotate the 3D cube model a set amount of radians.

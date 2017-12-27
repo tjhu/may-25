@@ -48,7 +48,7 @@ namespace UWP_DX11_XAML_
 		// Variables used with the rendering loop.
 		bool	m_loadingComplete;
 		float	m_degreesPerSecond;
-		bool	m_tracking;
+		bool	m_tracking;							// pointer pressed
 		MouseAndKeyboardController^ m_controller;
 	};
 }

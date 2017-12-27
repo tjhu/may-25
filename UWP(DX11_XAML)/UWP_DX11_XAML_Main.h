@@ -19,7 +19,7 @@ namespace UWP_DX11_XAML_
 			_In_ Windows::UI::Core::CoreWindow^ window,
 			_In_ Windows::UI::Core::CoreDispatcher^ dispatcher
 		);
-		void StartTracking() { m_sceneRenderer->StartTracking(); }
+		void StartTracking() { m_sceneRenderer->StartTracking(); }		// when pointer is presses
 		void TrackingUpdate(float positionX) { m_pointerLocationX = positionX; }
 		void StopTracking() { m_sceneRenderer->StopTracking(); }
 		bool IsTracking() { return m_sceneRenderer->IsTracking(); }

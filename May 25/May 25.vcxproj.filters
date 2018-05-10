@@ -193,9 +193,24 @@
     <Image Include="bitmap1.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="bmp\adv_ico.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bmp\adv_ico_acti.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include=".tfignore" />
+    <None Include="hlsl\ps.cso">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="hlsl\vs.cso">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="hlsl\Makefile">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="mathml.xml" />

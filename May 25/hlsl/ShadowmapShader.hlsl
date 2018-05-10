@@ -18,7 +18,7 @@ struct VertexOut
     float3 Normal : NORMAL;
 };
 
-VertexOut ShadowMapVS(VertexIn vin)
+VertexOut VS(VertexIn vin)
 {
     VertexOut vout;
 	
@@ -31,6 +31,6 @@ VertexOut ShadowMapVS(VertexIn vin)
     return vout;
 }
 
-void ShadowMapPS(VertexOut pin)
+void PS(VertexOut pin)
 {
 }

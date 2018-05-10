@@ -285,8 +285,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".tfignore" />
-    <None Include="bmp\text1.bin" />
-    <None Include="bmp\text2.bin" />
+    <None Include="hlsl\Makefile" />
+    <None Include="hlsl\ps.cso" />
+    <None Include="hlsl\vs.cso" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="mathml.xml">

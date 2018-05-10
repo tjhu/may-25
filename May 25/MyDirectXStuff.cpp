@@ -391,43 +391,21 @@ void CompileShaders()
 	// Set the input layout
 	g_pImmediateContext->IASetInputLayout(g_pVertexLayout);
 
-	// Compile the pixel shader
-	ID3DBlob* pPSBlob = nullptr;
-	hr = CompileShaderFromFile(hlslDir L"LightShader.hlsl", "PS", "ps_5_0", &pPSBlob);
-	if (FAILED(hr))
-	{
-		MessageBox(nullptr,
-			L"LightShader.hlsl cannot be compiled", L"Error", MB_OK);
-		ThrowIfFailed(hr);
-	}
+	// Load shaders
+	ID3DBlob* blob;
+	D3DReadFileToBlob(L"hlsl/vs.cso", &blob);
+	ThrowIfFailed(g_pd3dDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), NULL, &g_pVertexShader));
+	blob->Release();
+	D3DReadFileToBlob(L"hlsl/ps.cso", &blob);
+	ThrowIfFailed(g_pd3dDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), NULL, &g_pPixelShader));
+	blob->Release();
 
-	// Create the pixel shader
-	hr = g_pd3dDevice->CreatePixelShader(pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), nullptr, &g_pPixelShader);
-	pPSBlob->Release();
-	ThrowIfFailed(hr);
-
-	// Compile shaders for shadow map
-	ID3DBlob* pVSBlob_s = nullptr;
-	hr = CompileShaderFromFile(hlslDir L"ShadowmapShader.hlsl", "ShadowMapVS", "vs_5_0", &pVSBlob_s);
-	if (FAILED(hr))
-	{
-		MessageBox(nullptr,
-			L"ShadowmapShader.hlsl cannot be compiled", L"Error", MB_OK);
-		ThrowIfFailed(hr);
-	}
-	ID3DBlob* pPSBlob_s = nullptr;
-	hr = CompileShaderFromFile(hlslDir L"ShadowmapShader.hlsl", "ShadowMapPS", "ps_5_0", &pPSBlob_s);
-	if (FAILED(hr))
-	{
-		MessageBox(nullptr,
-			L"ShadowmapShader.hlsl cannot be compiled", L"Error", MB_OK);
-		ThrowIfFailed(hr);
-	}
-	hr = g_pd3dDevice->CreateVertexShader(pVSBlob_s->GetBufferPointer(), pVSBlob_s->GetBufferSize(), nullptr, &g_pShadowmapVertexShader);
-	hr = g_pd3dDevice->CreatePixelShader(pPSBlob_s->GetBufferPointer(), pPSBlob_s->GetBufferSize(), nullptr, &g_pShadowmapPixelShader);
-	pVSBlob_s->Release();
-	pPSBlob_s->Release();
-	ThrowIfFailed(hr);
+	D3DReadFileToBlob(L"hlsl/vs_shadow.cso", &blob);
+	ThrowIfFailed(g_pd3dDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), NULL, &g_pShadowmapVertexShader));
+	blob->Release();
+	D3DReadFileToBlob(L"hlsl/ps_shadow.cso", &blob);
+	ThrowIfFailed(g_pd3dDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), NULL, &g_pShadowmapPixelShader));
+	blob->Release();
 }
 
 bool GetFrameRate(IDXGISwapChainMedia * pSwapChainMedia, UINT * pFrameRate)

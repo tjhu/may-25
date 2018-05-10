@@ -279,10 +279,14 @@
     <Image Include="adv_ico.bmp" />
     <Image Include="adv_ico_acti.bmp" />
     <Image Include="bitmap1.bmp" />
+    <Image Include="bmp\adv_ico.bmp" />
+    <Image Include="bmp\adv_ico_acti.bmp" />
     <Image Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".tfignore" />
+    <None Include="bmp\text1.bin" />
+    <None Include="bmp\text2.bin" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="mathml.xml">

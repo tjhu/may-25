@@ -22,7 +22,7 @@ float4 PS(PS_INPUT pin) : SV_Target
 {
     float3 FresnelR0 = mMaterial.FresnelR0AndShininess.xyz;
     float Shininess = mMaterial.FresnelR0AndShininess.w;
-    float4 AmbientLight = (0.15f, 0.15f, 0.15f, 1.0f);
+    float4 AmbientLight = float4(0.15f, 0.15f, 0.15f, 1.0f);
 
     Light Lights[16];
     Lights[0].Direction = float3(0.57735f, -0.57735f, 0.57735f);

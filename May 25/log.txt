@@ -1,6 +1,0 @@
-Go main
-Read setting from file
-D3D device with feature level D3D_FEATURE_LEVEL_11_1 is created
-Initialization was succeed
-Read inputs from file
-Device cleaned up

@@ -35,7 +35,7 @@ All the source code are under "May 25/"
 ## Screenshots
 
 ### Coolest picture from development
-![alt text](https://raw.githubusercontent.com/gitleth/may-25/branch/screenshot/log_func.png)
+![alt text](https://github.com/gitletH/may-25/blob/master/screenshot/log_func.png?raw=true)
 
 
 ### Screenshot from latest build

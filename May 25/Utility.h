@@ -1,6 +1,6 @@
 #pragma once
 //******************************************************//
-//Utility.h by Tianjiao Huang, 2016-2017				//
+//	Utility.h by Tianjiao Huang, 2016-2018				//
 //******************************************************//
 #ifndef UTILITY_H
 #define UTILITY_H

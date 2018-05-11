@@ -1,5 +1,5 @@
 //******************************************************//
-//LighShader.hlsl by Tianjiao Huang, 2016-2017			//
+//  LighShader.hlsl by Tianjiao Huang, 2016-2018		//
 //******************************************************//
 
 // Defaults for number of lights.

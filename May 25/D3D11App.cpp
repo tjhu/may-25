@@ -1,5 +1,5 @@
 //******************************************************//
-//D3D11App.cpp by Tianjiao Huang, 2016-2017				//
+//	D3D11App.cpp by Tianjiao Huang, 2016-2018			//
 //******************************************************//
 
 //Reference: https://github.com/walbourn/directx-sdk-samples, 3D Game Programming With DirectX11 by Frank D. Luna

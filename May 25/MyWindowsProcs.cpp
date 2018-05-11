@@ -1,5 +1,5 @@
 //******************************************************//
-//MyWindowsProcs.cpp by Tianjiao Huang, 2016-2017				//
+//	MyWindowsProcs.cpp by Tianjiao Huang, 2016-2018		//
 //******************************************************//
 #include "stdafx.h"
 #include "Resource.h"

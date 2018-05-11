@@ -1,3 +1,6 @@
+//******************************************************//
+//	MathInput.h by Tianjiao Huang, 2016-2018			//
+//******************************************************//
 #pragma once
 #ifndef MATHINPUT_H
 #define MATHINPUT_H

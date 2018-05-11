@@ -1,5 +1,5 @@
 //******************************************************//
-//MathInput.cpp by Tianjiao Huang, 2016-2017				//
+//	MathInput.cpp by Tianjiao Huang, 2016-2018			//
 //******************************************************//
 #include "stdafx.h"
 #include "MathInput.h"

@@ -1,5 +1,5 @@
 //******************************************************//
-//Geometry.cpp by Tianjiao Huang, 2016-2017				//
+//	Geometry.cpp by Tianjiao Huang, 2016-2018			//
 //******************************************************//
 #include "stdafx.h"
 #include "Geometry.h"

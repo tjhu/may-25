@@ -1,5 +1,5 @@
 //******************************************************//
-//ShadowmapShader.hlsl by Tianjiao Huang, 2016-2017		//
+//  ShadowmapShader.hlsl by Tianjiao Huang, 2016-2018	//
 //******************************************************//
 cbuffer cbPerObject : register(b0)
 {

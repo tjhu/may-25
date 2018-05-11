@@ -1,5 +1,5 @@
 //******************************************************//
-//DirectXGlobalVariables.h by Tianjiao Huang, 2016-2017	//
+//DirectXGlobalVariables.h by Tianjiao Huang, 2016-2018	//
 //******************************************************//
 #pragma once
 

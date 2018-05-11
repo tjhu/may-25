@@ -1,5 +1,5 @@
 //******************************************************//
-//MyWindowsStuff.cpp by Tianjiao Huang, 2016-2017		//
+//	MyWindowsStuff.cpp by Tianjiao Huang, 2016-2018		//
 //******************************************************//
 #include "stdafx.h"
 #include "MyWindowsStuff.h"

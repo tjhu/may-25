@@ -23,12 +23,13 @@ Open `May 25.sln` with Visual Studio 2017 then build and run/debug it.
 * Windows SDK 10.0.16299.0
 * VC++ 2017 v141 toolset
 * MFC support (required)
+<br />
 You can adjust Windows SDK version or VC++ version, but you must have MFC support. These components can be installed via Visual Studio Installer.
 
 ## Supported platforms:
 * Windows 8
 * Windows 8.1
-* Windows 10 (tested)
+* Windows 10
 
 ## How to read the code
 All the source code are under "May 25/"

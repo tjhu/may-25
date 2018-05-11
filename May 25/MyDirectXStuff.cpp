@@ -351,29 +351,38 @@ void InitDevice(HWND hWnd, HINSTANCE hInstance)
 
 void CompileShaders()
 {
-#define hlslDir L"./hlsl/"
+//#define hlslDir L"./hlsl/"
+//
+//	// Compile the vertex shader
+//	ID3DBlob* pVSBlob = nullptr;
+//	
+//	
+//	HRESULT hr = CompileShaderFromFile(hlslDir L"LightShader.hlsl", "VS", "vs_5_0", &pVSBlob);
+//	if (FAILED(hr))
+//	{
+//		MessageBox(nullptr,
+//			L"LightShader.hlsl cannot be compiled", L"Error", MB_OK);
+//		ThrowIfFailed(hr);
+//	}
+//
+//	// Create the vertex shader
+//	hr = g_pd3dDevice->CreateVertexShader(pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &g_pVertexShader);
+//	if (FAILED(hr))
+//	{
+//		pVSBlob->Release();
+//		ThrowIfFailed(hr);
+//	}
 
-	// Compile the vertex shader
-	ID3DBlob* pVSBlob = nullptr;
-	
-	
-	HRESULT hr = CompileShaderFromFile(hlslDir L"LightShader.hlsl", "VS", "vs_5_0", &pVSBlob);
-	if (FAILED(hr))
-	{
-		MessageBox(nullptr,
-			L"LightShader.hlsl cannot be compiled", L"Error", MB_OK);
-		ThrowIfFailed(hr);
-	}
-
-	// Create the vertex shader
-	hr = g_pd3dDevice->CreateVertexShader(pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &g_pVertexShader);
-	if (FAILED(hr))
-	{
-		pVSBlob->Release();
-		ThrowIfFailed(hr);
-	}
-
+	HRESULT hr;
 	// Define the input layout
+	
+
+	// Load shaders
+	HRSRC hRes = FindResource(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_VS), _T("Shader"));
+	DWORD dwSize = SizeofResource(GetModuleHandle(NULL), hRes);
+	const BYTE* pData = reinterpret_cast<const BYTE*>(::LockResource(LoadResource(GetModuleHandle(NULL), hRes)));
+	ThrowIfFailed(g_pd3dDevice->CreateVertexShader(pData, dwSize, NULL, &g_pVertexShader));
+
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -382,30 +391,23 @@ void CompileShaders()
 	UINT numElements = ARRAYSIZE(layout);
 
 	// Create the input layout
-	hr = g_pd3dDevice->CreateInputLayout(layout, numElements, pVSBlob->GetBufferPointer(),
-		pVSBlob->GetBufferSize(), &g_pVertexLayout);
-	pVSBlob->Release();
-	if (FAILED(hr))
-		ThrowIfFailed(hr);
-
-	// Set the input layout
+	ThrowIfFailed(g_pd3dDevice->CreateInputLayout(layout, numElements, pData, dwSize, &g_pVertexLayout));
 	g_pImmediateContext->IASetInputLayout(g_pVertexLayout);
 
-	// Load shaders
-	ID3DBlob* blob;
-	D3DReadFileToBlob(L"hlsl/vs.cso", &blob);
-	ThrowIfFailed(g_pd3dDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), NULL, &g_pVertexShader));
-	blob->Release();
-	D3DReadFileToBlob(L"hlsl/ps.cso", &blob);
-	ThrowIfFailed(g_pd3dDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), NULL, &g_pPixelShader));
-	blob->Release();
+	hRes = FindResource(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_PS), _T("Shader"));
+	dwSize = SizeofResource(GetModuleHandle(NULL), hRes);
+	pData = reinterpret_cast<const BYTE*>(::LockResource(LoadResource(GetModuleHandle(NULL), hRes)));
+	ThrowIfFailed(g_pd3dDevice->CreatePixelShader(pData, dwSize, NULL, &g_pPixelShader));
 
-	D3DReadFileToBlob(L"hlsl/vs_shadow.cso", &blob);
-	ThrowIfFailed(g_pd3dDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), NULL, &g_pShadowmapVertexShader));
-	blob->Release();
-	D3DReadFileToBlob(L"hlsl/ps_shadow.cso", &blob);
-	ThrowIfFailed(g_pd3dDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), NULL, &g_pShadowmapPixelShader));
-	blob->Release();
+	hRes = FindResource(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_VS_SHADOW), _T("Shader"));
+	dwSize = SizeofResource(GetModuleHandle(NULL), hRes);
+	pData = reinterpret_cast<const BYTE*>(::LockResource(LoadResource(GetModuleHandle(NULL), hRes)));
+	ThrowIfFailed(g_pd3dDevice->CreateVertexShader(pData, dwSize, NULL, &g_pShadowmapVertexShader));
+
+	hRes = FindResource(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_PS_SHADOW), _T("Shader"));
+	dwSize = SizeofResource(GetModuleHandle(NULL), hRes);
+	pData = reinterpret_cast<const BYTE*>(::LockResource(LoadResource(GetModuleHandle(NULL), hRes)));
+	ThrowIfFailed(g_pd3dDevice->CreatePixelShader(pData, dwSize, NULL, &g_pShadowmapPixelShader));
 }
 
 bool GetFrameRate(IDXGISwapChainMedia * pSwapChainMedia, UINT * pFrameRate)

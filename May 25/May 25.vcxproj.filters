@@ -211,6 +211,8 @@
     <None Include="hlsl\Makefile">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="hlsl\ps_shadow.cso" />
+    <None Include="hlsl\vs_shadow.cso" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="mathml.xml" />

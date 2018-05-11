@@ -14,6 +14,17 @@ A 3D visualization for [Solid of Revolution](https://en.wikipedia.org/wiki/Solid
 
 ### Custom functions, boundaries, and number of solids
 
+## How to run it
+Go to [release page](https://github.com/gitletH/may-25/releases/latest) and download binary build (may-25.exe) and run it.
+
+## How to debug it
+Open `May 25.sln` with Visual Studio 2017 then build and run/debug it. 
+### Development dependencies
+* Windows SDK 10.0.16299.0
+* VC++ 2017 v141 toolset
+* MFC support (required)
+You can adjust Windows SDK version or VC++ version, but you must have MFC support. These components can be installed via Visual Studio Installer.
+
 ## Supported platforms:
 * Windows 8
 * Windows 8.1

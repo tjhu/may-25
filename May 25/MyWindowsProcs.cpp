@@ -545,7 +545,6 @@ LRESULT CALLBACK UIWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 			LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
 			HWND hwnd = pDIS->hwndItem;
 			BITMAP bm;
-			PAINTSTRUCT ps;
 
 			HDC hdc = pDIS->hDC;
 

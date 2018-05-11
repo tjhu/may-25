@@ -211,8 +211,12 @@
     <None Include="hlsl\Makefile">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="hlsl\ps_shadow.cso" />
-    <None Include="hlsl\vs_shadow.cso" />
+    <None Include="hlsl\ps_shadow.cso">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="hlsl\vs_shadow.cso">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="mathml.xml" />

@@ -11,3 +11,6 @@ ps_shadow.cso: ShadowmapShader.hlsl
 
 vs_shadow.cso: ShadowmapShader.hlsl
 	fxc //T vs_5_0 //E "VS" //Fo vs_shadow.cso ShadowmapShader.hlsl
+
+clean: 
+	rm ps.cso vs.cso ps_shadow.cso vs_shadow.cso
